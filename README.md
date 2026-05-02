@@ -12,29 +12,32 @@ If you're not a client and you've stumbled across this repo, that's fine — the
 
 ## What's inside
 
+All skills are namespaced under `/dlcOS:` — type `/dlcOS:` and tab-complete to see them all grouped together.
+
 | Skill | What it does |
 |---|---|
-| `dlc-setup` | One-time setup wizard. Run this first. |
-| `dlc-save-plan` | Park an in-progress plan for a future session to critique and execute. |
-| `dlc-resume-plan` | Pick up a plan saved by `/dlc-save-plan`. Critiques first, then executes. |
-| `dlc-end` | End-of-session ritual. Summarizes, routes durable knowledge, surfaces Office Hours. |
-| `dlc-weekly-review` | Friday GTD review. Tasks, projects, someday, optional Google Calendar. |
-| `dlc-morning-brief` | Interactive setup for a per-client daily brief. |
+| `/dlcOS:setup` | One-time setup wizard. Run this first. |
+| `/dlcOS:save-plan` | Park an in-progress plan for a future session to critique and execute. |
+| `/dlcOS:resume-plan` | Pick up a plan saved by `/dlcOS:save-plan`. Critiques first, then executes. |
+| `/dlcOS:end` | End-of-session ritual. Summarizes, routes durable knowledge, surfaces Office Hours. |
+| `/dlcOS:weekly-review` | Friday GTD review. Tasks, projects, someday, optional Google Calendar. |
+| `/dlcOS:morning-brief` | Interactive setup for a per-client daily brief. |
 
-Coming in v1.1: `dlc-inbox-triage` for inbox-zero workflow.
+Coming in v1.1: `/dlcOS:inbox-triage` for inbox-zero workflow.
 
 ## Install
 
 ```
 /plugin marketplace add Digital-Life-Coach/dlcOS
-/plugin install dlc@Digital-Life-Coach
+/plugin install dlcOS@dlcOS
+/reload-plugins
 ```
 
-Then run `/dlc-setup` to scaffold your AI workspace.
+Then run `/dlcOS:setup` to scaffold your AI workspace.
 
 ## Updates
 
-Each skill carries its own SemVer. `/dlc-end` checks for plugin updates at session close and prints a one-line nudge if newer versions are available.
+`/dlcOS:end` checks for plugin updates at session close and prints a one-line nudge if a newer version is available.
 
 Run `/plugin update` to pull the latest.
 

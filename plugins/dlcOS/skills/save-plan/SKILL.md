@@ -1,13 +1,15 @@
 ---
-name: dlc-save-plan
-description: Save the current plan to disk in a self-contained format so a future Claude session (possibly a different model) can critique and execute it without access to this conversation. Writes to ${VAULT_ROOT}/Reference/Plans/YYYY-MM-DD-slug.md, drops a pointer in the project CLAUDE.md under "## Pending Plans", and explains design decisions so the next agent can audit them. Use when the user says /dlc-save-plan, "save this plan", "hand this off", "park this for a new session", or wants a fresh model to critique before implementation. Pairs with /dlc-resume-plan.
+name: save-plan
+description: Save the current plan to disk in a self-contained format so a future Claude session (possibly a different model) can critique and execute it without access to this conversation. Writes to ${VAULT_ROOT}/Reference/Plans/YYYY-MM-DD-slug.md, drops a pointer in the project CLAUDE.md under "## Pending Plans", and explains design decisions so the next agent can audit them. Use when the user says /dlcOS:save-plan, "save this plan", "hand this off", "park this for a new session", or wants a fresh model to critique before implementation. Pairs with /dlcOS:resume-plan.
 ---
 
-# /dlc-save-plan — Hand off a plan to a future session
+# save-plan — Hand off a plan to a future session
 
-Use when the user wants to stop here, start a fresh session (often a different model — Sonnet → Opus, etc.) and have that agent **critique and then implement** the plan. This is NOT `/dlc-end`. `/dlc-end` summarizes a finished session; `/dlc-save-plan` packages an unfinished plan with enough context that a cold-start agent can act on it.
+*Invoke as `/dlcOS:save-plan`*
 
-If you're tempted to use both in the same session, run `/dlc-save-plan` FIRST (so the plan file is captured), THEN `/dlc-end` (which summarizes the session including the fact that a plan was parked).
+Use when the user wants to stop here, start a fresh session (often a different model — Sonnet → Opus, etc.) and have that agent **critique and then implement** the plan. This is NOT `/dlcOS:end`. `/dlcOS:end` summarizes a finished session; `/dlcOS:save-plan` packages an unfinished plan with enough context that a cold-start agent can act on it.
+
+If you're tempted to use both in the same session, run `/dlcOS:save-plan` FIRST (so the plan file is captured), THEN `/dlcOS:end` (which summarizes the session including the fact that a plan was parked).
 
 ---
 
@@ -23,7 +25,7 @@ That path is `${VAULT_ROOT}` for the rest of this skill. If the line is missing,
 
 > "I can't find the dlcOS vault-root marker. Add this line to your project CLAUDE.md (replace the path with your vault's absolute path):
 > `<!-- dlcos:vault-root --> /absolute/path/to/your/vault`
-> Then re-run /dlc-save-plan."
+> Then re-run /dlcOS:save-plan."
 
 ---
 
@@ -148,15 +150,15 @@ Before reporting done:
 
 1. Re-read the plan file you just wrote. Ask: *"If I had no memory of this conversation, could I execute this?"* If no, fix it.
 2. Confirm the CLAUDE.md pointer renders as valid markdown (relative link resolves).
-3. Output to the user: the plan file path, the CLAUDE.md you updated, and the exact phrase to start the next session: **"Run /dlc-resume-plan"** (or `/dlc-resume-plan <slug>` if there are multiple pending plans).
+3. Output to the user: the plan file path, the CLAUDE.md you updated, and the exact phrase to start the next session: **"Run /dlcOS:resume-plan"** (or `/dlcOS:resume-plan <slug>` if there are multiple pending plans).
 
 ---
 
-## Step 5 — Do NOT also run /dlc-end
+## Step 5 — Do NOT also run /dlcOS:end
 
-`/dlc-save-plan` deliberately does not write a daily note, post to dashboards, or commit. If the user also wants to close out the session, they'll run `/dlc-end` separately.
+`/dlcOS:save-plan` deliberately does not write a daily note, post to dashboards, or commit. If the user also wants to close out the session, they'll run `/dlcOS:end` separately.
 
-After reporting the plan as saved, remind the user: **"Run `/dlc-end` when you're ready to close this session."**
+After reporting the plan as saved, remind the user: **"Run `/dlcOS:end` when you're ready to close this session."**
 
 ---
 
@@ -166,4 +168,4 @@ After reporting the plan as saved, remind the user: **"Run `/dlc-end` when you'r
 - ❌ Vague steps ("then update the config")
 - ❌ Skipping section 5 because "the steps are obvious" — the critique pass needs decisions to chew on
 - ❌ Filing the plan under the project directory instead of `${VAULT_ROOT}/Reference/Plans/` — splits the index
-- ❌ Running `/dlc-save-plan` for a finished session — that's `/dlc-end`'s job
+- ❌ Running `/dlcOS:save-plan` for a finished session — that's `/dlcOS:end`'s job
