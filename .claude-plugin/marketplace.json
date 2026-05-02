@@ -1,0 +1,15 @@
+{
+  "name": "dlcos",
+  "owner": {
+    "name": "MacCog",
+    "email": "justin@maccog.com"
+  },
+  "description": "dlcOS — The Digital Life Coach OS. Private Claude Code plugin marketplace for MacCog AI Coaching clients.",
+  "plugins": [
+    {
+      "name": "dlc",
+      "source": "./plugins/dlc",
+      "description": "Core dlcOS skills: setup wizard, plan save/resume, end-of-session ritual, weekly review, morning-brief setup."
+    }
+  ]
+}

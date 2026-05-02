@@ -1,0 +1,14 @@
+{
+  "name": "dlc",
+  "version": "0.1.0",
+  "description": "Core dlcOS skills for MacCog AI Coaching clients: setup wizard, plan save/resume, end-of-session ritual, weekly review, morning-brief setup.",
+  "author": {
+    "name": "MacCog",
+    "email": "justin@maccog.com"
+  },
+  "homepage": "https://github.com/Digital-Life-Coach/dlcOS",
+  "repository": "https://github.com/Digital-Life-Coach/dlcOS",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": ["coaching", "gtd", "planning", "productivity", "claude-code"],
+  "skills": "./skills/"
+}
