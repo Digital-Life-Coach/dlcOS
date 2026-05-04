@@ -53,34 +53,70 @@ Tell the user:
 >
 > Which sections would you like in your brief?"
 
-Present as a checklist — user picks any combination:
+Present as a menu — user picks any combination. Group by category so it doesn't feel overwhelming:
 
 ```
-Sections (pick any):
+=== BRIEF SECTIONS — pick any ===
 
-a) ✅ P1 tasks — your highest-priority open tasks
-b) 📁 Projects needing attention — projects with no next action, or stalled 14+ days
-c) 📥 Inbox count — number of files waiting in Inbox/
-d) ✅ Yesterday's completions — tasks checked off in the past 24 hours
-e) 💡 SOMEDAY surface — one aged SOMEDAY item (60+ days) per day, in rotation
-f) 📅 Top 3 this week — tasks marked ⭐ THIS WEEK from the last weekly review
+── TASKS & PROJECTS ──────────────────────────────────
+a) ✅ P1 tasks            Your top-priority open tasks (recommended)
+b) 📋 All open tasks      Full task list, grouped by priority
+c) 📁 Projects needing    Projects with no next action or stalled 14+ days
+   attention             (recommended)
+d) ⭐ This week's top 3   Tasks you marked as THIS WEEK in your last weekly review
 
-(recommend: a + b + c + d for a tight brief; add e/f if you want more)
+── COMPLETIONS & MOMENTUM ────────────────────────────
+e) ✅ Yesterday's          Tasks checked off in the past 24 hours (recommended)
+   completions
+f) 📈 Weekly wins         Everything completed in the past 7 days — good for Monday
+g) 🔥 Streak check        Days in a row you've completed at least 1 task
+
+── CAPTURE & INBOX ───────────────────────────────────
+h) 📥 Inbox count         How many files are waiting in Inbox/ (recommended)
+i) 💡 SOMEDAY surface     One aged SOMEDAY item (60+ days) surfaced daily, in rotation
+j) 💭 Idea of the day     One item from IDEAS.md, rotated daily
+
+── REFLECTION ────────────────────────────────────────
+k) ❓ Daily question      One reflection question generated fresh each morning
+   (AI-generated)        (e.g. "What's one thing you've been avoiding?")
+l) 🎯 Intention setter    Claude asks: "What would make today a success?" — you answer,
+                          it writes your answer to the daily note
+m) 📖 Journal prompt      A writing prompt based on what's in your GTD system right now
+
+── CONTEXT & AWARENESS ───────────────────────────────
+n) 📆 Today's date/day    Day of week, date, week number — useful anchor
+o) 🌤  Weather             Current conditions for your location (requires location config)
+p) ⏰ Time-sensitive       Tasks or projects with upcoming deadlines (reads due dates
+   items                 from task frontmatter or inline dates)
+q) 🔁 Recurring check-in  A rotating reminder from a custom list you define (e.g. weekly
+                          calls, habits, routines)
+
+── CUSTOM ────────────────────────────────────────────
+z) ✏️  Custom section      Describe anything else you want — Claude will figure out
+                          how to pull it from your vault
+
+Starter pack (recommended for most people): a + c + e + h
+Power pack: a + c + d + e + f + h + i + k
+Reflective pack: a + e + h + k + l + m
 ```
 
-Wait for the user's choices. Default if they say "all" or "recommend": a + b + c + d.
+Wait for the user's choices. Default if they say "starter" or "recommend": a + c + e + h.
 
-### Step 3 — Delivery and Timing
+### Step 3 — Delivery and Config
 
-Ask:
+Ask the following, one at a time (don't dump all at once):
 
-> "A couple of quick questions:
->
-> 1. **Brief title:** What do you want to call your daily brief? (e.g. 'The Morning Brief', 'Daily Snapshot', 'What's Up') — this becomes the H1 heading.
-> 2. **Delivery:** For now, your brief writes to `Reference/Dailies/YYYY-MM-DD.md` in your vault. In phase 2 we can add email or notification delivery. Works for now?
-> 3. **Anything else** you'd want surfaced each morning that isn't on the list?"
+1. **Brief title:** "What do you want to call your daily brief? This becomes the heading each morning." (e.g. 'The Morning Brief', 'Daily Snapshot', 'Good Morning', 'What's Up')
 
-Collect answers. Note any custom sections for the spec.
+2. **If section o (weather) was selected:** "What city/location should I use for weather? (e.g. 'San Luis Obispo, CA')"
+
+3. **If section q (recurring check-in) was selected:** "Give me a list of recurring reminders to rotate through — one will surface each morning. These can be habits, relationship nudges, routine checks, anything. List them one per line."
+
+4. **Delivery:** "Your brief will write to `Reference/Dailies/YYYY-MM-DD.md` in your vault — you'll see it each time you open a session. In phase 2 we can add email or push notification delivery. Sound good for now?"
+
+5. **Custom sections:** "Anything else you'd want surfaced each morning that wasn't on the list? Describe it in plain English and I'll figure out how to pull it from your vault."
+
+Collect all answers before writing the spec.
 
 ### Step 4 — Write Brief Spec and First Preview
 
@@ -95,20 +131,29 @@ Write `${VAULT_ROOT}/Reference/dlcOS-morning-brief.md`:
 [chosen title]
 
 ## Sections
-- [section a: yes/no]
-- [section b: yes/no]
-- [section c: yes/no]
-- [section d: yes/no]
-- [section e: yes/no]
-- [section f: yes/no]
-- [any custom sections noted verbatim]
+[list only the enabled sections, one per line, e.g.:]
+- a: P1 tasks
+- c: projects needing attention
+- e: yesterday's completions
+- h: inbox count
+- k: daily question
+
+## Config
+location: [city, state — for weather; leave blank if section o not enabled]
+someday_index: 0
+ideas_index: 0
+
+## Recurring check-ins
+[one per line — rotated daily in section q; leave blank if not enabled]
+- [reminder 1]
+- [reminder 2]
+
+## Custom sections
+[free-form description of any custom sections the user requested]
 
 ## Delivery
 - v1: file-only → writes to ${VAULT_ROOT}/Reference/Dailies/YYYY-MM-DD.md
 - Phase 2: email / notification (configure when ready)
-
-## Notes
-[any free-form notes from the user's answers]
 ```
 
 Then immediately run **Brief Mode** (Steps 5–7) as a first preview, so the user sees their brief live before ending the session.
@@ -126,33 +171,73 @@ Read `${VAULT_ROOT}/Reference/dlcOS-morning-brief.md`. Parse:
 
 ### Step 6 — Gather Data
 
-Pull only the data needed for the enabled sections. Run reads in parallel:
+Pull only the data needed for the enabled sections. Run reads in parallel where possible.
 
 **Section a — P1 tasks:**
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Extract all unchecked `- [ ]` items tagged P1. If no P1 section exists, take the first 5 unchecked items.
+Read `${VAULT_ROOT}/GTD/TASKS.md`. Extract all unchecked `- [ ]` items tagged P1. If no P1 section exists, take the first 5 unchecked items. Cap display at 7 — if more, show 7 and note "…and N more."
 
-**Section b — Projects needing attention:**
+**Section b — All open tasks:**
+Read `${VAULT_ROOT}/GTD/TASKS.md`. Show all unchecked items grouped by P1/P2/P3. Collapse P3 to a count unless there are fewer than 5 total.
+
+**Section c — Projects needing attention:**
 Read `${VAULT_ROOT}/GTD/PROJECTS.md`. Flag projects that:
-- Have no next action line
-- Have a next action that's already checked off
-- Have no entry in COMPLETED.md in the past 14 days (use git log as proxy if needed)
+- Have no next action line, OR
+- Have a next action that's already checked off, OR
+- Have no entry in COMPLETED.md in the past 14 days
 
-**Section c — Inbox count:**
+**Section d — This week's top 3:**
+Read `${VAULT_ROOT}/GTD/TASKS.md`. Find items marked `⭐ THIS WEEK`. List them. If none found, note "No THIS WEEK items — run `/dlcOS:weekly-review` to set them."
+
+**Section e — Yesterday's completions:**
+Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract items dated yesterday (or the most recent date in the file if nothing from yesterday).
+
+**Section f — Weekly wins:**
+Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract all items from the past 7 days. Group by day. Good opener for Monday runs.
+
+**Section g — Streak check:**
+Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Count consecutive days (going backwards from yesterday) that have at least one completion entry. Print: "🔥 N-day streak" or "No streak yet this week."
+
+**Section h — Inbox count:**
 ```bash
 ls "${VAULT_ROOT}/Inbox/" | wc -l
 ```
 Note the count. If > 5, add a nudge: "run `/dlcOS:weekly-review` to process."
 
-**Section d — Yesterday's completions:**
-Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract items with a date of yesterday (or the most recent date in the file if nothing from yesterday).
+**Section i — SOMEDAY surface:**
+Read `${VAULT_ROOT}/GTD/SOMEDAY.md`. Track the last surfaced item index in the spec file (`someday_index` field). Advance by 1 each run (wrap around at end of list). Surface one item with its category.
 
-**Section e — SOMEDAY surface:**
-Read `${VAULT_ROOT}/GTD/SOMEDAY.md`. Find items that haven't been surfaced recently (use a simple round-robin: track the last surfaced item index in the spec file, advance by 1 each run). Surface one item with its category.
+**Section j — Idea of the day:**
+Read `${VAULT_ROOT}/GTD/IDEAS.md`. Rotate through items the same way as section i, using an `ideas_index` field in the spec.
 
-**Section f — This week's top 3:**
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Find items marked `⭐ THIS WEEK`. List them.
+**Section k — Daily question:**
+Generate one fresh reflection question informed by what's in the GTD system right now. Ground it in something real — e.g. if there's a stalled project, ask about that; if completions were heavy, ask about momentum. Examples:
+- "You've had [project] stalled for 14 days. What's actually blocking it?"
+- "You completed [N] things this week. What made those easier than usual?"
+- "What's one thing on your P2 list you've been quietly avoiding?"
 
-**Custom sections:** Execute per the spec's free-form notes as best you can from vault files.
+**Section l — Intention setter:**
+Ask: "What would make today a success?" — wait for the user's answer, then write it as a `## Today's Intention` heading at the top of `${VAULT_ROOT}/Reference/Dailies/YYYY-MM-DD.md`.
+
+**Section m — Journal prompt:**
+Generate a writing prompt based on what surfaced during the brief. Write it to the daily note as `## Journal Prompt` so the user can return to it later.
+
+**Section n — Date/day anchor:**
+Print: `📅 [Full day of week], [Month D, YYYY] — Week [N] of [Year]`
+
+**Section o — Weather:**
+Read the location from the spec file (`location` field, set during setup). Fetch current conditions via wttr.in:
+```bash
+curl -sf "https://wttr.in/${LOCATION}?format=3" 2>/dev/null
+```
+Skip silently if location not configured or fetch fails.
+
+**Section p — Time-sensitive items:**
+Read `${VAULT_ROOT}/GTD/TASKS.md` and `${VAULT_ROOT}/GTD/PROJECTS.md`. Look for inline dates (formats: `due: YYYY-MM-DD`, `by YYYY-MM-DD`, `📅 YYYY-MM-DD`). Flag anything due within 7 days.
+
+**Section q — Recurring check-in:**
+Read the `recurring` list from the spec file. Rotate through items daily (one per day) so they surface on a cadence without piling up. Examples a user might add: "Call mom this week?", "Check in with [client]", "Log workout."
+
+**Custom sections (z):** Execute per the spec's free-form description as best you can from vault files. If the user described something that requires a specific file path or format, note that in the spec during setup so it's reliably found on future runs.
 
 ### Step 7 — Compose and Deliver
 
