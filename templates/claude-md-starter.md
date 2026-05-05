@@ -2,11 +2,9 @@
 
 *This file orchestrates Claude's behavior in your dlcOS-managed vault. The markers below are read by dlcOS skills at runtime — leave them in place even if you're not using a feature yet.*
 
-<!-- dlcos:vault-root --> /absolute/path/to/your/vault
-<!-- dlcOS:office-hours-ical --> https://example.com/office-hours.ics
-<!-- dlcOS:gcal-enabled -->
-
-*Remove the `gcal-enabled` line if you don't want Google Calendar integration in `/dlcOS:weekly-review`. Replace the `office-hours-ical` URL with the calendar your coach gives you, or remove the line to disable Office Hours nudges.*
+<!-- dlcOS:vault-root --> /absolute/path/to/your/vault
+<!-- dlcOS:office-hours-ical --> https://example.com/office-hours.ics  (replace with your coach's calendar URL, or delete this line to disable Office Hours nudges)
+<!-- dlcOS:gcal-enabled -->  (delete this line to disable Google Calendar integration in /dlcOS:weekly-review)
 
 ---
 

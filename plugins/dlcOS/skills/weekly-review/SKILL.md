@@ -22,13 +22,13 @@ Target: Friday, flexible to Saturday.
 Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep it for the line:
 
 ```
-<!-- dlcos:vault-root --> /absolute/path/to/vault
+<!-- dlcOS:vault-root --> /absolute/path/to/vault
 ```
 
 That path is `${VAULT_ROOT}` for the rest of this skill. If the line is missing, stop and tell the user:
 
 > "I can't find the dlcOS vault-root marker. Add this line to your project CLAUDE.md:
-> `<!-- dlcos:vault-root --> /absolute/path/to/your/vault`
+> `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault`
 > Then re-run /dlcOS:weekly-review."
 
 Also check for the optional Google Calendar flag:

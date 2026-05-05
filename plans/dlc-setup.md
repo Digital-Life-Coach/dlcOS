@@ -86,14 +86,15 @@ ${VAULT_ROOT}/
     ├── Dailies/.gitkeep
     ├── Themes/
     │   └── themes-rolling.md          ← from templates/themes-rolling.md
-    └── Patterns/.gitkeep
+    ├── Patterns/.gitkeep
+    └── Plans/.gitkeep                 ← target dir for /dlcOS:save-plan output
 ```
 
-In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcos:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the GTD files (`*Last updated:* <today>`).
+In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the GTD files (`*Last updated:* <today>`).
 
 **Verify:**
 - `ls ${VAULT_ROOT}` shows all top-level dirs and `CLAUDE.md`.
-- `grep "<!-- dlcos:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
+- `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
 - All template files copied with no `<!-- placeholder -->` comments left behind in active content (Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those).
 
 ### Stage 3 — Skill install verify
@@ -108,7 +109,7 @@ For each skill, confirm it's reachable. Don't run them end-to-end — just verif
 - `/dlcOS:weekly-review` — should respond about review phase
 - `/dlcOS:morning-brief` — should respond and offer setup mode (since no spec exists yet)
 
-If any skill fails to discover, run `/plugin reload` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
+If any skill fails to discover, run `/reload-plugins` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
 
 **Verify:** all 5 skills respond to invocation. Document any oddities in the daily note for the coach to follow up on.
 

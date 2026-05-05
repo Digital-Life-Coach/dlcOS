@@ -42,7 +42,7 @@ If the file is missing, re-run the marketplace add command. If it exists but the
 The skills find your vault by looking for a marker line in your `CLAUDE.md`:
 
 ```
-<!-- dlcos:vault-root --> /absolute/path/to/your/vault
+<!-- dlcOS:vault-root --> /absolute/path/to/your/vault
 ```
 
 Open the `CLAUDE.md` at the top of your vault and confirm that line exists, with an absolute path (no `~`, no relatives). The wizard adds it during Stage 2 — if you skipped or interrupted that stage, it might be missing.
@@ -107,7 +107,7 @@ Correct — they're not in v1. Granola meeting ingest and email ingest are Phase
 If something feels weird after running `/dlcOS:setup`, here's the full list of places the wizard writes or changes things. Nothing else on your Mac is modified.
 
 **Inside your vault folder** (the path you gave the wizard in Stage 2):
-- Creates `CLAUDE.md` with the `<!-- dlcos:vault-root -->` marker and your identity block.
+- Creates `CLAUDE.md` with the `<!-- dlcOS:vault-root -->` marker and your identity block.
 - Creates `Inbox/`, `GTD/`, `Wiki/Knowledge/`, `Reference/Themes/`, `Reference/Patterns/`, `Reference/Dailies/`.
 - Writes `Wiki/Knowledge/about-me.md` (your L3 memory narrative).
 - Writes `Wiki/Knowledge/settings-memory-block.md` (a backup of the paste block).

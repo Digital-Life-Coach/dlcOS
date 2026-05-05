@@ -16,7 +16,7 @@ This skill consumes the wizard plan at `<marketplace-root>/plans/dlc-setup.md` a
 Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep for:
 
 ```
-<!-- dlcos:vault-root --> /absolute/path/to/vault
+<!-- dlcOS:vault-root --> /absolute/path/to/vault
 ```
 
 **If found:** use that path as `${VAULT_ROOT}`. The client has run setup before — confirm with them whether they're re-running intentionally (e.g., disaster recovery) or whether `/dlcOS:setup` was invoked by mistake. If re-running, proceed; the wizard is idempotent and will re-build / overwrite as needed.
