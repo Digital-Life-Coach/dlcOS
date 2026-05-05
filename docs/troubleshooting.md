@@ -102,6 +102,26 @@ Correct — they're not in v1. Granola meeting ingest and email ingest are Phase
 
 ---
 
+## What the wizard actually touches on your machine
+
+If something feels weird after running `/dlcOS:setup`, here's the full list of places the wizard writes or changes things. Nothing else on your Mac is modified.
+
+**Inside your vault folder** (the path you gave the wizard in Stage 2):
+- Creates `CLAUDE.md` with the `<!-- dlcos:vault-root -->` marker and your identity block.
+- Creates `Inbox/`, `GTD/`, `Wiki/Knowledge/`, `Reference/Themes/`, `Reference/Patterns/`, `Reference/Dailies/`.
+- Writes `Wiki/Knowledge/about-me.md` (your L3 memory narrative).
+- Writes `Wiki/Knowledge/settings-memory-block.md` (a backup of the paste block).
+- Drops template files into `Inbox/` and `GTD/` (do-now, ideas, thoughts, TASKS, PROJECTS, SOMEDAY, IDEAS, COMPLETED).
+
+**Outside your vault**:
+- You paste a memory block into **Claude desktop → Settings → Memory** during Stage 4a. That edit lives in your Claude account, not your filesystem. To remove it later: open Settings → Memory and delete the block.
+- The wizard does NOT install Obsidian, Granola, or any other app. If those came up in conversation, you (or your coach) installed them manually.
+- The wizard does NOT modify `~/.claude/CLAUDE.md`, your shell rc files, launchd jobs, or anything in `/etc`.
+
+**Rollback** if you want to start over: delete the vault folder (or just the files above), remove the Settings → Memory paste block, and re-run `/dlcOS:setup`.
+
+---
+
 ## Last resort
 
 Text Justin at **805-720-9276** with:

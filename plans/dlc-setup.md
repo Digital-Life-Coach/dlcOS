@@ -114,6 +114,16 @@ If any skill fails to discover, run `/plugin reload` and retry. If still failing
 
 ### Stage 4a — Memory layers build
 
+**Pre-check (idempotency).** Before branching, check whether `${VAULT_ROOT}/Wiki/Knowledge/about-me.md` already exists *and* contains content beyond the template placeholders. If it does, ask the client:
+
+> "Looks like you already have an `about-me.md` here. Do you want to (a) keep it as-is and skip this stage, (b) start over from scratch, or (c) review and refine what's there?"
+
+- (a) → skip to Stage 4b. Confirm the Settings paste block also exists at `Wiki/Knowledge/settings-memory-block.md`; if missing, regenerate it from the existing `about-me.md`.
+- (b) → back up the existing file to `Wiki/Knowledge/about-me.backup-YYYY-MM-DD.md` before overwriting, then continue with the branch below.
+- (c) → load the existing content and treat it as the input to the synthesis pass below (skip the export prompt; go straight to the synthesis rules).
+
+If `about-me.md` doesn't exist or only contains the unmodified template, proceed normally.
+
 Branch on import availability.
 
 **Ask the client:** "Do you have memory stored in ChatGPT or Gemini that you want to bring over?"
