@@ -7,7 +7,7 @@ description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold, v
 
 *Invoke as `/dlcOS:setup`*
 
-This skill consumes the wizard plan at `<plugin-root>/plans/dlc-setup.md` and walks a new client through onboarding. Plan is `mode: execute` so `/dlcOS:resume-plan` skips the critique pass and runs the stages directly.
+This skill consumes the wizard plan at `<marketplace-root>/plans/dlc-setup.md` and walks a new client through onboarding. Plan is `mode: execute` so `/dlcOS:resume-plan` skips the critique pass and runs the stages directly.
 
 ---
 
@@ -42,12 +42,14 @@ If anything is missing, pause and tell them what to do before continuing.
 
 ## Step 2 — Locate the wizard plan
 
-The wizard plan ships with this plugin. Find it at one of:
+The wizard plan lives in the marketplace clone, not the plugin install cache. Find it at one of:
 
-1. `<plugin-install-root>/plans/dlc-setup.md` — when installed via `/plugin install dlcOS@dlcOS`. The plugin install root is typically `~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`.
+1. `~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md` — created when the client ran `/plugin marketplace add Digital-Life-Coach/dlcOS`. **This is the canonical path.**
 2. If running from a development checkout: `<repo-root>/plans/dlc-setup.md`.
 
-Use the plugin-install path first; fall back to the repo path; if neither exists, tell the client the install is broken and ask them to re-run `/plugin install dlcOS@dlcOS`.
+Use the marketplace path first; fall back to the repo path. If neither exists, the marketplace was never added — tell the client to run `/plugin marketplace add Digital-Life-Coach/dlcOS` (not just `/plugin install`) and try again.
+
+Note: the plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`) contains only the plugin subdirectory and does NOT include `plans/`. Don't look there.
 
 ---
 
@@ -56,7 +58,7 @@ Use the plugin-install path first; fall back to the repo path; if neither exists
 Once `${VAULT_ROOT}` is established (which may not happen until Stage 1 of the wizard runs and Stage 2 creates the CLAUDE.md marker), copy the wizard plan to the client's vault:
 
 ```
-cp <plugin-install-root>/plans/dlc-setup.md ${VAULT_ROOT}/Reference/Plans/dlcOS-setup.md
+cp ~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md ${VAULT_ROOT}/Reference/Plans/dlcOS-setup.md
 ```
 
 Add a line under `## Pending Plans` in `${VAULT_ROOT}/CLAUDE.md`:
