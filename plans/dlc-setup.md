@@ -62,9 +62,22 @@ Hold these answers for use in Stage 2 (vault root, CLAUDE.md identity block) and
 
 **Verify:** all 6 questions answered; vault root path is absolute and the parent directory exists.
 
-### Stage 2 — Vault scaffold
+### Stage 2 — Vault scaffold (structure-aware)
 
-Build the directory structure and drop templates. Use the templates shipped at `<plugin-root>/templates/` as the source of truth.
+**Pre-check (existing-vault detection).** Before scaffolding, inspect `${VAULT_ROOT}`. Three branches:
+
+- **Empty / new:** the path doesn't exist or is empty → full scaffold below.
+- **Established vault** (has existing markdown content, especially recognizable directories like `Inbox/`, dailies, project folders) → **adapt, don't overwrite.** Walk the client through what already exists, ask what they want from the structure, then create only the missing pieces they want. Do NOT create empty parallel dirs next to existing ones (e.g. don't create a fresh `GTD/` if their tasks live at vault root or under another name).
+- **Partial** (some dirs exist, others don't) → ask per-dir before creating.
+
+**Structure is opinionated but optional.** The layout below is the default dlcOS shape. For each top-level dir, ask the client whether they want it, where it should live, and what to call it. Examples of legitimate variation seen in pilot:
+- Tasks at vault root rather than `GTD/` subdir.
+- Dailies already at `Wiki/Reference/Dailies/` rather than `Reference/Dailies/`.
+- Different folder name than `GTD/` (it's jargon — *Tasks/*, *Now/*, *Action/* are reasonable swaps; let the client pick).
+
+When the client already has a working naming convention, **honor it.** Update `${VAULT_ROOT}/CLAUDE.md` to reference the actual paths the client uses, not the canonical defaults. The skills read paths from `CLAUDE.md` — they don't care what the dirs are named, only that CLAUDE.md tells them where to look.
+
+Default scaffold (use as the starting offer; adjust per client answers):
 
 ```
 ${VAULT_ROOT}/
@@ -93,9 +106,11 @@ ${VAULT_ROOT}/
 In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the GTD files (`*Last updated:* <today>`).
 
 **Verify:**
-- `ls ${VAULT_ROOT}` shows all top-level dirs and `CLAUDE.md`.
+- `ls ${VAULT_ROOT}` shows the dirs the client agreed to + `CLAUDE.md` (existing or new).
 - `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
-- All template files copied with no `<!-- placeholder -->` comments left behind in active content (Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those).
+- `CLAUDE.md` accurately reflects the *actual* paths in this vault (especially if the client uses non-default names like `Tasks/` instead of `GTD/`, or has dailies in a non-standard location).
+- No empty parallel dirs created alongside existing client structure (e.g. an empty `GTD/` next to the client's existing tasks file).
+- Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those.
 
 ### Stage 3 — Skill install verify
 
@@ -150,8 +165,8 @@ Branch on import availability.
 1. Write `${VAULT_ROOT}/Wiki/Knowledge/about-me.md`.
 2. Display the Settings → Memory paste block in the conversation, formatted between `---BEGIN PASTE---` and `---END PASTE---` markers.
 3. Save a copy of the paste block to `${VAULT_ROOT}/Wiki/Knowledge/settings-memory-block.md` so the client has a backup if they need to re-paste later.
-4. Tell the client: "Now open Claude desktop → Settings → Memory and paste that block. Tell me when done."
-5. Wait for confirmation.
+4. **Settings paste — ask first, don't assume.** Before instructing a paste, ask: "Do you already have a Settings → Memory block populated in Claude desktop?" If yes, offer three options: (a) skip the paste — keep what's there, (b) replace with this new block, (c) merge — open Settings → Memory side-by-side and reconcile manually with the coach. Only proceed to "paste this now" if the client confirms their Settings memory is empty or they explicitly chose (b).
+5. Wait for confirmation that the Settings step is resolved (paste done, skip confirmed, or merge complete).
 
 **Verify:**
 - `Wiki/Knowledge/about-me.md` exists and has content in every section (no leftover `<!-- ... -->` placeholders).
@@ -184,12 +199,19 @@ Teaching frame: *"Most people only use Layer 1. You now have all four working."*
 
 Round-trip the plan workflow so the client experiences it once with the coach present.
 
-1. Pick something real on the client's plate — a project they've been thinking about. 5 minutes scoping conversation.
-2. Run `/dlcOS:save-plan`. Walk through the prompts together. Save the plan to `${VAULT_ROOT}/Reference/Plans/`.
+**Ask the client which path fits:**
+
+- **(a) Fresh scope:** pick something on their plate they've been thinking about. ~5 min scoping conversation, then save.
+- **(b) In-flight project:** if the client already has a project actively open in another conversation or in their head, save *that* plan instead. This is often the better demo — the plan workflow shines when there's real momentum to capture, not invented practice scope. Note: if the in-flight project lives in another Claude Code session, save-plan can be run from there in a separate session — Stage 5 verify just needs the artifact to exist somewhere reachable.
+
+Then:
+
+1. Run `/dlcOS:save-plan` (in this session for path (a); in the in-flight session for path (b)). Walk through the prompts together.
+2. Save the plan under `${VAULT_ROOT}/Reference/Plans/` (or wherever the client's CLAUDE.md points the Plans dir).
 3. Confirm the plan pointer appears in `${VAULT_ROOT}/CLAUDE.md` under `## Pending Plans`.
 4. (Optional, time permitting) start a fresh conversation and run `/dlcOS:resume-plan` to demonstrate the critique pass.
 
-**Verify:** plan file exists in `Reference/Plans/`; pointer in CLAUDE.md.
+**Verify:** plan file exists in the configured Plans dir; pointer in CLAUDE.md.
 
 ### Stage 6 — Handoff
 
