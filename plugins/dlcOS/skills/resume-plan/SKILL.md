@@ -97,7 +97,7 @@ Once the user has responded to the critique:
 When all steps are done and success criteria pass:
 
 1. Update frontmatter: `status: complete`, add `completed: YYYY-MM-DD HH:MM`.
-2. Append a `## Outcome` section: what shipped, what changed vs. the plan, any follow-up tasks (route those to `${VAULT_ROOT}/GTD/TASKS.md` per project conventions, NOT into the plan file).
+2. Append a `## Outcome` section: what shipped, what changed vs. the plan, any follow-up tasks (route those to `${VAULT_ROOT}/Action/TASKS.md` per project conventions, NOT into the plan file).
 3. Remove the plan's pointer line from `## Pending Plans` in CLAUDE.md.
 4. Move the file to `${VAULT_ROOT}/Reference/Plans/archive/<original-filename>` (create the dir if needed).
 5. Tell the user where the archived plan lives and summarize the outcome in 2-3 sentences. Suggest `/dlcOS:end` if the session is wrapping.

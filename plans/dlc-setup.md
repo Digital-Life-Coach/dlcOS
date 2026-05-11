@@ -18,7 +18,7 @@ A guided onboarding that stands up a new client's AI workspace end-to-end. Targe
 
 By the end of this wizard, the client has:
 
-- A working vault directory with `CLAUDE.md`, `Inbox/`, `GTD/`, `Wiki/Knowledge/about-me.md`, and the L2/L3/L4 memory folders under `Reference/`.
+- A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and the L2/L3/L4 memory folders under `Reference/`.
 - All 5 dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
 - A polished `Wiki/Knowledge/about-me.md` (synthesized from their prior AI memory exports OR built from a fresh interview).
 - A Settings → Memory paste block pasted into Claude desktop's Memory.
@@ -67,13 +67,13 @@ Hold these answers for use in Stage 2 (vault root, CLAUDE.md identity block) and
 **Pre-check (existing-vault detection).** Before scaffolding, inspect `${VAULT_ROOT}`. Three branches:
 
 - **Empty / new:** the path doesn't exist or is empty → full scaffold below.
-- **Established vault** (has existing markdown content, especially recognizable directories like `Inbox/`, dailies, project folders) → **adapt, don't overwrite.** Walk the client through what already exists, ask what they want from the structure, then create only the missing pieces they want. Do NOT create empty parallel dirs next to existing ones (e.g. don't create a fresh `GTD/` if their tasks live at vault root or under another name).
+- **Established vault** (has existing markdown content, especially recognizable directories like `Inbox/`, dailies, project folders) → **adapt, don't overwrite.** Walk the client through what already exists, ask what they want from the structure, then create only the missing pieces they want. Do NOT create empty parallel dirs next to existing ones (e.g. don't create a fresh `Action/` if their tasks live at vault root or under another name).
 - **Partial** (some dirs exist, others don't) → ask per-dir before creating.
 
 **Structure is opinionated but optional.** The layout below is the default dlcOS shape. For each top-level dir, ask the client whether they want it, where it should live, and what to call it. Examples of legitimate variation seen in pilot:
-- Tasks at vault root rather than `GTD/` subdir.
+- Tasks at vault root rather than `Action/` subdir.
 - Dailies already at `Wiki/Reference/Dailies/` rather than `Reference/Dailies/`.
-- Different folder name than `GTD/` (it's jargon — *Tasks/*, *Now/*, *Action/* are reasonable swaps; let the client pick).
+- Different folder name than `Action/` (it's jargon — *Tasks/*, *Now/*, *Action/* are reasonable swaps; let the client pick).
 
 When the client already has a working naming convention, **honor it.** Update `${VAULT_ROOT}/CLAUDE.md` to reference the actual paths the client uses, not the canonical defaults. The skills read paths from `CLAUDE.md` — they don't care what the dirs are named, only that CLAUDE.md tells them where to look.
 
@@ -89,12 +89,12 @@ ${VAULT_ROOT}/
 │   ├── do-now.md                      ← from templates/inbox/do-now.md
 │   ├── ideas.md                       ← from templates/inbox/ideas.md
 │   └── thoughts.md                    ← from templates/inbox/thoughts.md
-├── GTD/
-│   ├── TASKS.md                       ← from templates/gtd/TASKS.md
-│   ├── PROJECTS.md                    ← from templates/gtd/PROJECTS.md
-│   ├── SOMEDAY.md                     ← from templates/gtd/SOMEDAY.md
-│   ├── IDEAS.md                       ← from templates/gtd/IDEAS.md
-│   └── COMPLETED.md                   ← from templates/gtd/COMPLETED.md
+├── Action/
+│   ├── TASKS.md                       ← from templates/action/TASKS.md
+│   ├── PROJECTS.md                    ← from templates/action/PROJECTS.md
+│   ├── SOMEDAY.md                     ← from templates/action/SOMEDAY.md
+│   ├── IDEAS.md                       ← from templates/action/IDEAS.md
+│   └── COMPLETED.md                   ← from templates/action/COMPLETED.md
 └── Reference/
     ├── Dailies/.gitkeep
     ├── Themes/
@@ -103,13 +103,13 @@ ${VAULT_ROOT}/
     └── Plans/.gitkeep                 ← target dir for /dlcOS:save-plan output
 ```
 
-In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the GTD files (`*Last updated:* <today>`).
+In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the Action files (`*Last updated:* <today>`).
 
 **Verify:**
 - `ls ${VAULT_ROOT}` shows the dirs the client agreed to + `CLAUDE.md` (existing or new).
 - `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
-- `CLAUDE.md` accurately reflects the *actual* paths in this vault (especially if the client uses non-default names like `Tasks/` instead of `GTD/`, or has dailies in a non-standard location).
-- No empty parallel dirs created alongside existing client structure (e.g. an empty `GTD/` next to the client's existing tasks file).
+- `CLAUDE.md` accurately reflects the *actual* paths in this vault (especially if the client uses non-default names like `Tasks/` instead of `Action/`, or has dailies in a non-standard location).
+- No empty parallel dirs created alongside existing client structure (e.g. an empty `Action/` next to the client's existing tasks file).
 - Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those.
 
 ### Stage 3 — Skill install verify

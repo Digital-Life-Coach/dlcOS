@@ -12,7 +12,7 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 **When to use it.** Your first session after `/plugin install dlcOS@dlcOS`. Or if you nuke your vault and need to rebuild from scratch — the wizard is idempotent.
 
-**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `GTD/`, `Wiki/Knowledge/about-me.md`, and L2/L3/L4 memory folders. A Settings → Memory paste block for Claude desktop.
+**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and L2/L3/L4 memory folders. A Settings → Memory paste block for Claude desktop.
 
 **Time.** ~45 minutes with coach present.
 
@@ -60,7 +60,7 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 **When to use it.** Fridays are the canonical day, but any once-a-week cadence works. Use `--quick` for a 30-minute tactical version when you're crunched.
 
-**What it produces.** Updated `GTD/PROJECTS.md`, `GTD/TASKS.md`, `GTD/SOMEDAY.md`. A weekly wrap note. A stronger "next 2-3 Office Hours" surfacing than `/dlcOS:end`.
+**What it produces.** Updated `Action/PROJECTS.md`, `Action/TASKS.md`, `Action/SOMEDAY.md`. A weekly wrap note. A stronger "next 2-3 Office Hours" surfacing than `/dlcOS:end`.
 
 ---
 

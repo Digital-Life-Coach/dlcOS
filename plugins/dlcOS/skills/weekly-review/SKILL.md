@@ -53,7 +53,7 @@ Read each file found. Categorize: task / project idea / reference / wiki-worthy 
 
 ### 0b. Completion sweep
 
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Find all lines matching `- [x]`. These need archiving to `GTD/COMPLETED.md`.
+Read `${VAULT_ROOT}/Action/TASKS.md`. Find all lines matching `- [x]`. These need archiving to `Action/COMPLETED.md`.
 
 ### 0c. [GCal] Calendar pull — past 7 days
 
@@ -71,24 +71,24 @@ Use Google Calendar MCP (`gcal_list_events`) for the next 14 days. Flag events t
 
 ### 0f. Stale task scan
 
-Parse `${VAULT_ROOT}/GTD/TASKS.md`. Flag any unchecked item that has been in the file 14+ days without being touched. Use git blame or the "Last updated" timestamp as a proxy.
+Parse `${VAULT_ROOT}/Action/TASKS.md`. Flag any unchecked item that has been in the file 14+ days without being touched. Use git blame or the "Last updated" timestamp as a proxy.
 
 ### 0g. Project health check
 
-Parse `${VAULT_ROOT}/GTD/PROJECTS.md`. Flag:
+Parse `${VAULT_ROOT}/Action/PROJECTS.md`. Flag:
 - Projects with no next action
 - Projects where the next action is already checked off (stale)
 - Projects with no activity in COMPLETED.md for 14+ days
 
 ### 0h. SOMEDAY flags
 
-Parse `${VAULT_ROOT}/GTD/SOMEDAY.md`. Flag items that are:
+Parse `${VAULT_ROOT}/Action/SOMEDAY.md`. Flag items that are:
 - 60+ days old (estimate from "Last refreshed" date vs. item position)
 - Newly relevant based on recent activity
 
 ### 0j. Week's completions
 
-Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract entries from the past 7 days. This feeds Phase 3 ("What got done this week").
+Read `${VAULT_ROOT}/Action/COMPLETED.md`. Extract entries from the past 7 days. This feeds Phase 3 ("What got done this week").
 
 ---
 
@@ -147,7 +147,7 @@ Initialize a decisions collector.
 
 ### 2a. Task sweep
 
-Walk through `${VAULT_ROOT}/GTD/TASKS.md` section by section: P1 → P2 → P3.
+Walk through `${VAULT_ROOT}/Action/TASKS.md` section by section: P1 → P2 → P3.
 
 Skip checked items (handled in pre-flight).
 
@@ -170,7 +170,7 @@ Collect decision. Move to next item.
 
 ### 2b. Project review
 
-Walk through `${VAULT_ROOT}/GTD/PROJECTS.md` one project at a time:
+Walk through `${VAULT_ROOT}/Action/PROJECTS.md` one project at a time:
 
 ```
 📁 [Project Name]
@@ -261,10 +261,10 @@ Apply all? (yes / edit by number)
 Wait for confirmation. If "edit #N", adjust and re-present.
 
 Once confirmed, apply ALL changes in one batch:
-1. Archive checked items to `${VAULT_ROOT}/GTD/COMPLETED.md`
-2. Update `${VAULT_ROOT}/GTD/TASKS.md`
-3. Update `${VAULT_ROOT}/GTD/PROJECTS.md`
-4. Update `${VAULT_ROOT}/GTD/SOMEDAY.md`
+1. Archive checked items to `${VAULT_ROOT}/Action/COMPLETED.md`
+2. Update `${VAULT_ROOT}/Action/TASKS.md`
+3. Update `${VAULT_ROOT}/Action/PROJECTS.md`
+4. Update `${VAULT_ROOT}/Action/SOMEDAY.md`
 5. Delete processed Inbox/ files
 
 ---
@@ -332,9 +332,9 @@ Append weekly review summary to `${VAULT_ROOT}/Reference/Dailies/YYYY-MM-DD.md`:
 ### 4c. Update timestamps
 
 Update the "Last updated" line in:
-- `${VAULT_ROOT}/GTD/TASKS.md` → `*Last updated: YYYY-MM-DD*`
-- `${VAULT_ROOT}/GTD/PROJECTS.md` → `*Last updated: YYYY-MM-DD*`
-- `${VAULT_ROOT}/GTD/SOMEDAY.md` → `*Last refreshed: YYYY-MM-DD*`
+- `${VAULT_ROOT}/Action/TASKS.md` → `*Last updated: YYYY-MM-DD*`
+- `${VAULT_ROOT}/Action/PROJECTS.md` → `*Last updated: YYYY-MM-DD*`
+- `${VAULT_ROOT}/Action/SOMEDAY.md` → `*Last refreshed: YYYY-MM-DD*`
 
 ### 4d. Git commit (conditional)
 

@@ -174,28 +174,28 @@ Read `${VAULT_ROOT}/Reference/dlcOS-morning-brief.md`. Parse:
 Pull only the data needed for the enabled sections. Run reads in parallel where possible.
 
 **Section a — P1 tasks:**
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Extract all unchecked `- [ ]` items tagged P1. If no P1 section exists, take the first 5 unchecked items. Cap display at 7 — if more, show 7 and note "…and N more."
+Read `${VAULT_ROOT}/Action/TASKS.md`. Extract all unchecked `- [ ]` items tagged P1. If no P1 section exists, take the first 5 unchecked items. Cap display at 7 — if more, show 7 and note "…and N more."
 
 **Section b — All open tasks:**
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Show all unchecked items grouped by P1/P2/P3. Collapse P3 to a count unless there are fewer than 5 total.
+Read `${VAULT_ROOT}/Action/TASKS.md`. Show all unchecked items grouped by P1/P2/P3. Collapse P3 to a count unless there are fewer than 5 total.
 
 **Section c — Projects needing attention:**
-Read `${VAULT_ROOT}/GTD/PROJECTS.md`. Flag projects that:
+Read `${VAULT_ROOT}/Action/PROJECTS.md`. Flag projects that:
 - Have no next action line, OR
 - Have a next action that's already checked off, OR
 - Have no entry in COMPLETED.md in the past 14 days
 
 **Section d — This week's top 3:**
-Read `${VAULT_ROOT}/GTD/TASKS.md`. Find items marked `⭐ THIS WEEK`. List them. If none found, note "No THIS WEEK items — run `/dlcOS:weekly-review` to set them."
+Read `${VAULT_ROOT}/Action/TASKS.md`. Find items marked `⭐ THIS WEEK`. List them. If none found, note "No THIS WEEK items — run `/dlcOS:weekly-review` to set them."
 
 **Section e — Yesterday's completions:**
-Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract items dated yesterday (or the most recent date in the file if nothing from yesterday).
+Read `${VAULT_ROOT}/Action/COMPLETED.md`. Extract items dated yesterday (or the most recent date in the file if nothing from yesterday).
 
 **Section f — Weekly wins:**
-Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Extract all items from the past 7 days. Group by day. Good opener for Monday runs.
+Read `${VAULT_ROOT}/Action/COMPLETED.md`. Extract all items from the past 7 days. Group by day. Good opener for Monday runs.
 
 **Section g — Streak check:**
-Read `${VAULT_ROOT}/GTD/COMPLETED.md`. Count consecutive days (going backwards from yesterday) that have at least one completion entry. Print: "🔥 N-day streak" or "No streak yet this week."
+Read `${VAULT_ROOT}/Action/COMPLETED.md`. Count consecutive days (going backwards from yesterday) that have at least one completion entry. Print: "🔥 N-day streak" or "No streak yet this week."
 
 **Section h — Inbox count:**
 ```bash
@@ -204,10 +204,10 @@ ls "${VAULT_ROOT}/Inbox/" | wc -l
 Note the count. If > 5, add a nudge: "run `/dlcOS:weekly-review` to process."
 
 **Section i — SOMEDAY surface:**
-Read `${VAULT_ROOT}/GTD/SOMEDAY.md`. Track the last surfaced item index in the spec file (`someday_index` field). Advance by 1 each run (wrap around at end of list). Surface one item with its category.
+Read `${VAULT_ROOT}/Action/SOMEDAY.md`. Track the last surfaced item index in the spec file (`someday_index` field). Advance by 1 each run (wrap around at end of list). Surface one item with its category.
 
 **Section j — Idea of the day:**
-Read `${VAULT_ROOT}/GTD/IDEAS.md`. Rotate through items the same way as section i, using an `ideas_index` field in the spec.
+Read `${VAULT_ROOT}/Action/IDEAS.md`. Rotate through items the same way as section i, using an `ideas_index` field in the spec.
 
 **Section k — Daily question:**
 Generate one fresh reflection question informed by what's in the GTD system right now. Ground it in something real — e.g. if there's a stalled project, ask about that; if completions were heavy, ask about momentum. Examples:
@@ -232,7 +232,7 @@ curl -sf "https://wttr.in/${LOCATION}?format=3" 2>/dev/null
 Skip silently if location not configured or fetch fails.
 
 **Section p — Time-sensitive items:**
-Read `${VAULT_ROOT}/GTD/TASKS.md` and `${VAULT_ROOT}/GTD/PROJECTS.md`. Look for inline dates (formats: `due: YYYY-MM-DD`, `by YYYY-MM-DD`, `📅 YYYY-MM-DD`). Flag anything due within 7 days.
+Read `${VAULT_ROOT}/Action/TASKS.md` and `${VAULT_ROOT}/Action/PROJECTS.md`. Look for inline dates (formats: `due: YYYY-MM-DD`, `by YYYY-MM-DD`, `📅 YYYY-MM-DD`). Flag anything due within 7 days.
 
 **Section q — Recurring check-in:**
 Read the `recurring` list from the spec file. Rotate through items daily (one per day) so they surface on a cadence without piling up. Examples a user might add: "Call mom this week?", "Check in with [client]", "Log workout."

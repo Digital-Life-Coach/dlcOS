@@ -108,10 +108,10 @@ If something feels weird after running `/dlcOS:setup`, here's the full list of p
 
 **Inside your vault folder** (the path you gave the wizard in Stage 2):
 - Creates `CLAUDE.md` with the `<!-- dlcOS:vault-root -->` marker and your identity block.
-- Creates `Inbox/`, `GTD/`, `Wiki/Knowledge/`, `Reference/Themes/`, `Reference/Patterns/`, `Reference/Dailies/`.
+- Creates `Inbox/`, `Action/`, `Wiki/Knowledge/`, `Reference/Themes/`, `Reference/Patterns/`, `Reference/Dailies/`.
 - Writes `Wiki/Knowledge/about-me.md` (your L3 memory narrative).
 - Writes `Wiki/Knowledge/settings-memory-block.md` (a backup of the paste block).
-- Drops template files into `Inbox/` and `GTD/` (do-now, ideas, thoughts, TASKS, PROJECTS, SOMEDAY, IDEAS, COMPLETED).
+- Drops template files into `Inbox/` and `Action/` (do-now, ideas, thoughts, TASKS, PROJECTS, SOMEDAY, IDEAS, COMPLETED).
 
 **Outside your vault**:
 - You paste a memory block into **Claude desktop → Settings → Memory** during Stage 4a. That edit lives in your Claude account, not your filesystem. To remove it later: open Settings → Memory and delete the block.

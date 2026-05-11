@@ -76,9 +76,9 @@ Everything else from the summary (what-changed bullets, exploratory decisions, h
 
 ### Tier 3 — Still-open items → route out of CLAUDE.md
 
-- Actionable → `${VAULT_ROOT}/GTD/TASKS.md` (with priority tag)
+- Actionable → `${VAULT_ROOT}/Action/TASKS.md` (with priority tag)
 - Blocked on external reply → `${VAULT_ROOT}/Projects/Awaiting Responses/<topic>.md`
-- Idea, not yet actionable → `${VAULT_ROOT}/GTD/IDEAS.md` or `${VAULT_ROOT}/Inbox/ideas.md`
+- Idea, not yet actionable → `${VAULT_ROOT}/Action/IDEAS.md` or `${VAULT_ROOT}/Inbox/ideas.md`
 
 Never leave a growing "Still open" bullet list inside CLAUDE.md.
 
@@ -105,7 +105,7 @@ Recent sessions (see daily for full detail):
 
 ## Step 3: Check Off Completed Tasks
 
-Review what was accomplished this session. If any tasks in `${VAULT_ROOT}/GTD/TASKS.md` were completed during this session, mark them `[x]`.
+Review what was accomplished this session. If any tasks in `${VAULT_ROOT}/Action/TASKS.md` were completed during this session, mark them `[x]`.
 
 **Important:** Only check off tasks that THIS session actually completed. Do not scan for previously-checked tasks or archive anything — archiving is handled by the daily brief.
 
@@ -260,7 +260,7 @@ LATEST=$(gh api repos/Digital-Life-Coach/dlcOS/releases/latest --jq '.tag_name' 
 
 These are handled by `/dlcOS:morning-brief`, not `/dlcOS:end`:
 
-- Archive checked tasks to `GTD/COMPLETED.md`
+- Archive checked tasks to `Action/COMPLETED.md`
 - Process `Inbox/` folder
 - Reprioritize PROJECTS.md or create next actions
 - Promote SOMEDAY items
