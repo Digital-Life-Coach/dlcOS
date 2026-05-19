@@ -1,6 +1,6 @@
 {
   "name": "dlcOS",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Core dlcOS skills for MacCog AI Coaching clients: setup wizard, plan save/resume, end-of-session ritual, weekly review, morning-brief setup.",
   "author": {
     "name": "MacCog",
