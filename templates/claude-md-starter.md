@@ -14,7 +14,13 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 
 ## Pending Plans
 
-*Used by `/dlcOS:save-plan` and `/dlcOS:resume-plan`. Each entry: one line, link to the plan file in `Reference/Plans/`.*
+*Used by `/dlcOS:save-plan` and `/dlcOS:resume-plan`. Each entry: one line, link to the plan file in `Reference/Plans/`. Optional dlcOS add-ons appear here as pending plans you can pick up anytime — run `/dlcOS:resume-plan <name>` to start the guided setup.*
+
+<!-- dlcOS:addons-start -->
+- `setup-email` *(v1.1 add-on)* — Connect Gmail or Fastmail for inbox triage + auto-archive of sent emails to your wiki. Drafts mode by default; review and send manually. Run `/dlcOS:setup-email` when ready.
+- `setup-dashboard` *(v1.1 add-on)* — Your daily command center as a phone-installable web app (HQ dashboard PWA over Tailscale). Run `/dlcOS:setup-dashboard` when ready.
+<!-- dlcOS:addons-end -->
+
 
 ## Session Context
 
