@@ -186,18 +186,68 @@ Do NOT attempt to run `/compact` yourself — it's a CLI command that only the u
 
 ---
 
-## Step 6: Git Commit (conditional)
+## Step 6: Git Commit + Worktree Merge-Back
 
-Only run this step if the current working directory is inside the vault root AND the vault is a git repository.
+Two cases. Both run from any cwd inside a git repo; skip silently if not in one.
 
 ```bash
-REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then
-  git add -A && git commit -m "end: [brief description of session work]"
-fi
+GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || exit 0
+COMMON_DIR=$(git rev-parse --git-common-dir 2>/dev/null)
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# Worktree iff per-worktree git dir differs from the common dir
+IN_WORKTREE=0
+[ "$(cd "$GIT_DIR" && pwd)" != "$(cd "$COMMON_DIR" && pwd)" ] && IN_WORKTREE=1
 ```
 
-If the working directory is a subdirectory or a non-git directory, skip entirely.
+### Case A — main checkout (`IN_WORKTREE=0`)
+
+Commit only what this session wrote. Concurrent sessions can write to the same main; if `git status` shows files this session didn't touch, **stage only the files this session wrote** (the daily note, CLAUDE.md updates, anything Step 2 routed). Do not blanket `git add -A` when other sessions may be mid-flight.
+
+```bash
+# Stage the specific paths this session wrote (substitute the actual list)
+git add Reference/Dailies/YYYY-MM-DD.md path/to/CLAUDE.md ...
+git diff --cached --quiet || git commit -m "end: <brief session description>"
+```
+
+If no staged changes, skip the commit.
+
+### Case B — inside a worktree (`IN_WORKTREE=1`)
+
+Common when a Claude Code session is launched from the macOS app rather than the terminal — the app spawns the session inside a worktree on a side branch. Without merge-back, commits land on the worktree branch and `main` never sees them, even when the main-side session-close commit cites the worktree commit hash. Fix:
+
+1. **Commit on the worktree branch** (same scoped-stage rule as Case A).
+2. **Identify the main checkout and target branch:**
+   ```bash
+   WT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+   WT_PATH=$REPO_ROOT
+   MAIN_PATH=$(git worktree list --porcelain | awk '/^worktree /{print $2; exit}')
+   MAIN_BRANCH=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
+   MAIN_BRANCH=${MAIN_BRANCH:-main}
+   ```
+3. **Refuse if main has uncommitted changes** (concurrent session mid-flight — merging now will collide):
+   ```bash
+   if [ -n "$(git -C "$MAIN_PATH" status --porcelain)" ]; then
+     echo "⚠️  $MAIN_PATH has uncommitted changes — skipping worktree merge-back."
+     echo "    When ready: cd $MAIN_PATH && git merge --no-ff $WT_BRANCH && git worktree remove $WT_PATH"
+     exit 0
+   fi
+   ```
+4. **Merge worktree branch → main, then remove the worktree:**
+   ```bash
+   git -C "$MAIN_PATH" checkout "$MAIN_BRANCH"
+   if git -C "$MAIN_PATH" merge --no-ff "$WT_BRANCH" -m "end: merge worktree $WT_BRANCH"; then
+     git -C "$MAIN_PATH" worktree remove "$WT_PATH" 2>/dev/null \
+       || git -C "$MAIN_PATH" worktree remove --force "$WT_PATH"
+     git -C "$MAIN_PATH" branch -d "$WT_BRANCH" 2>/dev/null
+     echo "✅ Merged $WT_BRANCH → $MAIN_BRANCH and removed worktree."
+   else
+     echo "⚠️  Merge conflict $WT_BRANCH → $MAIN_BRANCH. Resolve manually in $MAIN_PATH."
+   fi
+   ```
+5. After the worktree is removed, cwd is invalid. The remaining steps (Office Hours nudge, plugin update check) tolerate this — they're network calls and don't need a live cwd.
+
+**Why a skill step, not a Stop hook:** a hook fires on every session end regardless of context — would auto-commit half-finished mid-task work. The skill scopes naturally to "things this session wrote" because it just wrote them.
 
 ---
 
