@@ -49,6 +49,8 @@ Use today's date from the system context. If a file with that path already exist
 
 The file MUST follow this schema. Sections §1, §3, §4, §5, §7, and §10 are **mandatory** — write them even if sparse. Sections §6, §8, and §9 are optional: omit the heading entirely if there is genuinely nothing to say. The future agent relies on the mandatory sections being present.
 
+**On `completion:`** — estimate the percentage of work already done at save time, in 5% chunks (0, 5, 10, … 100). The orchestrator dashboard renders this as a progress bar. Anchor points: `0` = fresh idea / nothing started, `5` = concept captured, `10–20` = first steps verified or research done, `25–50` = drafts/prototypes exist, `50–75` = core work done, decisions locked, polish remaining, `80–95` = one execution session from done, `100` = ship/archive. Bias toward honesty over optimism — the bar is a planning tool, not a vanity metric. Bump it in resume sessions as steps land.
+
 ```markdown
 ---
 plan: <slug>
@@ -57,6 +59,7 @@ author_model: <model id from environment, e.g. claude-opus-4-7>
 audience: <fresh-opus | fresh-sonnet | any>
 mode: <critique-then-execute | execute>
 status: pending
+completion: <0-100 in 5% chunks — estimate at save time>
 ---
 
 # Plan: <human title>
