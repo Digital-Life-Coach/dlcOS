@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold, verifies the 5 dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
+description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold, verifies the 6 dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
 ---
 
 # setup — dlcOS Onboarding Wizard

@@ -21,9 +21,10 @@ All skills are namespaced under `/dlcOS:` — type `/dlcOS:` and tab-complete to
 | `/dlcOS:resume-plan` | Pick up a plan saved by `/dlcOS:save-plan`. Critiques first, then executes. |
 | `/dlcOS:end` | End-of-session ritual. Summarizes, routes durable knowledge, surfaces Office Hours. |
 | `/dlcOS:weekly-review` | Friday GTD review. Tasks, projects, someday, optional Google Calendar. |
+| `/dlcOS:monthly-review` | Monthly memory maintenance. Synthesizes themes, audits memory for staleness and drift. |
 | `/dlcOS:morning-brief` | Interactive setup for a per-client daily brief. |
 
-Coming in v1.1: `/dlcOS:inbox-triage` for inbox-zero workflow.
+Coming later: `/dlcOS:inbox-triage` for inbox-zero workflow.
 
 ## Install
 

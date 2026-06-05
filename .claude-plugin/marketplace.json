@@ -9,7 +9,7 @@
     {
       "name": "dlcOS",
       "source": "./plugins/dlcOS",
-      "description": "Core dlcOS skills: setup wizard, plan save/resume, end-of-session ritual, weekly review, morning-brief setup."
+      "description": "Core dlcOS skills: setup wizard, plan save/resume, end-of-session ritual, weekly review, monthly memory review, morning-brief setup."
     }
   ]
 }

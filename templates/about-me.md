@@ -1,6 +1,6 @@
 # About Me
 
-*The L3 personal narrative — durable facts about who I am, how I work, and what I'm building toward. Refreshed quarterly via `/dlcOS:monthly-review` (v1.1) or by hand when something significant changes.*
+*The L3 personal narrative — durable facts about who I am, how I work, and what I'm building toward. Refreshed monthly via `/dlcOS:monthly-review` or by hand when something significant changes.*
 
 *This file is paired with the block in Claude Settings → Memory. The Settings block is the short version Claude carries everywhere; this file is the longer narrative Claude reads when the project is open.*
 

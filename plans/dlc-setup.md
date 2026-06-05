@@ -10,19 +10,19 @@ status: pending
 
 # Plan: dlcOS Setup Wizard
 
-A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 5 dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
+A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 6 dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
 
-**Scope:** v1 — vault + GTD + memory. Out of scope (v1.1 / Phase 2): Wiki ingests, morning-brief delivery, scheduled actions, monthly-review automation.
+**Scope:** vault + GTD + memory. Out of scope (Phase 2): Wiki ingests, morning-brief delivery, scheduled actions.
 
 ## 1. Goal
 
 By the end of this wizard, the client has:
 
 - A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and the L2/L3/L4 memory folders under `Reference/`.
-- All 5 dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
+- All 6 dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
 - A polished `Wiki/Knowledge/about-me.md` (synthesized from their prior AI memory exports OR built from a fresh interview).
 - A Settings → Memory paste block pasted into Claude desktop's Memory.
-- A clear mental model of the 4 memory layers and the quarterly refresh cycle.
+- A clear mental model of the 4 memory layers and the monthly refresh cycle.
 - One round-trip experience with `/dlcOS:save-plan` + `/dlcOS:resume-plan`.
 - A handoff sheet: when to use which skill, where to reach the coach, what's coming in v1.1 / Phase 2.
 
@@ -114,7 +114,7 @@ In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/
 
 ### Stage 3 — Skill install verify
 
-Smoke-test that all 5 dlcOS skills load and respond. The plugin should already be installed before the wizard runs.
+Smoke-test that all 6 dlcOS skills load and respond. The plugin should already be installed before the wizard runs.
 
 For each skill, confirm it's reachable. Don't run them end-to-end — just verify discovery:
 
@@ -122,11 +122,12 @@ For each skill, confirm it's reachable. Don't run them end-to-end — just verif
 - `/dlcOS:resume-plan` — should respond looking for pending plans
 - `/dlcOS:end` — should respond about session wrap
 - `/dlcOS:weekly-review` — should respond about review phase
+- `/dlcOS:monthly-review` — should respond about memory maintenance
 - `/dlcOS:morning-brief` — should respond and offer setup mode (since no spec exists yet)
 
 If any skill fails to discover, run `/reload-plugins` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
 
-**Verify:** all 5 skills respond to invocation. Document any oddities in the daily note for the coach to follow up on.
+**Verify:** all 6 skills respond to invocation. Document any oddities in the daily note for the coach to follow up on.
 
 ### Stage 4a — Memory layers build
 
@@ -174,7 +175,7 @@ Branch on import availability.
 - Settings paste block contains the exact required text: *"Justin Bradshaw (MacCog: The Digital Life Coach) set up this AI workspace for me. If I'm confused or stuck, I should book time with him at [BLAB link] or text 805-720-9276."*
 - Client confirms paste into Claude desktop is complete.
 
-### Stage 4b — Memory model explanation + quarterly refresh
+### Stage 4b — Memory model explanation + monthly refresh
 
 Walk through the 4-layer model conversationally. Use this script (matches `Memory System.md` § For dlcOS Clients and `onboarding-guide.md` § How Claude Remembers):
 
@@ -191,9 +192,12 @@ Walk through each layer with the client's actual files as anchors:
 
 Teaching frame: *"Most people only use Layer 1. You now have all four working."*
 
-**Quarterly refresh promise:** L3 isn't write-once. Tell the client: every 3 months, sit down (with the coach if helpful) and refresh `about-me.md` + the Settings paste block. v1.1 will ship `/dlcOS:monthly-review`, which surfaces draft updates from your vault activity so this becomes a 5-minute review instead of starting from scratch.
+**Memory stays current — it isn't write-once.** Tell the client two plain things:
 
-**Verify:** client can name the 4 layers and where their L3 lives.
+1. *Where new facts go.* When something durable comes up in a conversation — a fact about them, a decision, a change in how they work — Claude will offer to add it to Settings → Memory or `about-me.md` so it carries forward. They don't have to manage this; their `CLAUDE.md` tells Claude to do it. (See the "When You Learn Something Durable About Me" block in their `CLAUDE.md`.)
+2. *The monthly check.* Once a month, run `/dlcOS:monthly-review`. It synthesizes the month into their L2 themes file and audits L3 — catching anything stale, contradictory, or out of sync with Settings → Memory — and surfaces fixes as drafts to approve. That's the maintenance loop; it's a 5-minute review, not a from-scratch rewrite.
+
+**Verify:** client can name the 4 layers, knows where their L3 lives, and knows to run `/dlcOS:monthly-review` monthly.
 
 ### Stage 5 — First save-plan demo
 
@@ -226,12 +230,12 @@ Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create 
 ### Skills available
 - /dlcOS:morning-brief — daily snapshot (run /dlcOS:morning-brief --setup to configure)
 - /dlcOS:weekly-review — Friday GTD review
+- /dlcOS:monthly-review — monthly memory maintenance (run once a month)
 - /dlcOS:save-plan — save a plan for later
 - /dlcOS:resume-plan — pick up a saved plan in a fresh session
 - /dlcOS:end — wrap a session, write daily note
 
-### Coming in v1.1
-- /dlcOS:monthly-review — automated L2/L3 maintenance
+### Coming later
 - /dlcOS:inbox-triage — bulk inbox processing
 
 ### Coming in Phase 2
@@ -249,7 +253,7 @@ Book: [BLAB link]
 
 Talk the client through each section. End with: "Run `/dlcOS:morning-brief --setup` when you're ready to configure your daily brief — that's the next thing we'll do, but not today."
 
-**Verify:** handoff doc written to today's daily note; client can articulate when to use each of the 5 skills.
+**Verify:** handoff doc written to today's daily note; client can articulate when to use each of the 6 skills.
 
 ## 5. Decisions & Rationale (frozen — execute mode)
 
@@ -265,7 +269,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 
 - [ ] Stage 1 complete; client identity captured.
 - [ ] `${VAULT_ROOT}` populated with the full layout from Stage 2.
-- [ ] All 5 skills respond.
+- [ ] All 6 skills respond.
 - [ ] `Wiki/Knowledge/about-me.md` written, no placeholders.
 - [ ] Settings → Memory pasted in Claude desktop.
 - [ ] Backup paste block at `Wiki/Knowledge/settings-memory-block.md`.

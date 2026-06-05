@@ -46,7 +46,7 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 **What it does.** Wraps up the current session cleanly. Summarizes what happened, writes a daily note, optionally commits to git, prints a one-line nudge for next Office Hours, checks for plugin updates.
 
-**When to use it.** Every time you stop working. Make this a habit — it's how the daily/weekly/quarterly memory layers get fed.
+**When to use it.** Every time you stop working. Make this a habit — it's how the daily/weekly/monthly memory layers get fed.
 
 **What it produces.** A daily note at `Reference/Dailies/YYYY-MM-DD.md`. Optionally a git commit if your vault is a repo. A "see you next Office Hours" line if your coach has a calendar configured.
 
@@ -61,6 +61,18 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 **When to use it.** Fridays are the canonical day, but any once-a-week cadence works. Use `--quick` for a 30-minute tactical version when you're crunched.
 
 **What it produces.** Updated `Action/PROJECTS.md`, `Action/TASKS.md`, `Action/SOMEDAY.md`. A weekly wrap note. A stronger "next 2-3 Office Hours" surfacing than `/dlcOS:end`.
+
+---
+
+## `/dlcOS:monthly-review`
+
+**What it does.** Monthly memory + horizon check — the loop that keeps your memory from going stale and surfaces what's next. Three things, in order: synthesizes the month's daily notes into a new themes entry (L2); audits your L3 memory (`about-me.md` vs. recent reality, Settings → Memory drift, themes hygiene, duplicate facts) and surfaces every fix as an approval draft; then asks one 90-day horizon question and one cutting-time check-in. Cut from the same cloth as `/dlcOS:weekly-review` — same shape, just monthly and reflective.
+
+**When to use it.** Once a month — the start of a new month is the natural trigger. Running it before month-end is fine; the entry header notes the partial window. Use `--audit-only` to skip the themes write and the horizon questions, and just run the L3 audit.
+
+**What it produces.** A new entry in `Reference/Themes/themes-rolling.md` (oldest entry rolls to a dated archive when there are more than three). Approved edits to `Wiki/Knowledge/about-me.md` and `settings-memory-block.md`, plus a fresh Settings → Memory paste block when yours has drifted. A Monthly Review block in today's daily note with your verbatim horizon + cutting-time answers — seed material for next month.
+
+**Pairs with.** `/dlcOS:weekly-review` (tactical GTD) and `/dlcOS:end` (session close).
 
 ---
 
@@ -85,15 +97,15 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 - **Mid-session, hit a fork** → `/dlcOS:save-plan`, then close out and resume in a fresh session
 - **End of work session** → `/dlcOS:end`
 - **Friday afternoon** → `/dlcOS:weekly-review`
+- **Start of the month** → `/dlcOS:monthly-review`
 - **Brand new client** → `/dlcOS:setup` (with your coach)
 
 ---
 
-## What's NOT here in v1
+## What's not here yet
 
-These are deferred to v1.1 / Phase 2:
+These are deferred to a later release / Phase 2:
 
-- `/dlcOS:inbox-triage` — inbox-zero workflow (v1.1, after the upstream skill is battle-tested)
-- `/dlcOS:monthly-review` — quarterly memory refresh + themes synthesis (v1.1)
+- `/dlcOS:inbox-triage` — inbox-zero workflow (after the upstream skill is battle-tested)
 - Granola meeting ingest, email ingest, full Wiki scaffolding (Phase 2)
 - Scheduled delivery (cron/launchd) for morning-brief (Phase 2)

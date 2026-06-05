@@ -2,15 +2,16 @@
 
 Bundled skills shipped under the `dlcOS` plugin in the `dlcOS` marketplace. Invoke as `/dlcOS:<skill>`.
 
-| Skill | Status (v0.2.0) |
+| Skill | What it does (v1.1.0) |
 |---|---|
-| `setup` | placeholder — to be authored |
-| `save-plan` | ✅ ported from Justin's `save-plan` source |
-| `resume-plan` | ✅ ported from Justin's `resume-plan` source |
-| `end` | placeholder — port from `end`, strip MacCog dashboards, add Office Hours hook |
-| `weekly-review` | placeholder — port from `weekly-review`, strip Daylite/FreshBooks |
-| `morning-brief` | placeholder — interactive setup wizard, not runtime ingester |
+| `setup` | Guided end-to-end onboarding wizard. Run once. |
+| `save-plan` | Park a plan for a future session to critique and execute. |
+| `resume-plan` | Pick up a parked plan — critiques first, then executes. |
+| `end` | End-of-session ritual: summary, daily note, worktree-aware commit, Office Hours nudge. |
+| `weekly-review` | Guided GTD weekly review. |
+| `monthly-review` | Monthly memory maintenance — themes synthesis + L3 audit. |
+| `morning-brief` | Interactive setup for a per-client daily brief. |
 
-Coming in v1.1: `inbox-triage` (after Justin's `inbox-triage` source skill ships).
+Coming later: `inbox-triage` (after Justin's `inbox-triage` source skill ships).
 
 See repo root `README.md` for install instructions.

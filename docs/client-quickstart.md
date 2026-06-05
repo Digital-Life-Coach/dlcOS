@@ -71,6 +71,7 @@ The skills are:
 - `/dlcOS:resume-plan` — pick up a parked plan
 - `/dlcOS:end` — wrap up the current session cleanly (write a daily note, optionally commit)
 - `/dlcOS:weekly-review` — guided GTD review (Fridays are a good day)
+- `/dlcOS:monthly-review` — monthly memory maintenance (keeps your memory from going stale)
 - `/dlcOS:morning-brief` — a daily snapshot of what to focus on
 
 You don't have to memorize these. The slash menu shows them; natural language works for most.
@@ -83,6 +84,7 @@ You don't need to do anything else today. Over the next few sessions:
 
 - Let `/dlcOS:end` write a daily note for you each time you stop working.
 - The first Friday after onboarding, run `/dlcOS:weekly-review` with your coach.
+- Once a month, run `/dlcOS:monthly-review` — it keeps your memory current so Claude doesn't drift.
 - When you feel ready, run `/dlcOS:morning-brief --setup` to configure your daily brief. It's deferred from onboarding on purpose — easier to set up after you've used the system for a few days.
 
 ---

@@ -10,7 +10,7 @@
 
 ## Who I Am
 
-See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by `/dlcOS:setup` Stage 4a. Refreshed quarterly.
+See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by `/dlcOS:setup` Stage 4a, kept current by `/dlcOS:monthly-review`.
 
 ## Pending Plans
 
@@ -29,8 +29,18 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 ## Memory Layers
 
 - **L1** — this conversation (handled natively by Claude)
-- **L2** — `Reference/Themes/themes-rolling.md` (rolling 90-day synthesis; populated by `/dlcOS:monthly-review` in v1.1)
+- **L2** — `Reference/Themes/themes-rolling.md` (rolling 90-day synthesis; kept current by `/dlcOS:monthly-review`)
 - **L3** — Claude Settings → Memory + [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md)
 - **L4** — `Reference/Dailies/`, `Reference/Themes/` archive, `Reference/Patterns/`
+
+## When You Learn Something Durable About Me
+
+*(Instruction to Claude.)* If something comes up that will still be true next week — a fact about me, how I work, a decision I've made — it belongs in my memory, not just this chat. Route it:
+
+- **A lasting fact about who I am or how I work** → tell me to add it to **Claude Settings → Memory** (the short version I carry into every conversation), and offer to update [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) (the longer version) if my vault is open.
+- **Something true for just one project** → put it in that project's notes, not my global memory.
+- **When in doubt** → ask me where it goes. One home per fact — don't scatter the same fact across several places.
+
+Don't write to `Reference/Themes/` yourself — `/dlcOS:monthly-review` keeps that current and audits the rest of my memory monthly.
 
 See your coach if anything in this file looks unfamiliar — text **805-720-9276** or book at the BLAB link they shared.

@@ -26,4 +26,4 @@ For deeper context, the longer narrative version of this lives at `Wiki/Knowledg
 
 ---END PASTE---
 
-*This block is refreshed quarterly. Coming in v1.1, `/dlcOS:monthly-review` will surface draft updates so I don't have to maintain this manually.*
+*This block is kept current by `/dlcOS:monthly-review` — run monthly, it surfaces draft updates so I don't have to maintain this by hand.*
