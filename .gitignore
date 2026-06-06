@@ -29,3 +29,8 @@ yarn-error.log*
 
 # Claude Code local state
 .claude/settings.local.json
+
+# MacCog-internal subagent ops board — not for public dlcOS distribution.
+# When agents ship to clients, source files land here; allowlist them
+# individually (e.g. !agents/commit-narrator.md) at that point.
+agents/
