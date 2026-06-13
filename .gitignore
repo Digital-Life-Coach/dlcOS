@@ -31,6 +31,7 @@ yarn-error.log*
 .claude/settings.local.json
 
 # MacCog-internal subagent ops board — not for public dlcOS distribution.
-# When agents ship to clients, source files land here; allowlist them
-# individually (e.g. !agents/commit-narrator.md) at that point.
-agents/
+# Anchored with a leading slash so it ONLY ignores the repo-root ops-board dir,
+# NOT plugins/dlcOS/agents/ (the shipped, distributed agents — a bare `agents/`
+# pattern matches a dir of that name at ANY depth and would hide shipped agents).
+/agents/
