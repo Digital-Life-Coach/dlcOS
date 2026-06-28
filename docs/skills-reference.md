@@ -91,12 +91,71 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ---
 
+## `/dlcOS:draft`
+
+**What it does.** Spawns the `dlcOS:drafter` agent to write a piece of prose — email, reply, post, proposal — in your voice, then asks where it should go (save as markdown, hand it to you, or save to your email Drafts if email is set up). Never sends anything without you saying so explicitly.
+
+**When to use it.** Any time you'd write something that goes out in your name and want it to sound like you.
+
+**What it produces.** A draft, delivered the way you pick. Drafter reads `Wiki/Knowledge/voice.md` every run — fill that in (Stage 4c of setup, or it'll prompt you) so drafts sound like you instead of generic AI.
+
+---
+
+## `/dlcOS:vault-lint`
+
+**What it does.** Runs the `dlcOS:vault-hygiene` agent interactively to find broken `[[WikiLinks]]` (and aging Inbox items), repairs the safe/unambiguous ones, and walks you through anything that needs a judgment call.
+
+**When to use it.** After a big reorganization, or anytime links feel broken.
+
+**What it produces.** A health report; safe link fixes applied in place.
+
+---
+
+## `/dlcOS:vault-sweep`
+
+**What it does.** Same detection as `/dlcOS:vault-lint`, but **report-only** — it writes a dated log to `Reference/Dailies/` and fixes nothing. Safe to run on a schedule.
+
+**When to use it.** As an unattended/scheduled health check. Follow up with `/dlcOS:vault-lint` when you want to apply fixes.
+
+---
+
+## `/dlcOS:promote-lessons`
+
+**What it does.** When a learning agent (`librarian` or `drafter`) ends a run by proposing small lessons, this surfaces them for your approval and writes the approved ones into that agent's private companion file — so it gets sharper over time.
+
+**When to use it.** Right after an agent run that ends with a "Proposed lessons" block.
+
+**What it produces.** Approved lessons appended to `~/.claude/agents/<name>-learned.md`; rejected ones are dropped.
+
+---
+
+## `/dlcOS:setup-librarian-index` *(add-on)*
+
+**What it does.** Provisions a local semantic-search index over your vault (installs the agent-library tool, builds the index, wires a daily refresh, writes the `dlcOS:librarian-index` marker). Upgrades `librarian` from keyword matching to ranked semantic search. Everything stays on your machine.
+
+**When to use it.** Optional, when you want `librarian` to find things by meaning. Technical setup — needs Python + `uv`; do it with your coach if that's unfamiliar.
+
+---
+
+## Agents (subagents)
+
+Skills are things *you* run; agents are specialists *Claude* hands a focused task to. Invoke with `@dlcOS:<name>`, ask in plain language, or let a skill spawn one.
+
+- **`dlcOS:librarian`** — curated vault search (synthesis + citations, not raw dumps). Keyword mode by default; semantic with the index add-on.
+- **`dlcOS:drafter`** — prose in your voice. Usually via `/dlcOS:draft`.
+- **`dlcOS:webscout`** — open-web research with primary sources + a cited brief.
+- **`dlcOS:vault-hygiene`** — broken-link detection + safe repair. Via `/dlcOS:vault-lint` / `/dlcOS:vault-sweep`.
+
+---
+
 ## When to use which — quick decision tree
 
 - **Start of day** → `/dlcOS:morning-brief`
+- **Need to write something in your voice** → `/dlcOS:draft`
 - **Mid-session, hit a fork** → `/dlcOS:save-plan`, then close out and resume in a fresh session
 - **End of work session** → `/dlcOS:end`
 - **Friday afternoon** → `/dlcOS:weekly-review`
+- **Links feel broken** → `/dlcOS:vault-lint`
 - **Start of the month** → `/dlcOS:monthly-review`
 - **Brand new client** → `/dlcOS:setup` (with your coach)
 

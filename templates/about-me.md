@@ -37,7 +37,7 @@ Where I am today, where I'm headed. -->
 
 <!-- How I want Claude to talk to me. Direct vs. gentle. Long-form vs. terse. Markdown vs. prose. -->
 
-## Context Justin Should Know
+## Context My Coach Should Know
 
 <!-- Anything my coach should remember about my situation, business, family, constraints. -->
 

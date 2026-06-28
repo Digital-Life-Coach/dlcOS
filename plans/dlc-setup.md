@@ -199,6 +199,19 @@ Teaching frame: *"Most people only use Layer 1. You now have all four working."*
 
 **Verify:** client can name the 4 layers, knows where their L3 lives, and knows to run `/dlcOS:monthly-review` monthly.
 
+### Stage 4c — Voice doc (optional, ≤3 min — scaffold now, fill now or later)
+
+This stage stands up the voice rulebook the `dlcOS:drafter` agent reads whenever it writes something in the client's name (emails, posts, proposals). Keep it light — the goal is to *scaffold* the file and get one or two real answers, not run a full interview. Drafter works without it (neutral voice); it just sounds more like the client once filled.
+
+1. **Scaffold the file.** If `${VAULT_ROOT}/Wiki/Knowledge/voice.md` doesn't exist, copy it from `templates/voice.md` (the fillable skeleton). If it already exists with real content, skip to the offer below.
+2. **Offer — fill now or later** (`AskUserQuestion`, single-select):
+   > "Want to set up your writing voice now, or later? The `drafter` agent uses it to sound like you instead of generic AI."
+   - **(a) Quick pass now (recommended)** — ask just two things and write them into voice.md: *"In one line, how would a friend describe the way you write?"* and *"Any words, phrases, or punctuation you never want in your writing?"* (Mention em dashes as the classic example — keep or cut.) Write those two answers into the matching sections; leave the rest as skeleton prompts for them to fill anytime.
+   - **(b) Later** — leave the skeleton in place. Tell them: *"It's at `Wiki/Knowledge/voice.md` — fill it whenever, or `/dlcOS:draft` will offer to help the first time you use it."*
+3. Do NOT run a full register-by-register interview here — that protects the ≤45-min onboarding target. The skeleton + `/dlcOS:draft`'s first-run prompt cover the rest.
+
+**Verify:** `Wiki/Knowledge/voice.md` exists (filled or skeleton); client knows where it lives and that `/dlcOS:draft` will help finish it.
+
 ### Stage 5 — First save-plan demo
 
 Round-trip the plan workflow so the client experiences it once with the coach present.

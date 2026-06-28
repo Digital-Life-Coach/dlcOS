@@ -87,6 +87,16 @@ You don't need to do anything else today. Over the next few sessions:
 - Once a month, run `/dlcOS:monthly-review` — it keeps your memory current so Claude doesn't drift.
 - When you feel ready, run `/dlcOS:morning-brief --setup` to configure your daily brief. It's deferred from onboarding on purpose — easier to set up after you've used the system for a few days.
 
+### Meet your agents
+
+Beyond the skills you run, dlcOS ships a few **agents** — specialists Claude hands a task to:
+
+- **Writing in your voice.** During setup (Stage 4c) you can fill in a short voice doc (`Wiki/Knowledge/voice.md`) — one line on how you write, plus words you never want used. After that, `/dlcOS:draft` writes emails and posts that sound like you. If you skipped it, `/dlcOS:draft` will offer to help you fill it the first time.
+- **Searching your vault.** `librarian` answers "what do my notes say about X" with a synthesized, cited answer. It works out of the box; if you want it to search by *meaning* (not just keywords), ask your coach to run the optional `/dlcOS:setup-librarian-index` add-on — it builds a private search index that stays entirely on your machine.
+- **Web research** (`webscout`) and **vault health** (`/dlcOS:vault-lint`) round out the set — see `skills-reference.md`.
+
+Two of these agents (`librarian`, `drafter`) get a little smarter each time you use them: they propose small lessons you approve with `/dlcOS:promote-lessons`.
+
 ---
 
 ## When something breaks
