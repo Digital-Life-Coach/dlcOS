@@ -1,6 +1,7 @@
 ---
 name: morning-brief
-description: Morning brief for dlcOS clients — two modes. First run: interactive setup wizard that builds a personalized brief spec and writes it to ${VAULT_ROOT}/Reference/dlcOS-morning-brief.md. Subsequent runs: delivers a static GTD summary (P1 tasks, projects needing attention, inbox count, yesterday's completions) pulled live from vault files, written to Reference/Dailies/. Use when the user says /dlcOS:morning-brief, "morning brief", "what's my day look like", or "set up my daily brief". Use --setup to re-run the setup wizard even if a spec already exists. Use --dry-run to preview without writing the daily file.
+description: >-
+  Morning brief for dlcOS clients — two modes. First run: interactive setup wizard that builds a personalized brief spec and writes it to ${VAULT_ROOT}/Reference/dlcOS-morning-brief.md. Subsequent runs: delivers a static GTD summary (P1 tasks, projects needing attention, inbox count, yesterday's completions) pulled live from vault files, written to Reference/Dailies/. Use when the user says /dlcOS:morning-brief, "morning brief", "what's my day look like", or "set up my daily brief". Use --setup to re-run the setup wizard even if a spec already exists. Use --dry-run to preview without writing the daily file.
 ---
 
 # morning-brief — Daily Brief

@@ -1,6 +1,7 @@
 ---
 name: vault-hygiene
-description: Vault health subagent — detects broken WikiLinks, aging items stuck in the Inbox, and empty structural sections, then (in fix mode) repairs the safe ones and diagnoses root causes. Fix mode (default, interactive — called from /dlcOS:vault-lint): repairs broken wikilinks by finding files at new paths, applies safe fixes. Report-only mode (called from /dlcOS:vault-sweep): detects and writes a dated log, no other writes. Returns a structured markdown report string.
+description: >-
+  Vault health subagent — detects broken WikiLinks, aging items stuck in the Inbox, and empty structural sections, then (in fix mode) repairs the safe ones and diagnoses root causes. Fix mode (default, interactive — called from /dlcOS:vault-lint): repairs broken wikilinks by finding files at new paths, applies safe fixes. Report-only mode (called from /dlcOS:vault-sweep): detects and writes a dated log, no other writes. Returns a structured markdown report string.
 tools: Read, Glob, Grep, Bash, Edit
 model: sonnet
 ---
