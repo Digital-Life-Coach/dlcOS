@@ -77,7 +77,7 @@ Everything else from the summary (what-changed bullets, exploratory decisions, h
 ### Tier 3 — Still-open items → route out of CLAUDE.md
 
 - Actionable → `${VAULT_ROOT}/Action/TASKS.md` (with priority tag)
-- Blocked on external reply → `${VAULT_ROOT}/Projects/Awaiting Responses/<topic>.md`
+- Blocked on external reply → inline, never a standalone file. Active project → `@waiting` task in `${VAULT_ROOT}/Action/TASKS.md` under that project's section. No project home → bullet in a `## Waiting On` section at the bottom of `${VAULT_ROOT}/Action/TASKS.md`.
 - Idea, not yet actionable → `${VAULT_ROOT}/Action/IDEAS.md` or `${VAULT_ROOT}/Inbox/ideas.md`
 
 Never leave a growing "Still open" bullet list inside CLAUDE.md.
