@@ -12,7 +12,7 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 **When to use it.** Your first session after `/plugin install dlcOS@dlcOS`. Or if you nuke your vault and need to rebuild from scratch — the wizard is idempotent.
 
-**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and L2/L3/L4 memory folders. A Settings → Memory paste block for Claude desktop.
+**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and L2/L3/L4 memory folders; up to three optional Wiki starter areas chosen from a curated list; and a Settings → Memory paste block for Claude desktop. If a selected data source is available, setup can build a small initial index. Recurring sync and large migrations come later.
 
 **Time.** ~45 minutes with coach present.
 
@@ -166,5 +166,5 @@ Skills are things *you* run; agents are specialists *Claude* hands a focused tas
 These are deferred to a later release / Phase 2:
 
 - `/dlcOS:inbox-triage` — inbox-zero workflow (after the upstream skill is battle-tested)
-- Granola meeting ingest, email ingest, full Wiki scaffolding (Phase 2)
+- Recurring Granola/email/other Wiki ingests and large historical imports (Phase 2)
 - Scheduled delivery (cron/launchd) for morning-brief (Phase 2)

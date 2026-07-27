@@ -12,7 +12,7 @@ status: pending
 
 A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 6 dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
 
-**Scope:** vault + GTD + memory. Out of scope (Phase 2): Wiki ingests, morning-brief delivery, scheduled actions.
+**Scope:** vault + GTD + memory, including a small client-selected Wiki starter set. Out of scope (Phase 2): unattended/recurring Wiki ingests, morning-brief delivery, scheduled actions.
 
 ## 1. Goal
 
@@ -103,6 +103,39 @@ ${VAULT_ROOT}/
     └── Plans/.gitkeep                 ← target dir for /dlcOS:save-plan output
 ```
 
+#### Wiki starter packs — let the client choose
+
+After agreeing on the base structure, tell the client:
+
+> "Your Wiki is where Claude keeps useful reference material that isn't a task. I can set up a few starter areas now and, where you already have source material available, pull in an initial index. Pick only what would be useful today; you can add the rest later."
+
+Show this curated list. Use plain-language labels first; mention example sources only to help the client recognize what they already have.
+
+| Starter area | Useful for | Possible starting sources | Default destination |
+|---|---|---|---|
+| People & relationships | Important context, preferences, last touch, follow-ups | Contacts, CRM, existing notes | `Wiki/People/` |
+| Clients & work | Client briefs, active engagements, key decisions | CRM, project folders, email, meeting notes | `Wiki/Clients/` |
+| Meetings | Searchable meeting summaries and decisions | Granola, Zoom transcripts, calendar notes, markdown exports | `Wiki/Meetings/` |
+| Companies & organizations | Vendors, partners, memberships, institutions | Contacts, email, existing documents | `Wiki/Organizations/` |
+| Personal knowledge | Topics, procedures, lessons, reference notes | Apple Notes, Notion, Obsidian, Google Drive, markdown files | `Wiki/Knowledge/` |
+| Reading & research | Articles, books, highlights, saved links | Browser bookmarks, Readwise, Kindle highlights, reading lists | `Wiki/Library/` |
+| Health & wellness | Providers, routines, goals, non-sensitive reference material | Health notes, PDFs, exported reports | `Wiki/Health/` |
+| Home, vehicles & possessions | Maintenance history, manuals, warranties, service providers | Drive folders, email receipts, PDFs, existing notes | `Wiki/Home/` |
+| Travel & places | Trips, itineraries, favorite places, loyalty details | Calendar, email confirmations, travel notes | `Wiki/Travel/` |
+| Recipes & food | Recipes, meal ideas, restaurant notes | Notes, bookmarks, recipe exports | `Wiki/Food/` |
+
+Ask them to choose **up to 3 starter areas** for onboarding. "None for now" is a valid choice. Also accept a client-suggested area that is not on the list.
+
+For each selection:
+
+1. Ask which source, if any, they want to start from. Never imply a connector or account is available until you verify it.
+2. If the source is accessible in the current session, preview what will be imported and ask for confirmation before reading or copying in bulk. Create the destination and a concise `README.md` index describing its purpose, source, organization, and last import date; then import a small representative batch or index that can be completed during onboarding.
+3. If the source is not accessible, still create the destination and `README.md`, add a `## Source to connect` note with the source and intended import, and tell the client exactly what access/export is needed later. Do not stall the rest of onboarding.
+4. Prefer links or summaries over duplicating entire source archives. Preserve source attribution and dates. Do not import secrets, credentials, financial account numbers, medical identifiers, or other highly sensitive data without an explicit item-level review.
+5. If the client already has a matching folder or convention, use it. Never create a parallel folder merely to match the defaults above.
+
+Keep this stage to **10 minutes maximum**. This is a useful starting surface, not a full migration. Recurring synchronization and large historical imports remain Phase 2 work.
+
 In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the Action files (`*Last updated:* <today>`).
 
 **Verify:**
@@ -110,6 +143,8 @@ In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/
 - `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
 - `CLAUDE.md` accurately reflects the *actual* paths in this vault (especially if the client uses non-default names like `Tasks/` instead of `Action/`, or has dailies in a non-standard location).
 - No empty parallel dirs created alongside existing client structure (e.g. an empty `Action/` next to the client's existing tasks file).
+- Every selected Wiki starter area has an agreed destination and `README.md`; any unavailable source is recorded under `## Source to connect` rather than treated as configured.
+- No unselected Wiki starter directories were created.
 - Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those.
 
 ### Stage 3 — Skill install verify
@@ -252,7 +287,7 @@ Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create 
 - /dlcOS:inbox-triage — bulk inbox processing
 
 ### Coming in Phase 2
-- Wiki scaffolding + ingests (Granola, email)
+- Recurring Wiki ingests and large historical imports (Granola, email, and other selected sources)
 - Morning-brief delivery channels (email, push)
 - Scheduled actions (cron/launchd)
 
@@ -273,7 +308,7 @@ Talk the client through each section. End with: "Run `/dlcOS:morning-brief --set
 This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05-04) — not for the executor to second-guess:
 
 - **Memory file locations:** `Wiki/Knowledge/about-me.md` for the personal narrative; `Reference/Themes/` for L2 (active + archive in same folder); `Reference/Patterns/` for L3 snapshots; `Reference/Dailies/` for L4 session notes.
-- **Wiki = Phase 2** (only `about-me.md` created in v1).
+- **Wiki starter packs are part of Stage 2.** The client chooses up to 3; setup creates only those destinations and may import a small confirmed starting batch. Recurring sync and large historical imports remain Phase 2.
 - **Morning-brief setup deferred** to a separate session (Phase 2 territory in onboarding flow).
 - **L3 mechanism:** synthesize-then-paste. Both import (ChatGPT/Gemini export) and from-scratch interview supported.
 - **No GitHub release-cut step** in this wizard — that's a coach-side action.
@@ -282,6 +317,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 
 - [ ] Stage 1 complete; client identity captured.
 - [ ] `${VAULT_ROOT}` populated with the full layout from Stage 2.
+- [ ] Client was offered the curated Wiki starter list; each selection has a destination + README (or client explicitly chose none).
 - [ ] All 6 skills respond.
 - [ ] `Wiki/Knowledge/about-me.md` written, no placeholders.
 - [ ] Settings → Memory pasted in Claude desktop.

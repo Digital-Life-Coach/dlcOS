@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold, verifies the 6 dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
+description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold and a small client-selected Wiki starter set, verifies the 6 dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
 ---
 
 # setup — dlcOS Onboarding Wizard
@@ -98,7 +98,7 @@ When all 6 stages pass:
 
 ## What This Skill Does NOT Do (v1)
 
-- **Wiki scaffolding beyond `Wiki/Knowledge/about-me.md`** — Phase 2 owns Meetings/, Mindsera/, Clients/ and the Granola + email ingests.
+- **Recurring Wiki synchronization or large historical imports** — Stage 2 creates up to 3 client-selected starter areas and may pull a small confirmed starting batch; Phase 2 owns unattended sync and larger migrations.
 - **Morning-brief setup** — deferred to a follow-up session. Wizard mentions it in Stage 6 handoff.
 - **Scheduled actions (cron/launchd)** — Phase 2.
 - **Claude desktop Settings → Memory automation** — there's no API. The wizard outputs a paste block; the client manually pastes it into Settings.
