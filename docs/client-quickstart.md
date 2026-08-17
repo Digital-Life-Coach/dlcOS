@@ -1,20 +1,23 @@
 # dlcOS Quickstart
 
-Welcome. You've been invited to dlcOS — the Digital Life Coach OS. It's a small set of Claude Code skills that turn your AI workflow into something you run on your own machine, not something you have to remember to do.
+Welcome to dlcOS, the Digital Life Coach OS. It's a small set of Claude Code skills that turn your AI workflow into something you run on your own machine, not something you have to remember to do.
 
-This page gets you from "I just got the invite" to "the wizard is running" in about ten minutes. Your coach should be on the call with you for the wizard itself.
+This page gets you from a fresh Mac to "the wizard is running" in about ten minutes. Your coach should be on the call with you for the wizard itself.
 
 ---
 
 ## What you need first
 
-1. **A Mac.** dlcOS is built and tested on macOS only.
-2. **Claude desktop app.** Download from claude.ai/download. Sign in with the same account you'll use for Claude Code.
-3. **Claude Code.** Install per the instructions at claude.com/claude-code. Sign in.
-4. **A GitHub account.** dlcOS lives in a private repo your coach has invited you to. If you don't have one, create one at github.com/join — your coach will walk you through this if needed.
-5. **A terminal.** Terminal.app (built into macOS) is fine. iTerm2 if you have a preference.
+1. **A Mac**, running macOS 14 (Sonoma) or newer. dlcOS is built and tested on macOS only.
+2. **A Claude Pro or Max subscription.** The free plan does not include Claude Code, which is the piece that does the work.
+3. **Claude Code**, installed with one command: `curl -fsSL https://claude.ai/install.sh | bash`
+4. **A terminal.** [cmux](https://cmux.com/) is what we recommend and what your coach uses. Terminal.app works too.
+
+No GitHub account is needed. dlcOS is a public repo.
 
 If any of those is missing, stop here and finish them with your coach before continuing.
+
+Your coach will usually hand you a step-by-step setup page covering all of the above before your first session.
 
 ---
 
@@ -28,7 +31,7 @@ Two commands, run inside Claude Code. Open Claude Code in any directory (it does
 /plugin marketplace add Digital-Life-Coach/dlcOS
 ```
 
-You'll see `Successfully added marketplace: dlcOS`. If you see an authentication error, your GitHub access hasn't been wired up yet — text your coach.
+You'll see `Successfully added marketplace: dlcOS`. If it fails, check your internet and try again: the repo is public, so there is no login involved.
 
 **Step 2 — install the plugin:**
 

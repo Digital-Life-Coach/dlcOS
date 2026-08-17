@@ -6,7 +6,7 @@ This repository ships an opinionated set of Claude Code skills **and subagents**
 
 ## Who this is for
 
-This marketplace is **invite-only** for active MacCog AI Coaching clients. If you're a client who's been added to this org, see `docs/client-quickstart.md` to get started.
+This marketplace is built for active MacCog AI Coaching clients. If you're a client, see `docs/client-quickstart.md` to get started.
 
 If you're not a client and you've stumbled across this repo, that's fine — there's nothing sensitive here, but the skills are tailored to a specific coaching relationship and workflow. They won't be useful in isolation.
 
