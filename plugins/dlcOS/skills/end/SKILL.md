@@ -1,6 +1,6 @@
 ---
 name: end
-description: End-of-session wrap-up for dlcOS clients — summarize the session, route durable context to the right home (Tier 1/2/3), check off completed tasks, write daily note, compact conversation, optional git commit. Closes with an Office Hours nudge and plugin update check. Use when the user says "we're done", "wrap up the session", "end", or invokes /dlcOS:end. Run /dlcOS:save-plan FIRST if there's unfinished work to hand off to a future session. Pairs with /dlcOS:save-plan and /dlcOS:resume-plan.
+description: End-of-session wrap-up for dlcOS clients — summarize the session, route durable context to the right home (Tier 1/2/3), check off completed tasks, write daily note, compact conversation, optional git commit. Closes with a low-noise setup-checklist + weekly/monthly review due-date nudge, an Office Hours nudge, and a plugin update check. Use when the user says "we're done", "wrap up the session", "end", or invokes /dlcOS:end. Run /dlcOS:save-plan FIRST if there's unfinished work to hand off to a future session. Pairs with /dlcOS:save-plan and /dlcOS:resume-plan.
 ---
 
 # end — Session Close Ritual
@@ -248,6 +248,57 @@ Common when a Claude Code session is launched from the macOS app rather than the
 5. After the worktree is removed, cwd is invalid. The remaining steps (Office Hours nudge, plugin update check) tolerate this — they're network calls and don't need a live cwd.
 
 **Why a skill step, not a Stop hook:** a hook fires on every session end regardless of context — would auto-commit half-finished mid-task work. The skill scopes naturally to "things this session wrote" because it just wrote them.
+
+---
+
+## Step 6b: Setup Checklist + Review Due-Dates Nudge
+
+One compact, low-noise block. If nothing below is `pending` or overdue, print nothing — don't manufacture a nudge just to say something.
+
+### Setup checklist
+
+Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `<plugin-root>/templates/setup-checklist.md` (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature).
+
+**Auto-flip detectable items to `done`** before reading pending state (edit the file in place, don't just report — the client should see the table itself update over time):
+- "See what Claude remembers locally" → `done` if `${VAULT_ROOT}/Reference/Memory/README.md` exists.
+- "Semantic search over your vault" → `done` if `<!-- dlcOS:librarian-index -->` is present in the nearest `CLAUDE.md`.
+- "A daily morning brief" → `done` if `${VAULT_ROOT}/Reference/dlcOS-morning-brief.md` exists.
+
+The "Add another Wiki area" row has no reliable completion marker — leave it to the client's manual dismiss/done edit.
+
+For every row still `pending`, add one line to the nudge block:
+
+```
+- <item> → <command>
+```
+
+### Weekly / monthly review due-dates
+
+Read `<!-- dlcOS:weekly-review-last --> YYYY-MM-DD` and `<!-- dlcOS:monthly-review-last --> YYYY-MM-DD` from the nearest `CLAUDE.md`. For each:
+
+- **Marker absent** → treat as overdue (never run). Don't say "never run" alarmingly; just nudge.
+- **Marker present** → compute days since that date against today.
+  - Weekly: overdue at **7+ days**.
+  - Monthly: overdue at **30+ days**.
+
+Add a line per overdue review:
+
+```
+- Weekly review is <N> days overdue → /dlcOS:weekly-review
+- Monthly review is <N> days overdue → /dlcOS:monthly-review
+```
+
+### Printing it
+
+If there's at least one pending checklist item or one overdue review, print once, together:
+
+```
+📋 A few things worth a look (dismiss any of these by editing Reference/dlcOS-setup-checklist.md):
+   - Semantic search over your vault → /dlcOS:setup-librarian-index
+   - Weekly review is 9 days overdue → /dlcOS:weekly-review
+```
+
+If everything is `done`/`dismissed` and both reviews are within their window, skip this step's output entirely — no empty checkmark spam.
 
 ---
 

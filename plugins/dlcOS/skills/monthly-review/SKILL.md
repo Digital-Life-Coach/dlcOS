@@ -256,7 +256,17 @@ if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then
 fi
 ```
 
-### 4d. Closing summary
+### 4d. Write the last-run marker
+
+Update (or add, if missing) this line in the nearest `CLAUDE.md`, near the other `dlcOS:` markers:
+
+```
+<!-- dlcOS:monthly-review-last --> YYYY-MM-DD
+```
+
+Use today's date. `/dlcOS:end` reads this marker to nudge the client when a review is overdue — without it, every session looks overdue.
+
+### 4e. Closing summary
 
 Tell the client:
 - Files changed and what moved (mirror the way `/dlcOS:weekly-review` reports its wrap).

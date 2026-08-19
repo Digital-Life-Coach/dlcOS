@@ -35,6 +35,7 @@ Confirm:
 - Coach is present (or client wants to proceed solo — note this).
 - Client has Claude desktop installed alongside Claude Code.
 - Client has a rough idea where they want their vault to live (e.g., `~/Documents/<name>-vault`).
+- The dlcOS plugin actually installed (`/dlcOS` brings up a command list). If it didn't, see the Homebrew/git/CLI prerequisite note in **Step 2**.
 
 If anything is missing, pause and tell them what to do before continuing.
 
@@ -50,6 +51,16 @@ The wizard plan lives in the marketplace clone, not the plugin install cache. Fi
 Use the marketplace path first; fall back to the repo path. If neither exists, the marketplace was never added — tell the client to run `/plugin marketplace add Digital-Life-Coach/dlcOS` (not just `/plugin install`) and try again.
 
 Note: the plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`) contains only the plugin subdirectory and does NOT include `plans/`. Don't look there.
+
+**On a fresh Mac, `/plugin marketplace add` / `/plugin install` will not run from inside the Claude desktop app at all — this is not optional.** Confirmed on Ted Humphrey's onboarding call (2026-08-18): the desktop app has no way to install plugins itself, so the coach has to run the install from a terminal, which on a Mac that's never had developer tools means installing three things first, in order:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install git
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Only then do `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` work. This is the coach's step, not the client's — cheat sheet Step 5 (`dlcos-setup.html`) walks through it. If a client reaches `/dlcOS:setup` and the plugin somehow still isn't installed, that's where to send them back to.
 
 ---
 
@@ -103,4 +114,4 @@ When all 6 stages pass:
 - **Scheduled actions (cron/launchd)** — Phase 2.
 - **Claude desktop Settings → Memory automation** — there's no API. The wizard outputs a paste block; the client manually pastes it into Settings.
 - **Critique the plan each run** — `mode: execute` skips the critique. The plan content was reviewed at build time.
-- **Re-install the dlcOS plugin** — the client must already have run `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` before invoking `/dlcOS:setup`.
+- **Re-install the dlcOS plugin** — the client must already have run `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.

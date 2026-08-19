@@ -137,6 +137,16 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ---
 
+## `/dlcOS:memory-harden` *(add-on)*
+
+**What it does.** Claude Code keeps a local memory file (`MEMORY.md`) hidden outside your vault by default, and can create new ones there without you seeing them. This skill moves it into `Reference/Memory/` in your vault — visible in Obsidian, editable or deletable any time — and locks the folder so Claude can keep updating `MEMORY.md` but can never quietly create a new file next to it.
+
+**When to use it.** Any time you want to see exactly what Claude has been keeping as memory outside a conversation, or stop it from scattering extra memory files you never asked for. Safe to run once, safe to re-run.
+
+**What it produces.** `Reference/Memory/MEMORY.md` (Claude's local memory, now visible) and `Reference/Memory/README.md` (how to unlock it if you ever want to add something manually).
+
+---
+
 ## Agents (subagents)
 
 Skills are things *you* run; agents are specialists *Claude* hands a focused task to. Invoke with `@dlcOS:<name>`, ask in plain language, or let a skill spawn one.

@@ -345,6 +345,16 @@ if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then
 fi
 ```
 
+### 4e. Write the last-run marker
+
+Update (or add, if missing) this line in the nearest `CLAUDE.md`, near the other `dlcOS:` markers:
+
+```
+<!-- dlcOS:weekly-review-last --> YYYY-MM-DD
+```
+
+Use today's date. `/dlcOS:end` reads this marker to nudge the client when a review is overdue — without it, every session looks overdue.
+
 ---
 
 ## What This Skill Does NOT Do

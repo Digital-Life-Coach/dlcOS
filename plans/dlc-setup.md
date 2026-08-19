@@ -267,6 +267,8 @@ Then:
 
 ### Stage 6 — Handoff
 
+Copy `<plugin-root>/templates/setup-checklist.md` to `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md` if it doesn't already exist. This is what `/dlcOS:end` nudges from every session close — better to ship it now than have `/dlcOS:end` silently create it later on the client's first session.
+
 Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create if needed):
 
 ```markdown
@@ -325,6 +327,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 - [ ] Client can name the 4 memory layers.
 - [ ] One real plan saved + pointer in CLAUDE.md.
 - [ ] Handoff doc in today's daily note.
+- [ ] `Reference/dlcOS-setup-checklist.md` exists.
 - [ ] Wizard completed in ≤45 minutes (record actual time in handoff doc).
 
 ## 7. Rollback / Safety
