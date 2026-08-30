@@ -142,7 +142,7 @@ For each, add a draft to the collector: specific old → new edit.
 
 Claude cannot read the Settings → Memory GUI directly — so this check works against the `settings-memory-block.md` backup file.
 
-Regenerate the short Settings block from the *current* `about-me.md` (same shape as `templates/settings-memory-block.md` — under ~400 words; keep the required coach-contact sentence verbatim). Diff it against the saved `settings-memory-block.md`.
+Regenerate the short Settings block from the *current* `about-me.md` (same shape as `templates/settings-memory-block.md` — under ~400 words; keep the required coach-attribution sentence verbatim, and carry the client's own contact line through unchanged — it's theirs, not boilerplate to regenerate). Diff it against the saved `settings-memory-block.md`.
 
 If they differ, the client's actual Settings → Memory is probably stale too. Add to the collector: an updated `settings-memory-block.md` **and** a clean paste block for the client to copy into Claude desktop → Settings → Memory.
 

@@ -257,7 +257,7 @@ One compact, low-noise block. If nothing below is `pending` or overdue, print no
 
 ### Setup checklist
 
-Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `<plugin-root>/templates/setup-checklist.md` (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature).
+Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `~/.claude/plugins/marketplaces/dlcOS/templates/setup-checklist.md` (the marketplace clone — the plugin install cache has no `templates/` dir) (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature).
 
 **Auto-flip detectable items to `done`** before reading pending state (edit the file in place, don't just report — the client should see the table itself update over time):
 - "See what Claude remembers locally" → `done` if `${VAULT_ROOT}/Reference/Memory/README.md` exists.

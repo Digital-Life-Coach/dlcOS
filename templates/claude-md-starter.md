@@ -5,6 +5,7 @@
 <!-- dlcOS:vault-root --> /absolute/path/to/your/vault
 <!-- dlcOS:office-hours-ical --> https://example.com/office-hours.ics  (replace with your coach's calendar URL, or delete this line to disable Office Hours nudges)
 <!-- dlcOS:gcal-enabled -->  (delete this line to disable Google Calendar integration in /dlcOS:weekly-review)
+<!-- dlcOS:coach-contact --> text 805-720-9276 or book at [BLAB link]  (how you actually reach your coach — set during setup; edit freely, or delete this line if you reach them some other way)
 
 ---
 
@@ -17,8 +18,8 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 *Used by `/dlcOS:save-plan` and `/dlcOS:resume-plan`. Each entry: one line, link to the plan file in `Reference/Plans/`. Optional dlcOS add-ons appear here as pending plans you can pick up anytime — run `/dlcOS:resume-plan <name>` to start the guided setup.*
 
 <!-- dlcOS:addons-start -->
-- `setup-email` *(v1.1 add-on)* — Connect Gmail or Fastmail for inbox triage + auto-archive of sent emails to your wiki. Drafts mode by default; review and send manually. Run `/dlcOS:setup-email` when ready.
-- `setup-dashboard` *(v1.1 add-on)* — Your daily command center as a phone-installable web app (HQ dashboard PWA over Tailscale). Run `/dlcOS:setup-dashboard` when ready.
+- `setup-email` *(v2.1 add-on)* — Let Claude read your inbox, and (on Fastmail, or Gmail with extra setup) save drafts straight into your Drafts folder. Drafts only — nothing is ever sent without you. Run `/dlcOS:setup-email` when ready.
+- `dashboard-setup` *(v2.0 add-on)* — Your daily command center as a phone-installable web app, running on your own machine. Technical setup; coach-run. Run `/dlcOS:dashboard-setup` when ready.
 - `setup-librarian-index` *(v2.0 add-on)* — Give the `librarian` agent a local semantic-search index so it finds things by meaning, not just keywords. Everything stays on your machine. Technical setup (needs Python + `uv`). Run `/dlcOS:setup-librarian-index` when ready.
 <!-- dlcOS:addons-end -->
 
@@ -44,4 +45,4 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 
 Don't write to `Reference/Themes/` yourself — `/dlcOS:monthly-review` keeps that current and audits the rest of my memory monthly.
 
-See your coach if anything in this file looks unfamiliar — text **805-720-9276** or book at the BLAB link they shared.
+See your coach if anything in this file looks unfamiliar. Reach them the way the `dlcOS:coach-contact` marker at the top of this file says.

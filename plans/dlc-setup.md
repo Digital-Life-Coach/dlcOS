@@ -10,7 +10,7 @@ status: pending
 
 # Plan: dlcOS Setup Wizard
 
-A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 6 dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
+A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the core dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
 
 **Scope:** vault + GTD + memory, including a small client-selected Wiki starter set. Out of scope (Phase 2): unattended/recurring Wiki ingests, morning-brief delivery, scheduled actions.
 
@@ -19,7 +19,7 @@ A guided onboarding that stands up a new client's AI workspace end-to-end. Targe
 By the end of this wizard, the client has:
 
 - A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and the L2/L3/L4 memory folders under `Reference/`.
-- All 6 dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
+- The core dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
 - A polished `Wiki/Knowledge/about-me.md` (synthesized from their prior AI memory exports OR built from a fresh interview).
 - A Settings → Memory paste block pasted into Claude desktop's Memory.
 - A clear mental model of the 4 memory layers and the monthly refresh cycle.
@@ -70,18 +70,30 @@ Hold these answers for use in Stage 2 (vault root, CLAUDE.md identity block) and
 - **Established vault** (has existing markdown content, especially recognizable directories like `Inbox/`, dailies, project folders) → **adapt, don't overwrite.** Walk the client through what already exists, ask what they want from the structure, then create only the missing pieces they want. Do NOT create empty parallel dirs next to existing ones (e.g. don't create a fresh `Action/` if their tasks live at vault root or under another name).
 - **Partial** (some dirs exist, others don't) → ask per-dir before creating.
 
-**Structure is opinionated but optional.** The layout below is the default dlcOS shape. For each top-level dir, ask the client whether they want it, where it should live, and what to call it. Examples of legitimate variation seen in pilot:
+**Structure is opinionated but optional — and how much you ask depends on capability level.** The layout below is the default dlcOS shape. Take the client's Stage 1 capability answer and branch:
+
+**L1–L2 — decide for them, offer to change it later.** Do not ask an L1 client to choose between `Action/`, `Tasks/`, and `Now/`. They have no basis to evaluate that choice; it's jargon dressed up as a preference, and it makes the first ten minutes of their vault feel like a configuration screen. Build the default scaffold, then tell them in one sentence:
+
+> "I've set up a standard layout — an Inbox for anything you haven't sorted yet, an Action folder for tasks and projects, a Wiki for reference, and a Reference folder for the automatic notes. If any of those names bug you later, say so and we'll rename them; nothing breaks."
+
+Then move on. The one thing to confirm out loud is the **vault root path**, because that's about where their files live, which they do have an opinion about.
+
+**L3+ — run the full interview.** For each top-level dir, ask whether they want it, where it should live, and what to call it. Examples of legitimate variation seen in pilot:
 - Tasks at vault root rather than `Action/` subdir.
 - Dailies already at `Wiki/Reference/Dailies/` rather than `Reference/Dailies/`.
 - Different folder name than `Action/` (it's jargon — *Tasks/*, *Now/*, *Action/* are reasonable swaps; let the client pick).
 
-When the client already has a working naming convention, **honor it.** Update `${VAULT_ROOT}/CLAUDE.md` to reference the actual paths the client uses, not the canonical defaults. The skills read paths from `CLAUDE.md` — they don't care what the dirs are named, only that CLAUDE.md tells them where to look.
+**Both branches:** when the client already has a working naming convention, **honor it.** Update `${VAULT_ROOT}/CLAUDE.md` *and* `${VAULT_ROOT}/AGENTS.md` to reference the actual paths the client uses, not the canonical defaults. The skills read paths from `CLAUDE.md` — they don't care what the dirs are named, only that it tells them where to look.
+
+Note the existing-vault pre-check above still runs for every capability level. "Decide for them" applies to *naming a new scaffold*, never to touching structure the client already has.
 
 Default scaffold (use as the starting offer; adjust per client answers):
 
 ```
 ${VAULT_ROOT}/
 ├── CLAUDE.md                          ← from templates/claude-md-starter.md
+├── AGENTS.md                          ← from templates/agents-md-starter.md (tool-neutral twin — see below)
+├── START-HERE.md                      ← from templates/START-HERE.md (client-facing orientation; finished in Stage 6)
 ├── Wiki/
 │   └── Knowledge/
 │       └── about-me.md                ← from templates/about-me.md (placeholder; filled in Stage 4a)
@@ -136,11 +148,31 @@ For each selection:
 
 Keep this stage to **10 minutes maximum**. This is a useful starting surface, not a full migration. Recurring synchronization and large historical imports remain Phase 2 work.
 
-In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1. Replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable). Date-stamp the Action files (`*Last updated:* <today>`).
+#### Write BOTH orchestration files
+
+`CLAUDE.md` is Claude-only. Any client who uses Codex, Cursor, Aider, or anything else reads `AGENTS.md` instead — and gets nothing: no vault map, no communication preferences, no memory routing rule. Assume the client will use more than one tool, because most of them do.
+
+1. Copy `${TEMPLATES}/claude-md-starter.md` → `${VAULT_ROOT}/CLAUDE.md`.
+2. Copy `${TEMPLATES}/agents-md-starter.md` → `${VAULT_ROOT}/AGENTS.md`.
+3. In **both**: replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1, and correct the "Where things live" paths to whatever this vault actually uses.
+4. In `CLAUDE.md` only: replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable).
+5. In `AGENTS.md`: fill the "How to work with me" section from the Stage 1 communication-preferences answer.
+6. Copy `${TEMPLATES}/START-HERE.md` → `${VAULT_ROOT}/START-HERE.md` and date it. Its "What's here" and "What's still unfinished" sections get filled in Stage 6, once you know what actually happened.
+7. Date-stamp the Action files (`*Last updated:* <today>`).
+
+**Set the coach-contact marker.** `CLAUDE.md` ships a `<!-- dlcOS:coach-contact -->` line with Justin's phone and booking link as the default. Ask, don't assume:
+
+> "How do you actually reach me when you're stuck?"
+
+Write their real answer. For most clients that's the text/booking default. For a client who's married to their coach, or sees them weekly, or works in the same building, a booking CTA reads as absurd — and boilerplate that obviously wasn't written for this person quietly undermines everything around it, especially for an anxious client. If they reach the coach some other way entirely, delete the marker line.
 
 **Verify:**
 - `ls ${VAULT_ROOT}` shows the dirs the client agreed to + `CLAUDE.md` (existing or new).
 - `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
+- `${VAULT_ROOT}/AGENTS.md` exists, carries the same vault-root path, and its "Where things live" table matches the dirs actually created.
+- `${VAULT_ROOT}/START-HERE.md` exists (its Stage-6 sections may still be placeholders).
+- The `<!-- dlcOS:coach-contact -->` line says how this client actually reaches their coach, or has been deleted deliberately — it is not the unedited shipped default unless the client confirmed the default is true for them.
+- For an L1/L2 client: no folder-naming interview was run, and the client was told they can rename later.
 - `CLAUDE.md` accurately reflects the *actual* paths in this vault (especially if the client uses non-default names like `Tasks/` instead of `Action/`, or has dailies in a non-standard location).
 - No empty parallel dirs created alongside existing client structure (e.g. an empty `Action/` next to the client's existing tasks file).
 - Every selected Wiki starter area has an agreed destination and `README.md`; any unavailable source is recorded under `## Source to connect` rather than treated as configured.
@@ -149,9 +181,9 @@ In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/
 
 ### Stage 3 — Skill install verify
 
-Smoke-test that all 6 dlcOS skills load and respond. The plugin should already be installed before the wizard runs.
+Smoke-test that the **core** dlcOS skills load and respond. The plugin should already be installed before the wizard runs.
 
-For each skill, confirm it's reachable. Don't run them end-to-end — just verify discovery:
+Confirm each is reachable. Don't run them end-to-end — just verify discovery:
 
 - `/dlcOS:save-plan` — should respond with a request for the plan name
 - `/dlcOS:resume-plan` — should respond looking for pending plans
@@ -159,10 +191,13 @@ For each skill, confirm it's reachable. Don't run them end-to-end — just verif
 - `/dlcOS:weekly-review` — should respond about review phase
 - `/dlcOS:monthly-review` — should respond about memory maintenance
 - `/dlcOS:morning-brief` — should respond and offer setup mode (since no spec exists yet)
+- `/dlcOS:draft` — should respond asking what to draft
 
-If any skill fails to discover, run `/reload-plugins` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
+Typing `/dlcOS` should also list the optional add-ons (`setup-email`, `dashboard-setup`, `setup-librarian-index`, `memory-harden`) and the vault-health skills. Don't smoke-test those here — they're not part of onboarding and several of them do real work on invocation.
 
-**Verify:** all 6 skills respond to invocation. Document any oddities in the daily note for the coach to follow up on.
+If a skill fails to discover, run `/reload-plugins` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
+
+**Verify:** all 7 core skills respond to invocation, and `/dlcOS` lists the add-ons. Document any oddities in the daily note for the coach to follow up on.
 
 ### Stage 4a — Memory layers build
 
@@ -181,9 +216,40 @@ Branch on import availability.
 **Ask the client:** "Do you have memory stored in ChatGPT or Gemini that you want to bring over?"
 
 **Yes path:**
-1. Read `<plugin-root>/templates/chatgpt-memory-export-prompt.md` and print the export prompt verbatim.
-2. Tell the client: "Paste that prompt into ChatGPT (or Gemini), copy the output, and paste it back here."
-3. Wait for the export. When it arrives, synthesize it into:
+1. Read `${TEMPLATES}/chatgpt-memory-export-prompt.md` and print the export prompt verbatim.
+2. Tell the client how to get the output back **without shipping it to another provider**: save it to a file (e.g. `~/Desktop/memory-export.md`) and let this session read it off disk. Offer pasting-in-chat only as the second option, and don't offer it at all to a client whose stated reason for being here is privacy.
+3. Wait for the export.
+
+#### Triage the export BEFORE writing anything
+
+**Do not skip this and do not do it silently.** Memory exports are not tidy lists of preferences. Real ones from the live runs have contained a named hospice patient's clinical and mental-health detail, a friend's terminal cancer course, family medical history, and an unresolved death with allegations about a named police officer. Caregiving, hospice, healthcare, clergy, legal, and therapy clients will hit this routinely, and for several of them confidentiality is a real obligation, not a preference. "Synthesize it" is the wrong default when the file contains someone else's worst year.
+
+Read the export and sort every item into four buckets. Show the client the **counts and one-line labels** — not the full contents read back at them:
+
+| Bucket | What it is | Default destination |
+|---|---|---|
+| **(a) Their own durable facts** | Who they are, what they do, how they work, goals, tools, preferences | `about-me.md` + Settings → Memory block |
+| **(b) Their own health** | Their diagnoses, medications, mental health, treatment | Local vault only, if they want it at all — **never** the Settings → Memory block |
+| **(c) Third-party sensitive** | Anything identifying about someone else: patients, clients under confidentiality, friends' or family's health, deaths, legal matters, allegations about named people | **Nothing is written by default.** Local vault only, and only per-item, only if they ask |
+| **(d) Practical reference** | Passwords-adjacent notes, addresses, schedules, logistics, how-tos | Ask — often better as a normal Wiki note than as memory |
+
+Then confirm **per category**, one at a time, using `AskUserQuestion`:
+
+- **(a)** — "This is the material I'd use to write your profile. Good?" Default yes.
+- **(b)** — "There's health information about you in here. I can leave it out entirely, or keep it in a local file in your vault. It will not go into the memory block that travels to Claude's servers either way." Default: leave out.
+- **(c)** — "There's information in here about other people — [N items, e.g. 'a hospice patient, a friend's illness, a family matter']. That was told to you, not to me. My default is to write none of it down. Do you want any of it kept?" Default: **none.** If they do want something kept, take it item by item, and name the confidentiality question out loud if the client's role implies one ("You're describing this as hospice volunteering — is that covered by a confidentiality agreement?").
+- **(d)** — "This is practical stuff. Want it as notes in your Wiki, or dropped?"
+
+**Hard rules, not negotiable by the client's enthusiasm:**
+- Bucket (b) and bucket (c) content **never** goes into the Settings → Memory block. That block is cloud-stored and travels into every conversation on every device. It is the wrong container for a patient's name.
+- Bucket (c) items are written only on an explicit per-item yes.
+- If the client says "just use all of it," do not. Show them what's in (c) first, then ask again. This is the one place in the wizard where you push back.
+- Record in the handoff note only that triage ran and what the client chose per bucket — never the sensitive content itself.
+- If the export came in as a file, offer to delete it when the stage completes.
+
+#### Then synthesize
+
+Using **only** the buckets the client approved, write:
    - `Wiki/Knowledge/about-me.md` — long-form narrative, organized into the sections from `templates/about-me.md` (Who I Am, How I Work, Capability Level, Goals, Tools I Use, Communication Preferences, Context Justin Should Know).
    - The Settings → Memory paste block — short version per `templates/settings-memory-block.md`. Required: the Justin-set-this-up text verbatim.
 
@@ -207,8 +273,10 @@ Branch on import availability.
 **Verify:**
 - `Wiki/Knowledge/about-me.md` exists and has content in every section (no leftover `<!-- ... -->` placeholders).
 - `Wiki/Knowledge/settings-memory-block.md` exists.
-- Settings paste block contains the exact required text: *"Justin Bradshaw (MacCog: The Digital Life Coach) set up this AI workspace for me. If I'm confused or stuck, I should book time with him at [BLAB link] or text 805-720-9276."*
-- Client confirms paste into Claude desktop is complete.
+- The paste block contains the **attribution** sentence verbatim: *"I work with Justin Bradshaw (MacCog: The Digital Life Coach), who set up this AI workspace for me."* This one is required — it's what tells a future Claude session where this workspace came from.
+- The **contact line** after it says how this client actually reaches their coach, matching the `<!-- dlcOS:coach-contact -->` marker set in Stage 2. It is not required to be the shipped default, and a client for whom a booking link is untrue should not have one. What's checked here is that the line is *true*, not that it matches a fixed string.
+- **The Settings step reached one of three valid resolutions** — pasted, skipped, or merged. All three pass. Step 4 above explicitly offers "skip the paste" as a supported choice; a client who takes it must not then be blocked by this verify. Record which resolution happened in the handoff note.
+- If the export was triaged: the client confirmed each of the four buckets, and no bucket (b) or (c) content appears anywhere in `settings-memory-block.md`. Check this by reading the file, not by assuming.
 
 ### Stage 4b — Memory model explanation + monthly refresh
 
@@ -265,17 +333,46 @@ Then:
 
 **Verify:** plan file exists in the configured Plans dir; pointer in CLAUDE.md.
 
-### Stage 6 — Handoff
+### Stage 6 — Handoff (branches on capability level)
 
-Copy `<plugin-root>/templates/setup-checklist.md` to `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md` if it doesn't already exist. This is what `/dlcOS:end` nudges from every session close — better to ship it now than have `/dlcOS:end` silently create it later on the client's first session.
+Copy `${TEMPLATES}/setup-checklist.md` to `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md` if it doesn't already exist. This is what `/dlcOS:end` nudges from every session close — better to ship it now than have `/dlcOS:end` silently create it later on the client's first session.
 
-Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create if needed):
+#### Finish START-HERE.md — every client, every level
+
+Stage 2 dropped `${VAULT_ROOT}/START-HERE.md` in place. Now fill its two blank sections, because only now do you know what actually happened:
+
+- **"What's here"** — list only the folders this client actually has, under the names they actually have. Don't describe folders you didn't create.
+- **"What's still unfinished"** — be specific and honest. A Wiki area created but empty because the source needed a password. An add-on deferred. A memory bucket the client chose to leave out. One line each, plain language, with what it's waiting on. If nothing is outstanding, say so plainly.
+
+This file is the deliverable that survives the client not being at the keyboard. Stage 4b's memory-model walkthrough is a **spoken script** — if the client stepped away, was overwhelmed, or was never at the machine in the first place, the entire teaching half of onboarding delivered nothing. START-HERE.md is the durable copy. Write it whether or not the conversation went well.
+
+#### Then branch
+
+**L1–L2 clients — the skills are the COACH's surface, not theirs.**
+
+An L1 client may not have a command line, may never open Claude Code again, and does not benefit from memorizing six slash commands. Their surface is Obsidian plus a chat app. Teaching them `/dlcOS:save-plan` on day one produces nodding, not competence.
+
+Walk them through **START-HERE.md on screen**, and teach exactly three things:
+
+1. **Where to put things** — Inbox for anything unsorted; when in doubt, Inbox. Show them, in Obsidian, once.
+2. **How to ask** — they can ask Claude about their own vault in plain language. Give them one real example using something from their own Stage 1 answers.
+3. **How to reach you** — the `dlcOS:coach-contact` line, in whatever form is actually true for them.
+
+Then tell them what *you* will run on their behalf, and when: the monthly memory review, and a check-in on whatever's in the unfinished list. Do not hand an L1 client a list of commands.
+
+Write the daily-note handoff for the **coach's** records (below) — but the client's copy is START-HERE.md.
+
+**L3+ clients — full skill handoff.**
+
+Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create if needed) and talk them through it:
 
 ```markdown
 ## dlcOS Onboarding — <date>
 
 **Capability level:** L<N>
 **Vault root:** ${VAULT_ROOT}
+**Settings → Memory resolution:** pasted / skipped / merged
+**Memory export triage:** ran / not applicable — buckets kept: <a / a+d / etc.>
 
 ### Skills available
 - /dlcOS:morning-brief — daily snapshot (run /dlcOS:morning-brief --setup to configure)
@@ -283,27 +380,31 @@ Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create 
 - /dlcOS:monthly-review — monthly memory maintenance (run once a month)
 - /dlcOS:save-plan — save a plan for later
 - /dlcOS:resume-plan — pick up a saved plan in a fresh session
+- /dlcOS:draft — draft something in your voice
 - /dlcOS:end — wrap a session, write daily note
 
-### Coming later
-- /dlcOS:inbox-triage — bulk inbox processing
+### Add-ons available when they're wanted
+- /dlcOS:setup-email — connect Fastmail or Gmail (drafts only, never sends)
+- /dlcOS:dashboard-setup — the dashboard web app on their own machine (macOS or Linux)
+- /dlcOS:setup-librarian-index — local semantic search over the vault
 
-### Coming in Phase 2
-- Recurring Wiki ingests and large historical imports (Granola, email, and other selected sources)
-- Morning-brief delivery channels (email, push)
-- Scheduled actions (cron/launchd)
+### Still unfinished
+<!-- mirror START-HERE.md's unfinished list -->
 
 ### Office Hours
-Fridays at 11am — group session for all AI Coaching clients.
+<!-- day/time if the coach runs them, else delete -->
 
 ### Reach the coach
-Text: 805-720-9276
-Book: [BLAB link]
+<!-- whatever the dlcOS:coach-contact marker says -->
 ```
 
-Talk the client through each section. End with: "Run `/dlcOS:morning-brief --setup` when you're ready to configure your daily brief — that's the next thing we'll do, but not today."
+End with: "Run `/dlcOS:morning-brief --setup` when you're ready to configure your daily brief — that's the next thing we'll do, but not today."
 
-**Verify:** handoff doc written to today's daily note; client can articulate when to use each of the 6 skills.
+**Verify:**
+- `${VAULT_ROOT}/START-HERE.md` exists with both formerly-blank sections filled, naming this client's real folders and real outstanding items.
+- Handoff written to today's daily note.
+- **L1–L2:** client can say where an unsorted thought goes, and how to reach their coach. They are *not* expected to name any slash command.
+- **L3+:** client can articulate when to use each skill.
 
 ## 5. Decisions & Rationale (frozen — execute mode)
 
@@ -314,17 +415,25 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 - **Morning-brief setup deferred** to a separate session (Phase 2 territory in onboarding flow).
 - **L3 mechanism:** synthesize-then-paste. Both import (ChatGPT/Gemini export) and from-scratch interview supported.
 - **No GitHub release-cut step** in this wizard — that's a coach-side action.
+- **Structural questions are gated on capability level** (added 2026-08-30, from a live L1 run). Folder naming is jargon presented as a preference; an L1 client has no basis to answer it. L1–L2 get defaults plus a rename offer, L3+ get the interview.
+- **Both `CLAUDE.md` and `AGENTS.md` are written for every client** (added 2026-08-30). Assume more than one tool. `CLAUDE.md` keeps the dlcOS runtime markers; `AGENTS.md` carries the vault map, preferences, and memory routing for everything else.
+- **Memory-export triage is mandatory and non-silent** (added 2026-08-30). Exports routinely contain third-party clinical, legal, and end-of-life detail. Four buckets, per-category confirmation, nothing from buckets (b)/(c) in cloud-stored memory, per-item yes required for (c).
+- **The coach-contact CTA is data, not a constant** (added 2026-08-30). Attribution stays required verbatim; the contact line comes from the `dlcOS:coach-contact` marker and must be true for this client.
+- **START-HERE.md is the durable half of Stage 4b** (added 2026-08-30). A spoken walkthrough delivers nothing if the client isn't at the keyboard.
 
 ## 6. Success Criteria
 
 - [ ] Stage 1 complete; client identity captured.
 - [ ] `${VAULT_ROOT}` populated with the full layout from Stage 2.
 - [ ] Client was offered the curated Wiki starter list; each selection has a destination + README (or client explicitly chose none).
-- [ ] All 6 skills respond.
+- [ ] All 7 core skills respond; add-ons appear in the `/dlcOS` list.
 - [ ] `Wiki/Knowledge/about-me.md` written, no placeholders.
-- [ ] Settings → Memory pasted in Claude desktop.
-- [ ] Backup paste block at `Wiki/Knowledge/settings-memory-block.md`.
-- [ ] Client can name the 4 memory layers.
+- [ ] Settings → Memory resolved — pasted, skipped, or merged (all three count).
+- [ ] Backup paste block at `Wiki/Knowledge/settings-memory-block.md`, carrying the attribution sentence and a *true* contact line.
+- [ ] If a memory export was imported: triage ran, all four buckets confirmed with the client, no third-party or client-health content in the Settings block.
+- [ ] `AGENTS.md` written alongside `CLAUDE.md`, both pointing at the same real paths.
+- [ ] `START-HERE.md` written, with the client's real folders and a truthful unfinished list.
+- [ ] Client can name the 4 memory layers *(L3+; for L1–L2 it's enough that they know where things go and how to reach the coach)*.
 - [ ] One real plan saved + pointer in CLAUDE.md.
 - [ ] Handoff doc in today's daily note.
 - [ ] `Reference/dlcOS-setup-checklist.md` exists.
@@ -339,7 +448,7 @@ The wizard only writes inside `${VAULT_ROOT}` (which the client picked) and to C
 
 ## 8. References
 
-- Templates source: `<plugin-root>/templates/`
+- Templates source: `${TEMPLATES}` — resolves to `~/.claude/plugins/marketplaces/dlcOS/templates/` (canonical) or `<repo-root>/templates/` (dev checkout). **Never** the plugin install cache; it ships no `templates/` dir. Every bare `templates/<x>` reference in this plan means `${TEMPLATES}/<x>`.
 - Memory architecture: `Wiki/Knowledge/Memory System.md` in the coach's reference vault (will be dropped to client vaults in Phase 2).
 - Onboarding script source: `Projects/AI Coaching/onboarding-guide.md` § How Claude Remembers in the coach's reference vault.
 

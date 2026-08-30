@@ -129,6 +129,41 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ---
 
+## `/dlcOS:setup-email` *(add-on)*
+
+**What it does.** Connects your mailbox so Claude can read it and — depending on your provider — put drafts into your Drafts folder.
+
+| Your email | Claude can read it | Claude can save drafts into it |
+|---|---|---|
+| **Fastmail** | Yes | **Yes** — one command and a browser login. The easy path. |
+| **Google Workspace / Gmail** | Yes | Only if you set up your own Google Cloud project first (about 30–45 minutes with your coach, in your own Google account). Without that, read-only. |
+| **Microsoft 365 / Outlook** | Yes | **No.** There's no way to do it, quick or slow. You'll copy drafts across by hand. |
+| iCloud, other IMAP | No | No |
+
+The Gmail draft-writing path is real but it's a project: a Google Cloud project of your own, the Gmail API turned on, and an app you authorize to your own mailbox — scoped so it can create drafts and *cannot* send. Your coach drives it. Most people are happier stopping at read-only and copying the occasional draft across.
+
+**When to use it.** When you're tired of copying drafts out of a chat window by hand, and you're comfortable with Claude being able to read your mail to answer questions about it.
+
+**What it will never do.** Send. There is no send path in this add-on, and `/dlcOS:draft` does not send. Drafts sit in Drafts until you press the button. It also doesn't archive, file, or delete anything.
+
+**If you have a choice of provider,** Fastmail gets you draft-writing in five minutes with no cloud project. Nobody should switch email hosts over this — but if you were already thinking about it, that's the difference.
+
+**Worth knowing before you say yes.** Messages Claude reads to answer you go to Anthropic, the same as anything you paste into a conversation — your mailbox isn't uploaded, but what it reads does leave your machine. If your inbox carries other people's confidential information (clients, patients, HR), skipping this is a reasonable choice, not a timid one. Turn it off any time by deleting the `dlcOS:email-enabled` line from your `CLAUDE.md` and revoking the grant in Fastmail's settings.
+
+---
+
+## `/dlcOS:dashboard-setup` *(add-on)*
+
+**What it does.** Installs your own copy of the dlcOS dashboard — a small web app (Today/GTD and friends) running on your own machine against your own vault, reachable from your phone if you want it to be. Interviews you for which modules to run and how you want to reach it, then sets it up to start on its own at login.
+
+**When to use it.** After base setup, when a browser surface would beat a chat window for your daily loop. Technical and coach-run: it needs a terminal and `bun`.
+
+**Platforms.** macOS (launchd) and Linux (systemd). Not Windows.
+
+**Worth knowing.** It runs on *your* machine, not your coach's. If your machine is off or asleep, the dashboard is down and nobody is monitoring that but you.
+
+---
+
 ## `/dlcOS:setup-librarian-index` *(add-on)*
 
 **What it does.** Provisions a local semantic-search index over your vault (installs the agent-library tool, builds the index, wires a daily refresh, writes the `dlcOS:librarian-index` marker). Upgrades `librarian` from keyword matching to ranked semantic search. Everything stays on your machine.

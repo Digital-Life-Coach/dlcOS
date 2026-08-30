@@ -27,7 +27,10 @@ All skills are namespaced under `/dlcOS:` — type `/dlcOS:` and tab-complete to
 | `/dlcOS:vault-lint` | Interactively check your vault for broken links and fix the safe ones (spawns `vault-hygiene`). |
 | `/dlcOS:vault-sweep` | Unattended vault health sweep — detects and logs, fixes nothing. Good for a schedule. |
 | `/dlcOS:promote-lessons` | Approve lessons your learning agents propose, so they get smarter over time. |
+| `/dlcOS:setup-email` | *(add-on)* Let Claude read your inbox. Saves drafts into Drafts on Fastmail (easy) or Gmail (needs your own Google Cloud project); read-only on Microsoft 365. Never sends. |
+| `/dlcOS:dashboard-setup` | *(add-on)* Install your own dashboard web app on your own machine (macOS or Linux). Coach-run. |
 | `/dlcOS:setup-librarian-index` | *(add-on)* Provision a local semantic-search index so `librarian` finds by meaning, not just keywords. |
+| `/dlcOS:memory-harden` | *(add-on)* Move Claude's hidden local memory file into your vault where you can see it. |
 
 Coming later: `/dlcOS:inbox-triage` for inbox-zero workflow.
 

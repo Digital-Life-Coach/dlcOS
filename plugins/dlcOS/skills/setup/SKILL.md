@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold and a small client-selected Wiki starter set, verifies the 6 dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
+description: Onboard a new dlcOS client end-to-end. Builds the vault scaffold and a small client-selected Wiki starter set, verifies the core dlcOS skills install correctly, synthesizes the client's L3 memory layer (about-me.md + Claude Settings → Memory paste block) from their ChatGPT/Gemini export OR a from-scratch interview, walks them through the 4-layer memory model, and runs a save-plan round-trip. Use when the user says "/dlcOS:setup", "set me up", "onboard me", "I'm new to dlcOS", or this is their first session with the plugin installed. Target run time ≤45 minutes; coach should be present.
 ---
 
 # setup — dlcOS Onboarding Wizard
@@ -52,6 +52,13 @@ Use the marketplace path first; fall back to the repo path. If neither exists, t
 
 Note: the plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`) contains only the plugin subdirectory and does NOT include `plans/`. Don't look there.
 
+**`templates/` lives in the same place, and for the same reason.** Every template the wizard copies (`claude-md-starter.md`, `agents-md-starter.md`, `START-HERE.md`, `about-me.md`, `settings-memory-block.md`, `chatgpt-memory-export-prompt.md`, `voice.md`, `setup-checklist.md`, `action/`, `inbox/`) resolves against the **marketplace root**, not the plugin root:
+
+1. `~/.claude/plugins/marketplaces/dlcOS/templates/` — **canonical.**
+2. `<repo-root>/templates/` — development checkout fallback.
+
+Set `${TEMPLATES}` to whichever exists and use it for every copy in the plan. Anywhere the wizard plan says `templates/<x>`, read it as `${TEMPLATES}/<x>`. The plugin install cache has no `templates/` directory at all — a copy from there fails, and on a live run it fails silently mid-stage.
+
 **On a fresh Mac, `/plugin marketplace add` / `/plugin install` will not run from inside the Claude desktop app at all — this is not optional.** Confirmed on Ted Humphrey's onboarding call (2026-08-18): the desktop app has no way to install plugins itself, so the coach has to run the install from a terminal, which on a Mac that's never had developer tools means installing three things first, in order:
 
 ```
@@ -59,6 +66,15 @@ Note: the plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`
 brew install git
 curl -fsSL https://claude.ai/install.sh | bash
 ```
+
+**On Linux** (supported — it's the basis of the appliance delivery path in `docs/linux-appliance-setup.md`) there is no Homebrew step and no desktop app; the client is at a terminal already:
+
+```
+sudo apt update && sudo apt install -y git curl
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Everything the base wizard does afterwards is platform-neutral — it writes markdown into a directory. The macOS-specific pieces are all in optional add-ons (`dashboard-setup` and `setup-librarian-index` both branch on platform; `dashboard-setup` writes a systemd user unit on Linux instead of a launchd plist).
 
 Only then do `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` work. This is the coach's step, not the client's — cheat sheet Step 5 (`dlcos-setup.html`) walks through it. If a client reaches `/dlcOS:setup` and the plugin somehow still isn't installed, that's where to send them back to.
 
@@ -97,7 +113,7 @@ After each stage:
 
 ## Step 5 — Close out
 
-When all 6 stages pass:
+When all stages pass:
 
 1. Update plan frontmatter: `status: complete`, `completed: <timestamp>`.
 2. Append an `## Outcome` section summarizing what shipped, total wizard runtime, any oddities.
@@ -114,4 +130,4 @@ When all 6 stages pass:
 - **Scheduled actions (cron/launchd)** — Phase 2.
 - **Claude desktop Settings → Memory automation** — there's no API. The wizard outputs a paste block; the client manually pastes it into Settings.
 - **Critique the plan each run** — `mode: execute` skips the critique. The plan content was reviewed at build time.
-- **Re-install the dlcOS plugin** — the client must already have run `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.
+- **Re-install the dlcOS plugin** — the client must already have run `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI; on Linux, git plus the CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.

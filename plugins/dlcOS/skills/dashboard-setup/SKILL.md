@@ -1,6 +1,6 @@
 ---
 name: dashboard-setup
-description: "Install a client's own dlcOS Dashboards — a Bun+Hono operator surface (Today/GTD/Orchestrator/Starts) running on the client's own Mac against their own vault, never Justin's hardware. Interviews for which modules to run and for network shape (laptop-only / phone-anywhere / VPN comfort), resolves to one of three supported topologies, writes the client's entry-point server file + launchd plist + 1Password item wiring, and verifies bun + cmux are present first. Use when the user says /dlcOS:dashboard-setup, 'set up my dashboard', 'I want the Today/GTD dashboard', or picks up the dashboards add-on from Pending Plans. Optional add-on, not part of base /dlcOS:setup — run this after base setup, with the coach present."
+description: "Install a client's own dlcOS Dashboards — a Bun+Hono operator surface (Today/GTD/Orchestrator/Starts) running on the client's own machine (macOS or Linux) against their own vault, never Justin's hardware. Interviews for which modules to run and for network shape (laptop-only / phone-anywhere / VPN comfort), resolves to one of three supported topologies, writes the client's entry-point server file + a launchd plist (macOS) or systemd user unit (Linux) + 1Password item wiring, and verifies bun + cmux are present first. Use when the user says /dlcOS:dashboard-setup, 'set up my dashboard', 'I want the Today/GTD dashboard', or picks up the dashboards add-on from Pending Plans. Optional add-on, not part of base /dlcOS:setup — run this after base setup, with the coach present."
 ---
 
 # dashboard-setup — Install the Client's Own Dashboards
@@ -9,14 +9,33 @@ description: "Install a client's own dlcOS Dashboards — a Bun+Hono operator su
 
 Ships a client's own copy of `Work/Dashboards` — the Bun + Hono + HTMX operator
 hub Justin runs on his own Mac at `hq.macjustin.com` — generalized so a dlcOS
-client runs it on **their own Mac against their own vault**. Not multi-tenant
-on Justin's hardware; each client's data never leaves their machine. Full
+client runs it on **their own machine against their own vault**. Not
+multi-tenant on Justin's hardware; each client's data never leaves their
+machine. Supported hosts: macOS (launchd) and Linux (systemd user units) —
+the latter covers the Linux-appliance delivery path in
+`docs/linux-appliance-setup.md`. Full
 design background: `Reference/Plans/2026-08-18-dlcos-dashboards.md` in
 Justin's vault (not shipped to clients — reference for the coach only).
 
 This is a technical add-on, coach-run. It needs a terminal, `bun`, and cmux on
-the client's Mac. If the client isn't comfortable with a terminal, do it
+the client's machine. If the client isn't comfortable with a terminal, do it
 together on a screen-share.
+
+---
+
+## Step 0a — Detect the platform FIRST
+
+Everything downstream branches on this, so resolve it before anything else:
+
+```bash
+uname -s
+```
+
+- `Darwin` → `${PLATFORM}=macos`. Service manager is **launchd**; unit goes to `~/Library/LaunchAgents/`.
+- `Linux` → `${PLATFORM}=linux`. Service manager is **systemd user units**; unit goes to `~/.config/systemd/user/`. Confirm systemd is actually the init system (`ps -p 1 -o comm=` returns `systemd`) — if it isn't (a container, or a non-systemd distro), stop and say so plainly rather than writing a unit file nothing will read.
+- Anything else → stop. Tell the client this add-on supports macOS and systemd Linux only, and that base dlcOS still works fine without it.
+
+Say the detected platform out loud so the client knows which path they're on.
 
 ---
 
@@ -121,9 +140,9 @@ Resolve per this table (same as `Reference/Plans/2026-08-18-dlcos-dashboards.md`
 
 | Q1 (laptop) | Q2 (phone) | Q3 (VPN OK) | Topology | Notes |
 |---|---|---|---|---|
-| no | no | – | **localhost-only** | Bind `127.0.0.1`. Reachable only from the Mac itself. |
+| no | no | – | **localhost-only** | Bind `127.0.0.1`. Reachable only from the machine itself. |
 | yes | no | – | **LAN** | Bind `0.0.0.0`. Reachable at `<hostname>.local:PORT` on the home network. Local password only. |
-| any | yes | yes | **Tailscale** | Install Tailscale on the Mac + the client's phone. MagicDNS name, no public surface, no login needed — covers the LAN case for free. |
+| any | yes | yes | **Tailscale** | Install Tailscale on the host machine + the client's phone. MagicDNS name, no public surface, no login needed — covers the LAN case for free. |
 | any | yes | no | **NOT AVAILABLE YET** | See below. |
 
 **If the answers land on row 4:** stop and tell the client plainly: "That combination — reachable from your phone anywhere, without a VPN — needs a public hostname with real login security, and that part of the build isn't done yet. I can set you up with Tailscale instead (same phone reach, but it does install a VPN profile), or with LAN-only for now and revisit this once the public-hostname path ships. Which would you like?" Re-run this step with their new answer. Do not attempt to build a Cloudflare Tunnel + auth path yourself — it's explicitly out of scope (plan §5 decision 5, §9).
@@ -140,7 +159,7 @@ If `TOPOLOGY = tailscale`:
 command -v tailscale || echo "no tailscale"
 ```
 
-If missing, tell the client to install Tailscale on the Mac (https://tailscale.com/download) and on their phone, sign in to the same tailnet on both, then re-run this step. Don't proceed without it.
+If missing, tell the client to install Tailscale on the host machine (https://tailscale.com/download) and on their phone, sign in to the same tailnet on both, then re-run this step. Don't proceed without it.
 
 ---
 
@@ -277,7 +296,19 @@ recommended.
 
 ---
 
-## Step 9 — Write the launchd plist
+## Step 9 — Write the service unit (branches on `${PLATFORM}`)
+
+Same job either way: run `bun run server.ts` in `${DASH_DIR}` at login, keep it
+alive, log to files, and hand it every `DLCOS_CLIENT=1` tenant env var. Only
+the wrapper differs.
+
+Fill in every env value from Steps 4/6/8 — every tenant override must actually
+be present or the process refuses to boot (that's the point). `DASH_BIND` is
+`127.0.0.1` for `localhost` topology, `0.0.0.0` for `lan` and `tailscale`
+(Tailscale's own network boundary is the security control there, not the bind
+address).
+
+### macOS — launchd
 
 Write `~/Library/LaunchAgents/com.dlcos.${INSTALL_NAME}-dashboard.plist`:
 
@@ -302,16 +333,72 @@ Write `~/Library/LaunchAgents/com.dlcos.${INSTALL_NAME}-dashboard.plist`:
 </plist>
 ```
 
-Fill in every env value from Steps 4/6/8 — every `DLCOS_CLIENT=1` tenant
-override must actually be present or the process refuses to boot (that's the
-point). `DASH_BIND` is `127.0.0.1` for `localhost` topology, `0.0.0.0` for
-`lan` and `tailscale` (Tailscale's own network boundary is the security
-control there, not the bind address).
-
 Load it:
 ```bash
 launchctl load ~/Library/LaunchAgents/com.dlcos.${INSTALL_NAME}-dashboard.plist
 ```
+
+### Linux — systemd user unit
+
+Write `~/.config/systemd/user/dlcos-${INSTALL_NAME}-dashboard.service` (create
+the directory if needed):
+
+```ini
+[Unit]
+Description=dlcOS Dashboards (${INSTALL_NAME})
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=${DASH_DIR}
+Environment=DLCOS_CLIENT=1
+Environment=OP_ITEM=dlcOS
+Environment=VAULT_ROOT=${VAULT_ROOT}
+Environment=PUBLIC_BASE_URL=...
+Environment=CLAUDE_ORG_ID=...
+Environment=FRESHBOOKS_ACCOUNT_ID=...
+Environment=CHARGEBEE_BASE=...
+Environment=PORT=${PORT}
+Environment=DASH_BIND=127.0.0.1_or_0.0.0.0
+ExecStart=/bin/bash -lc 'export OP_SERVICE_ACCOUNT_TOKEN=$(cat ~/.config/op/service-account-token 2>/dev/null); exec /path/to/bun run server.ts'
+Restart=always
+RestartSec=3
+StandardOutput=append:${DASH_DIR}/log.out
+StandardError=append:${DASH_DIR}/log.err
+
+[Install]
+WantedBy=default.target
+```
+
+Enable and start it:
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now dlcos-${INSTALL_NAME}-dashboard.service
+```
+
+**Linux-only gotchas — cover these with the client, they bite in this order:**
+
+1. **A user unit dies when the user logs out**, which on a headless appliance
+   means it dies the moment the SSH session ends. Fix it once:
+   ```bash
+   sudo loginctl enable-linger $USER
+   ```
+   Without this, the dashboard works during setup and is mysteriously down
+   the next morning. Do this before declaring the install finished.
+2. **`Environment=` values are not shell-expanded.** No `$VAR`, no `~`, no
+   command substitution — write literal absolute paths. Anything that genuinely
+   needs a shell (the 1Password token read) belongs inside the `ExecStart`
+   `bash -lc` string, which is why it's written that way above.
+3. **`StandardOutput=append:` needs systemd 240+.** On anything older, drop
+   both lines and read logs with `journalctl --user -u
+   dlcos-${INSTALL_NAME}-dashboard -f` instead.
+4. **`bun` is often not on the unit's PATH** even when it works in the
+   client's shell. Use the absolute path from `command -v bun`, same as macOS.
+5. **1Password CLI on Linux** — if the client declined `op`, the fallback is
+   `Environment=HUB_DEV_KEYS=1` and `Environment=HUB_MASTER_KEY=<password>`,
+   with the same warning as macOS: the password sits in the unit file in
+   plaintext. Tighten it with `chmod 600` on the unit file.
 
 ---
 
@@ -335,18 +422,27 @@ Tailscale MagicDNS URL) in a browser, log in with the master key, and confirm:
 If `/healthz` doesn't return 200: check `$DASH_DIR/log.err` for the boot
 error — the most likely cause is a `DLCOS_CLIENT=1` tenant throw from Step 8
 (a missing env var), which will name the exact variable in its error message.
+On Linux also check `systemctl --user status dlcos-${INSTALL_NAME}-dashboard`
+and `journalctl --user -u dlcos-${INSTALL_NAME}-dashboard -n 50`, which catch
+the failures that never reach the log file (bad unit syntax, `bun` not found).
+
+**Linux — verify it survives logout.** Confirm lingering is on
+(`loginctl show-user $USER --property=Linger` returns `Linger=yes`), then log
+out, log back in, and re-run the `/healthz` curl. An install that only works
+while you're SSH'd in is not installed.
 
 ---
 
 ## Gotchas (worth telling the client)
 
-- **This is not on Justin's hardware.** If the client's Mac is off or asleep, the dashboard is down. There's no fleet monitoring on client machines yet (plan §7 "Failure visibility" — open question) — if it goes down, the client notices before Justin does.
+- **This is not on Justin's hardware.** If the client's machine is off or asleep, the dashboard is down. (A Linux appliance is the better answer here — it's always on, which is much of the point of that delivery path.) There's no fleet monitoring on client machines yet (plan §7 "Failure visibility" — open question) — if it goes down, the client notices before Justin does.
 - **Update path is manual today.** A future dashboard improvement in Justin's own `Work/Dashboards/` does not automatically reach a client install (plan §7 "Update path" — open question, unresolved as of 2026-08-24). Re-running this skill with a fresh payload copy is the only path right now.
 - **Cheat sheets need Orchestrator to manage, not to view.** Anyone with a share link can always view a cheat sheet regardless of module choice; only a client with Orchestrator enabled can see the list or delete one from the dashboard itself.
 
 ## What this skill does NOT do
 
 - ❌ Build the Cloudflare Tunnel + full-auth topology (network-shape row 4) — not built yet; the skill redirects to Tailscale or LAN-only instead of attempting it.
+- ❌ Support anything but macOS and systemd Linux — Step 0a stops on anything else rather than writing a unit file nothing reads.
 - ❌ Install `bun`, cmux, or Tailscale for the client — it verifies they're present and tells the client what to run, same policy as `setup-librarian-index`.
 - ❌ Push updates to an existing client install automatically — re-run manually.
-- ❌ Touch Justin's own hub (`Work/Dashboards/hub/server.ts`, `com.maccog.hub`) in any way — this skill only ever writes into the client's own `$DASH_DIR` and their own launchd plist.
+- ❌ Touch Justin's own hub (`Work/Dashboards/hub/server.ts`, `com.maccog.hub`) in any way — this skill only ever writes into the client's own `$DASH_DIR` and their own service unit.

@@ -2,13 +2,13 @@
 
 Welcome to dlcOS, the Digital Life Coach OS. It's a small set of Claude Code skills that turn your AI workflow into something you run on your own machine, not something you have to remember to do.
 
-This page gets you from a fresh Mac to "the wizard is running" in about ten minutes. Your coach should be on the call with you for the wizard itself.
+This page gets you from a fresh machine to "the wizard is running" in about ten minutes. Your coach should be on the call with you for the wizard itself.
 
 ---
 
 ## What you need first
 
-1. **A Mac**, running macOS 14 (Sonoma) or newer. dlcOS is built and tested on macOS only.
+1. **A Mac** running macOS 14 (Sonoma) or newer, **or a Linux box** running a current systemd distro (Ubuntu LTS is what we test). macOS is the common path and what the setup pages below assume; Linux is supported and is the basis of the appliance option, where dlcOS runs on a dedicated always-on machine and syncs to the Mac you actually use. Windows is not supported.
 2. **A Claude Pro or Max subscription.** The free plan does not include Claude Code, which is the piece that does the work.
 3. **Claude Code**, installed with one command: `curl -fsSL https://claude.ai/install.sh | bash`
 4. **A terminal.** [cmux](https://cmux.com/) is what we recommend and what your coach uses. Terminal.app works too.
