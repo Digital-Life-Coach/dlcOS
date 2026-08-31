@@ -35,11 +35,17 @@ dlcOS is a combo of three components:
 grep -h '"version"' plugins/dlcOS/.claude-plugin/plugin.json plugins/dlcOS/.codex-plugin/plugin.json
 ```
 
-**Validate both before release:**
+**Validate both before release.** Codex ships its own authoritative validator — use it, don't eyeball the manifest:
+
 ```bash
 claude plugin validate plugins/dlcOS
+python3 ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/dlcOS
 codex plugin marketplace add . && codex plugin add dlcOS@dlcOS && codex plugin list | grep dlcOS@
 ```
+
+⚠️ **`codex plugin add` succeeding does NOT mean the manifest is valid.** The v2.2.0 manifest installed and enabled cleanly while missing a required field (`interface.defaultPrompt`) — the official validator caught it, the install path didn't. Same shape as the npm-vs-native remote-control bug: the happy path reports success and the defect surfaces somewhere else later.
+
+Codex's `plugin-creator` skill (`~/.codex/skills/.system/plugin-creator/`) is the schema source of truth. Required in `interface`: `displayName`, `shortDescription`, `longDescription`, `developerName`, `category`, `capabilities` (array), and `defaultPrompt`. Top-level keys are allow-listed — an unknown key is a hard error.
 
 **What doesn't port, and shouldn't be papered over:** the *named agent registry*. Codex has real subagents — `spawn_agent`, hierarchical task names, inter-agent messaging, `SubagentStart`/`SubagentStop` hooks, `features.multi_agent` stable and on by default — but they're anonymous and inherit the parent's tools, defined by the task you hand them rather than by a persona file the harness discovered. So `subagent_type: dlcOS:drafter` has no equivalent; passing `agents/drafter.md` to `spawn_agent` does.
 

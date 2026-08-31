@@ -26,6 +26,11 @@
       "Interactive",
       "Write"
     ],
-    "websiteURL": "https://github.com/Digital-Life-Coach/dlcOS"
+    "websiteURL": "https://github.com/Digital-Life-Coach/dlcOS",
+    "defaultPrompt": [
+      "Set up my vault with /dlcOS:setup",
+      "Run my weekly review",
+      "Wrap up this session"
+    ]
   }
 }
