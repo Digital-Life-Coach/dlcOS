@@ -76,7 +76,16 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 Everything the base wizard does afterwards is platform-neutral — it writes markdown into a directory. The macOS-specific pieces are all in optional add-ons (`dashboard-setup` and `setup-librarian-index` both branch on platform; `dashboard-setup` writes a systemd user unit on Linux instead of a launchd plist).
 
-Only then do `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` work. This is the coach's step, not the client's — cheat sheet Step 5 (`dlcos-setup.html`) walks through it. If a client reaches `/dlcOS:setup` and the plugin somehow still isn't installed, that's where to send them back to.
+Only then does the install work. **Two harnesses, same plugin** — use whichever the client actually drives:
+
+| Harness | Install |
+|---|---|
+| **Claude Code** | `/plugin marketplace add Digital-Life-Coach/dlcOS` then `/plugin install dlcOS@dlcOS` |
+| **Codex** | `codex plugin marketplace add https://github.com/Digital-Life-Coach/dlcOS` then `codex plugin add dlcOS@dlcOS` |
+
+The repo ships packaging for both (`.claude-plugin/` and `.agents/plugins/` + `.codex-plugin/`), reading the same `skills/` directory. **The vault is the product; the model is switchable** — pick from the client's habits, not a house preference, and a client who uses both can install both against one vault.
+
+Codex has no subagent mechanism, so the four dlcOS agents don't auto-load there. The skills that use them (`draft`, `vault-lint`, `vault-sweep`) carry an inline fallback and still work — the agent markdown ships in the plugin either way. This is the coach's step, not the client's — cheat sheet Step 5 (`dlcos-setup.html`) walks through it. If a client reaches `/dlcOS:setup` and the plugin somehow still isn't installed, that's where to send them back to.
 
 ---
 
@@ -130,4 +139,4 @@ When all stages pass:
 - **Scheduled actions (cron/launchd)** — Phase 2.
 - **Claude desktop Settings → Memory automation** — there's no API. The wizard outputs a paste block; the client manually pastes it into Settings.
 - **Critique the plan each run** — `mode: execute` skips the critique. The plan content was reviewed at build time.
-- **Re-install the dlcOS plugin** — the client must already have run `/plugin marketplace add Digital-Life-Coach/dlcOS` and `/plugin install dlcOS@dlcOS` before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI; on Linux, git plus the CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.
+- **Re-install the dlcOS plugin** — the client must already have installed it (Claude Code or Codex, see **Step 2**) before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI; on Linux, git plus the CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.

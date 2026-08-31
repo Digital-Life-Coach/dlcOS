@@ -36,7 +36,7 @@ Coming later: `/dlcOS:inbox-triage` for inbox-zero workflow.
 
 ## Agents
 
-Subagents are specialists Claude can hand a focused task to. They're auto-discovered under scoped names (`dlcOS:<name>`) and each resolves your vault path automatically. Invoke one with `@dlcOS:<name>`, ask Claude in plain language ("use webscout to research X"), or let a skill spawn it.
+Subagents are specialists Claude Code can hand a focused task to (Claude Code only — see the note under **Install** for how these skills behave in Codex). They're auto-discovered under scoped names (`dlcOS:<name>`) and each resolves your vault path automatically. Invoke one with `@dlcOS:<name>`, ask Claude in plain language ("use webscout to research X"), or let a skill spawn it.
 
 | Agent | What it does |
 |---|---|
@@ -49,19 +49,30 @@ Subagents are specialists Claude can hand a focused task to. They're auto-discov
 
 ## Install
 
+**The vault is the product; the model is switchable.** dlcOS ships packaging for two harnesses off the same `skills/` directory. Install whichever you actually use — or both, against one vault.
+
+**Claude Code:**
 ```
 /plugin marketplace add Digital-Life-Coach/dlcOS
 /plugin install dlcOS@dlcOS
 /reload-plugins
 ```
 
-Then run `/dlcOS:setup` to scaffold your AI workspace.
+**Codex:**
+```
+codex plugin marketplace add https://github.com/Digital-Life-Coach/dlcOS
+codex plugin add dlcOS@dlcOS
+```
+
+Then run `/dlcOS:setup` to scaffold your AI workspace. Setup writes both `CLAUDE.md` and `AGENTS.md`, so either agent arrives knowing the same things about you.
+
+**One difference worth knowing:** Codex has no subagent mechanism, so the four agents below don't auto-load there. The skills that use them (`draft`, `vault-lint`, `vault-sweep`) carry an inline fallback and still work — the agent instructions ship in the plugin either way. Slower and noisier, not broken.
 
 ## Updates
 
 `/dlcOS:end` checks for plugin updates at session close and prints a one-line nudge if a newer version is available.
 
-Run `/plugin update` to pull the latest.
+Claude Code: `/plugin update`. Codex: `codex plugin marketplace upgrade` then `codex plugin add dlcOS@dlcOS`.
 
 ## Support
 

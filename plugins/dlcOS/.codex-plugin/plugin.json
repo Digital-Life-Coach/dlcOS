@@ -7,7 +7,6 @@
     "email": "justin@maccog.com"
   },
   "homepage": "https://github.com/Digital-Life-Coach/dlcOS",
-  "repository": "https://github.com/Digital-Life-Coach/dlcOS",
   "license": "SEE LICENSE IN LICENSE",
   "keywords": [
     "coaching",
@@ -17,10 +16,16 @@
     "claude-code"
   ],
   "skills": "./skills/",
-  "agents": [
-    "./agents/drafter.md",
-    "./agents/librarian.md",
-    "./agents/vault-hygiene.md",
-    "./agents/webscout.md"
-  ]
+  "interface": {
+    "displayName": "dlcOS",
+    "shortDescription": "The Digital Life Coach OS \u2014 vault, memory, and review skills",
+    "longDescription": "Skills for a client's own markdown vault: onboarding wizard, plan save/resume, end-of-session ritual, weekly GTD review, monthly memory maintenance, morning brief, drafting, vault health, and optional email / dashboard / semantic-search add-ons. The vault is the product; the model is switchable.",
+    "developerName": "MacCog",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Digital-Life-Coach/dlcOS"
+  }
 }

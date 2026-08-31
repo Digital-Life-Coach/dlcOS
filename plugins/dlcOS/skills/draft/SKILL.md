@@ -7,13 +7,16 @@ description: Spawn the drafter subagent for a piece of prose (email, proposal, b
 
 Thin wrapper around the `dlcOS:drafter` subagent. Drafter returns a draft string only; this skill closes the loop by letting you pick what happens to it.
 
+
+> **Harness note.** Subagents are a Claude Code feature. In Codex or any harness without them, don't stop — **do the work inline in this session** using the same instructions the agent file carries (`agents/drafter.md` in the plugin). The agent exists to keep the main context clean, not because the work needs a separate process. A run without it is slower and noisier, not wrong.
+
 ## Steps
 
 ### 1. Frame the request
 
 Capture the brief: at minimum **topic / audience / register hint**. Optional but useful: recipient (if email), prior thread context (if reply), tone calibration (e.g. how hard to sell, if a proposal).
 
-If the brief is too thin to draft well — e.g. "draft an email" with no recipient or topic — ask one clarifying question via `AskUserQuestion`. Don't draft on guesses.
+If the brief is too thin to draft well — e.g. "draft an email" with no recipient or topic — ask one clarifying question (via `AskUserQuestion` where it exists, plainly in prose otherwise). Don't draft on guesses.
 
 Quick check — is this actually a drafter job? Push back if:
 - The user wants a commit message → that's a different tool.
@@ -24,6 +27,8 @@ Quick check — is this actually a drafter job? Push back if:
 
 Use the `Agent` tool with `subagent_type: dlcOS:drafter` (the scoped plugin name). Pass the brief plus any context already loaded (recipient note, prior thread, facts).
 
+Without subagent support, read `agents/drafter.md` and follow it inline — including the step it never skips: load `Wiki/Knowledge/voice.md` before writing a word, and run the avoid-list lint pass after. Losing the subagent must not mean losing the voice doc.
+
 Drafter returns a `**Draft:**` block followed by a metadata block (format hint, register, subject line, suggested delivery, notes).
 
 ### 3. Present the draft
@@ -32,7 +37,7 @@ Show the draft body verbatim. Below it, show the metadata block. Below that, pre
 
 ### 4. Confirm action
 
-Use `AskUserQuestion` (single-select). Options depend on whether an email integration is configured — check the project `CLAUDE.md` for a `<!-- dlcOS:email-enabled -->` marker (set by the `setup-email` add-on):
+Present a single-select choice (`AskUserQuestion` where available, a lettered list otherwise). Options depend on whether an email integration is configured — check the project `CLAUDE.md` for a `<!-- dlcOS:email-enabled -->` marker (set by the `setup-email` add-on):
 
 **Always available:**
 - **Save as markdown file** — default for blog post / newsletter / any non-email, and the default for everything when no email integration is set up. Use the drafter's suggested path or ask.

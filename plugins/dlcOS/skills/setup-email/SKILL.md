@@ -47,7 +47,7 @@ Say it plainly:
 > If that's not a trade you want, we skip this. Everything else in dlcOS still
 > works, and `/dlcOS:draft` will just save drafts as files instead."
 
-Then ask, `AskUserQuestion`, single-select: **connect it** / **not now**.
+Then ask, single-select (`AskUserQuestion` where available, otherwise plainly): **connect it** / **not now**.
 
 "Not now" is a completely normal answer, especially for a privacy-motivated
 client. Take it at face value, say the add-on stays available, and stop here.

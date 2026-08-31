@@ -32,7 +32,7 @@ If there's no recent block, tell the user: *"No proposed lessons in the recent c
 
 ### 2. Surface them for approval
 
-Use `AskUserQuestion` with `multiSelect: true` — one option per proposal, label = the rule (trimmed to fit), description = the trigger context. Agents are capped at 3 proposals; if you somehow see more, surface the first 3 and flag it.
+Present a multi-select — `AskUserQuestion` with `multiSelect: true` where available, otherwise a numbered list the user answers by picking numbers. One option per proposal, label = the rule (trimmed to fit), description = the trigger context. Agents are capped at 3 proposals; if you somehow see more, surface the first 3 and flag it.
 
 ### 3. Write approved entries
 

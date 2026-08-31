@@ -195,7 +195,9 @@ Confirm each is reachable. Don't run them end-to-end — just verify discovery:
 
 Typing `/dlcOS` should also list the optional add-ons (`setup-email`, `dashboard-setup`, `setup-librarian-index`, `memory-harden`) and the vault-health skills. Don't smoke-test those here — they're not part of onboarding and several of them do real work on invocation.
 
-If a skill fails to discover, run `/reload-plugins` and retry. If still failing, stop here — the install is broken and the wizard can't continue.
+If a skill fails to discover: in Claude Code run `/reload-plugins` and retry; in Codex confirm `codex plugin list` shows `dlcOS@dlcOS` as *installed, enabled* and restart the session. If still failing, stop here — the install is broken and the wizard can't continue.
+
+**On Codex,** skip the `draft` check's subagent expectation — subagents don't exist there. The skill still runs; it does the drafting inline. Everything else behaves the same.
 
 **Verify:** all 7 core skills respond to invocation, and `/dlcOS` lists the add-ons. Document any oddities in the daily note for the coach to follow up on.
 
@@ -233,7 +235,7 @@ Read the export and sort every item into four buckets. Show the client the **cou
 | **(c) Third-party sensitive** | Anything identifying about someone else: patients, clients under confidentiality, friends' or family's health, deaths, legal matters, allegations about named people | **Nothing is written by default.** Local vault only, and only per-item, only if they ask |
 | **(d) Practical reference** | Passwords-adjacent notes, addresses, schedules, logistics, how-tos | Ask — often better as a normal Wiki note than as memory |
 
-Then confirm **per category**, one at a time, using `AskUserQuestion`:
+Then confirm **per category**, one at a time (`AskUserQuestion` where the harness has it, otherwise a plain lettered choice — the confirmation matters, the widget doesn't):
 
 - **(a)** — "This is the material I'd use to write your profile. Good?" Default yes.
 - **(b)** — "There's health information about you in here. I can leave it out entirely, or keep it in a local file in your vault. It will not go into the memory block that travels to Claude's servers either way." Default: leave out.
@@ -307,7 +309,7 @@ Teaching frame: *"Most people only use Layer 1. You now have all four working."*
 This stage stands up the voice rulebook the `dlcOS:drafter` agent reads whenever it writes something in the client's name (emails, posts, proposals). Keep it light — the goal is to *scaffold* the file and get one or two real answers, not run a full interview. Drafter works without it (neutral voice); it just sounds more like the client once filled.
 
 1. **Scaffold the file.** If `${VAULT_ROOT}/Wiki/Knowledge/voice.md` doesn't exist, copy it from `templates/voice.md` (the fillable skeleton). If it already exists with real content, skip to the offer below.
-2. **Offer — fill now or later** (`AskUserQuestion`, single-select):
+2. **Offer — fill now or later** (single-select; `AskUserQuestion` where available):
    > "Want to set up your writing voice now, or later? The `drafter` agent uses it to sound like you instead of generic AI."
    - **(a) Quick pass now (recommended)** — ask just two things and write them into voice.md: *"In one line, how would a friend describe the way you write?"* and *"Any words, phrases, or punctuation you never want in your writing?"* (Mention em dashes as the classic example — keep or cut.) Write those two answers into the matching sections; leave the rest as skeleton prompts for them to fill anytime.
    - **(b) Later** — leave the skeleton in place. Tell them: *"It's at `Wiki/Knowledge/voice.md` — fill it whenever, or `/dlcOS:draft` will offer to help the first time you use it."*

@@ -1,0 +1,19 @@
+{
+  "name": "dlcOS",
+  "interface": {
+    "displayName": "dlcOS"
+  },
+  "plugins": [
+    {
+      "name": "dlcOS",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dlcOS"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
