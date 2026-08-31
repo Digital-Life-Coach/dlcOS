@@ -1,6 +1,6 @@
 {
   "name": "dlcOS",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "dlcOS skills + subagents for MacCog AI Coaching clients: setup wizard, plan save/resume, end-of-session ritual, weekly + monthly review, morning brief, plus optional email, dashboard, semantic-search and memory-hardening add-ons \u2014 and the librarian, drafter, webscout, and vault-hygiene agents with a learn-across-sessions companion-memory loop.",
   "author": {
     "name": "MacCog",

@@ -13,7 +13,7 @@ This skill consumes the wizard plan at `<marketplace-root>/plans/dlc-setup.md` a
 
 ## Step 0 — Resolve VAULT_ROOT (or accept that it doesn't exist yet)
 
-Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep for:
+Walk up from the current working directory to find the nearest **`CLAUDE.md` or `AGENTS.md`** (both carry the same dlcOS markers; a Codex-driven vault may only auto-load `AGENTS.md`, so check both and use whichever has the marker). Grep for:
 
 ```
 <!-- dlcOS:vault-root --> /absolute/path/to/vault

@@ -154,7 +154,7 @@ Keep this stage to **10 minutes maximum**. This is a useful starting surface, no
 
 1. Copy `${TEMPLATES}/claude-md-starter.md` → `${VAULT_ROOT}/CLAUDE.md`.
 2. Copy `${TEMPLATES}/agents-md-starter.md` → `${VAULT_ROOT}/AGENTS.md`.
-3. In **both**: replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1, and correct the "Where things live" paths to whatever this vault actually uses.
+3. In **both**: replace `<!-- dlcOS:vault-root --> /absolute/path/to/your/vault` with the actual vault root from Stage 1, and correct the "Where things live" paths to whatever this vault actually uses. **The vault-root marker must be in both files, not just `CLAUDE.md`** — every dlcOS skill resolves the vault from it, and a Codex-driven vault auto-loads only `AGENTS.md`. A marker in one file and not the other is the single most likely reason a skill stops at Step 0 on a working vault.
 4. In `CLAUDE.md` only: replace the office-hours-ical URL with the calendar URL the coach provides (or remove the line if not applicable).
 5. In `AGENTS.md`: fill the "How to work with me" section from the Stage 1 communication-preferences answer.
 6. Copy `${TEMPLATES}/START-HERE.md` → `${VAULT_ROOT}/START-HERE.md` and date it. Its "What's here" and "What's still unfinished" sections get filled in Stage 6, once you know what actually happened.

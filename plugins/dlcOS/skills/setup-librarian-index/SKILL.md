@@ -11,7 +11,7 @@ This is a technical add-on. If the user isn't comfortable with a terminal, offer
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Read the `<!-- dlcOS:vault-root -->` marker in the project `CLAUDE.md`. Take the absolute path after it as `VAULT_ROOT`. If the marker is missing, stop and tell the user to run `/dlcOS:setup` first.
+Read the `<!-- dlcOS:vault-root -->` marker in the project `CLAUDE.md` **or `AGENTS.md`** — check both, since a Codex-driven vault may only carry `AGENTS.md`. Take the absolute path after it as `VAULT_ROOT`. If neither has the marker, stop and tell the user to run `/dlcOS:setup` first.
 
 ## Step 1 — Check prerequisites
 

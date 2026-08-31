@@ -13,7 +13,7 @@ Run this at the end of every Claude Code session. It captures what happened, upd
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep it for the line:
+Walk up from the current working directory to find the nearest **`CLAUDE.md` or `AGENTS.md`** (both carry the same dlcOS markers; a Codex-driven vault may only auto-load `AGENTS.md`, so check both and use whichever has the marker). Grep it for the line:
 
 ```
 <!-- dlcOS:vault-root --> /absolute/path/to/vault
@@ -261,7 +261,7 @@ Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist
 
 **Auto-flip detectable items to `done`** before reading pending state (edit the file in place, don't just report — the client should see the table itself update over time):
 - "See what Claude remembers locally" → `done` if `${VAULT_ROOT}/Reference/Memory/README.md` exists.
-- "Semantic search over your vault" → `done` if `<!-- dlcOS:librarian-index -->` is present in the nearest `CLAUDE.md`.
+- "Semantic search over your vault" → `done` if `<!-- dlcOS:librarian-index -->` is present in the nearest `CLAUDE.md` or `AGENTS.md`.
 - "A daily morning brief" → `done` if `${VAULT_ROOT}/Reference/dlcOS-morning-brief.md` exists.
 
 The "Add another Wiki area" row has no reliable completion marker — leave it to the client's manual dismiss/done edit.
@@ -274,7 +274,7 @@ For every row still `pending`, add one line to the nudge block:
 
 ### Weekly / monthly review due-dates
 
-Read `<!-- dlcOS:weekly-review-last --> YYYY-MM-DD` and `<!-- dlcOS:monthly-review-last --> YYYY-MM-DD` from the nearest `CLAUDE.md`. For each:
+Read `<!-- dlcOS:weekly-review-last --> YYYY-MM-DD` and `<!-- dlcOS:monthly-review-last --> YYYY-MM-DD` from the nearest `CLAUDE.md` or `AGENTS.md`. For each:
 
 - **Marker absent** → treat as overdue (never run). Don't say "never run" alarmingly; just nudge.
 - **Marker present** → compute days since that date against today.
@@ -304,7 +304,7 @@ If everything is `done`/`dismissed` and both reviews are within their window, sk
 
 ## Step 7: Office Hours Nudge
 
-Check whether the client has configured an Office Hours iCal feed. Look for this line in the nearest `CLAUDE.md`:
+Check whether the client has configured an Office Hours iCal feed. Look for this line in the nearest `CLAUDE.md` or `AGENTS.md`:
 
 ```
 <!-- dlcOS:office-hours-ical --> https://calendar.google.com/calendar/ical/.../basic.ics

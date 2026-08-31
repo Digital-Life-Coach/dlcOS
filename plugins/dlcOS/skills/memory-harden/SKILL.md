@@ -22,7 +22,7 @@ This is filesystem-level prevention, not a policy the agent has to remember to f
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Same technique as `/dlcOS:setup` Step 0: walk up from cwd to the nearest `CLAUDE.md`, grep for:
+Same technique as `/dlcOS:setup` Step 0: walk up from cwd to the nearest `CLAUDE.md` **or `AGENTS.md`**, grep for:
 
 ```
 <!-- dlcOS:vault-root --> /absolute/path/to/vault

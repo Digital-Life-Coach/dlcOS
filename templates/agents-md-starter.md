@@ -10,7 +10,9 @@
 
 <!-- dlcOS:vault-root --> /absolute/path/to/your/vault
 
-*(The dlcOS plugin's own runtime markers — office hours, calendar, coach contact — live in `CLAUDE.md` only; they configure Claude-specific skills that other tools don't run. Everything below applies to every tool.)*
+*This marker must match the one in `CLAUDE.md` exactly. Every dlcOS skill resolves your vault from it, and it has to be in **both** files — Claude auto-loads `CLAUDE.md`, Codex auto-loads this one. A marker in one and not the other is why a skill stops before it starts.*
+
+*Other dlcOS runtime markers (office hours, calendar, coach contact, review dates) live in `CLAUDE.md` and are mirrored here when set. Everything below applies to every tool.*
 
 ## Who I Am
 

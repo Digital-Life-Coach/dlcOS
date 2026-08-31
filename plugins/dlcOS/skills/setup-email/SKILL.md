@@ -19,7 +19,7 @@ is there to talk through the "what does it get to see" question honestly.
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Read the `<!-- dlcOS:vault-root -->` marker in the project `CLAUDE.md`. Take
+Read the `<!-- dlcOS:vault-root -->` marker in the project `CLAUDE.md` **or `AGENTS.md`** (check both). Take
 the absolute path after it as `${VAULT_ROOT}`. If the marker is missing, stop
 and tell the client to run `/dlcOS:setup` first — there's no vault to attach
 this to.

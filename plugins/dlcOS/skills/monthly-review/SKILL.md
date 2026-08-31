@@ -21,7 +21,7 @@ Three jobs:
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep it for the line:
+Walk up from the current working directory to find the nearest **`CLAUDE.md` or `AGENTS.md`** (both carry the same dlcOS markers; a Codex-driven vault may only auto-load `AGENTS.md`, so check both and use whichever has the marker). Grep it for the line:
 
 ```
 <!-- dlcOS:vault-root --> /absolute/path/to/vault
@@ -258,7 +258,7 @@ fi
 
 ### 4d. Write the last-run marker
 
-Update (or add, if missing) this line in the nearest `CLAUDE.md`, near the other `dlcOS:` markers:
+Update (or add, if missing) this line in the nearest `CLAUDE.md`, near the other `dlcOS:` markers — and mirror it into `AGENTS.md` if that file exists, so both stay in sync:
 
 ```
 <!-- dlcOS:monthly-review-last --> YYYY-MM-DD

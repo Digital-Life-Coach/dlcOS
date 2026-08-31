@@ -41,7 +41,7 @@ Say the detected platform out loud so the client knows which path they're on.
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Walk up from the current working directory to find the nearest `CLAUDE.md`.
+Walk up from the current working directory to find the nearest **`CLAUDE.md` or `AGENTS.md`** (both carry the same dlcOS markers — check both).
 Grep for:
 
 ```

@@ -13,7 +13,7 @@ You are (probably) a fresh session — possibly a different model than the one t
 
 ## Step 0 — Resolve VAULT_ROOT
 
-Walk up from the current working directory to find the nearest `CLAUDE.md`. Grep it for the line:
+Walk up from the current working directory to find the nearest **`CLAUDE.md` or `AGENTS.md`** (both carry the same dlcOS markers; a Codex-driven vault may only auto-load `AGENTS.md`, so check both and use whichever has the marker). Grep it for the line:
 
 ```
 <!-- dlcOS:vault-root --> /absolute/path/to/vault
@@ -33,7 +33,7 @@ If the user passed a slug (e.g. `/dlcOS:resume-plan wp-fleet-rollout`), look for
 
 Otherwise:
 
-1. Read the nearest CLAUDE.md (walk up from cwd; default `${VAULT_ROOT}/CLAUDE.md`).
+1. Read the nearest CLAUDE.md or AGENTS.md (walk up from cwd; default `${VAULT_ROOT}/CLAUDE.md`, falling back to `${VAULT_ROOT}/AGENTS.md`).
 2. Find the `## Pending Plans` section.
 3. If exactly one entry → use it. If multiple → list them numbered, ask the user which to resume (multiple-choice `(a)/(b)/(c)`).
 4. If none → tell the user no pending plans found, suggest `/dlcOS:save-plan` if they meant to save one.
