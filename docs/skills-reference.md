@@ -12,7 +12,7 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 **When to use it.** Your first session after `/plugin install dlcOS@dlcOS`. Or if you nuke your vault and need to rebuild from scratch — the wizard is idempotent.
 
-**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and L2/L3/L4 memory folders; up to three optional Wiki starter areas chosen from a curated list; and a Settings → Memory paste block for Claude desktop. If a selected data source is available, setup can build a small initial index. Recurring sync and large migrations come later.
+**What it produces.** A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/me.md`, and L2/L3/L4 memory folders; up to three optional Wiki starter areas chosen from a curated list; and a Settings → Memory paste block for Claude desktop. If a selected data source is available, setup can build a small initial index. Recurring sync and large migrations come later.
 
 **Time.** ~45 minutes with coach present.
 
@@ -66,11 +66,11 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ## `/dlcOS:monthly-review`
 
-**What it does.** Monthly memory + horizon check — the loop that keeps your memory from going stale and surfaces what's next. Three things, in order: synthesizes the month's daily notes into a new themes entry (L2); audits your L3 memory (`about-me.md` vs. recent reality, Settings → Memory drift, themes hygiene, duplicate facts) and surfaces every fix as an approval draft; then asks one 90-day horizon question and one cutting-time check-in. Cut from the same cloth as `/dlcOS:weekly-review` — same shape, just monthly and reflective.
+**What it does.** Monthly memory + horizon check — the loop that keeps your memory from going stale and surfaces what's next. Three things, in order: synthesizes the month's daily notes into a new themes entry (L2); audits your L3 memory (`me.md` vs. recent reality, Settings → Memory drift, themes hygiene, duplicate facts) and surfaces every fix as an approval draft; then asks one 90-day horizon question and one cutting-time check-in. Cut from the same cloth as `/dlcOS:weekly-review` — same shape, just monthly and reflective.
 
 **When to use it.** Once a month — the start of a new month is the natural trigger. Running it before month-end is fine; the entry header notes the partial window. Use `--audit-only` to skip the themes write and the horizon questions, and just run the L3 audit.
 
-**What it produces.** A new entry in `Reference/Themes/themes-rolling.md` (oldest entry rolls to a dated archive when there are more than three). Approved edits to `Wiki/Knowledge/about-me.md` and `settings-memory-block.md`, plus a fresh Settings → Memory paste block when yours has drifted. A Monthly Review block in today's daily note with your verbatim horizon + cutting-time answers — seed material for next month.
+**What it produces.** A new entry in `Reference/Themes/themes-rolling.md` (oldest entry rolls to a dated archive when there are more than three). Approved edits to `Wiki/Knowledge/me.md` and `settings-memory-block.md`, plus a fresh Settings → Memory paste block when yours has drifted. A Monthly Review block in today's daily note with your verbatim horizon + cutting-time answers — seed material for next month.
 
 **Pairs with.** `/dlcOS:weekly-review` (tactical GTD) and `/dlcOS:end` (session close).
 
@@ -139,11 +139,11 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ## `/dlcOS:memory-harden` *(add-on)*
 
-**What it does.** Claude Code keeps a local memory file (`MEMORY.md`) hidden outside your vault by default, and can create new ones there without you seeing them. This skill moves it into `Reference/Memory/` in your vault — visible in Obsidian, editable or deletable any time — and locks the folder so Claude can keep updating `MEMORY.md` but can never quietly create a new file next to it.
+**What it does.** Sets up the six canonical memory files in `Wiki/Knowledge/` — `me`, `voice`, `preferences`, `assistant`, `decisions`, `environment` — each owning exactly one subject, so the same fact stops getting written into three different places. Writes the routing hub at `Wiki/Knowledge/Memory/MEMORY.md`, moves Claude Code's hidden memory folder into the vault beside it (visible in Obsidian, editable or deletable any time), and wires `AGENTS.md` so Codex and ChatGPT follow the same rules rather than just Claude.
 
 **When to use it.** Any time you want to see exactly what Claude has been keeping as memory outside a conversation, or stop it from scattering extra memory files you never asked for. Safe to run once, safe to re-run.
 
-**What it produces.** `Reference/Memory/MEMORY.md` (Claude's local memory, now visible) and `Reference/Memory/README.md` (how to unlock it if you ever want to add something manually).
+**What it produces.** Six canonical files in `Wiki/Knowledge/`, plus `Wiki/Knowledge/Memory/MEMORY.md` (the routing hub and shard index) and `Wiki/Knowledge/Memory/README.md`. Earlier versions used `Reference/Memory/` and locked it read-only; re-running migrates that layout and removes the lock.
 
 ---
 

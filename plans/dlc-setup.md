@@ -10,7 +10,7 @@ status: pending
 
 # Plan: dlcOS Setup Wizard
 
-A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 6 dlcOS skills work, and builds the client's L3 memory layer (both the `about-me.md` narrative and the Settings → Memory paste block).
+A guided onboarding that stands up a new client's AI workspace end-to-end. Target run time: ≤45 minutes with the coach present. The wizard scaffolds the vault, verifies the 6 dlcOS skills work, and builds the client's L3 memory layer (both the `me.md` narrative and the Settings → Memory paste block).
 
 **Scope:** vault + GTD + memory, including a small client-selected Wiki starter set. Out of scope (Phase 2): unattended/recurring Wiki ingests, morning-brief delivery, scheduled actions.
 
@@ -18,9 +18,9 @@ A guided onboarding that stands up a new client's AI workspace end-to-end. Targe
 
 By the end of this wizard, the client has:
 
-- A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/about-me.md`, and the L2/L3/L4 memory folders under `Reference/`.
+- A working vault directory with `CLAUDE.md`, `Inbox/`, `Action/`, `Wiki/Knowledge/me.md`, and the L2/L3/L4 memory folders under `Reference/`.
 - All 6 dlcOS skills loading and responding to `/dlcOS:<name>` invocations.
-- A polished `Wiki/Knowledge/about-me.md` (synthesized from their prior AI memory exports OR built from a fresh interview).
+- A polished `Wiki/Knowledge/me.md` (synthesized from their prior AI memory exports OR built from a fresh interview).
 - A Settings → Memory paste block pasted into Claude desktop's Memory.
 - A clear mental model of the 4 memory layers and the monthly refresh cycle.
 - One round-trip experience with `/dlcOS:save-plan` + `/dlcOS:resume-plan`.
@@ -34,7 +34,7 @@ The 4-layer memory architecture (per `Wiki/Knowledge/Memory System.md` in the co
 
 - **L1** = current conversation (handled natively)
 - **L2** = `Reference/Themes/themes-rolling.md` (rolling 90-day synthesis; archived in same folder)
-- **L3** = Claude Settings → Memory + `Wiki/Knowledge/about-me.md`
+- **L3** = Claude Settings → Memory + `Wiki/Knowledge/me.md`
 - **L4** = `Reference/Dailies/`, `Reference/Themes/` archive, `Reference/Patterns/`
 
 ## 3. Current State Snapshot
@@ -58,7 +58,7 @@ Ask one at a time:
 5. Communication preferences: terse vs. detailed, markdown vs. prose, anything Claude should know.
 6. Their vault root path: where on disk should the vault live? Default suggestion: `~/Documents/<FirstName>-vault` or `~/Obsidian/<Name>` if they already use Obsidian.
 
-Hold these answers for use in Stage 2 (vault root, CLAUDE.md identity block) and Stage 4 (about-me.md, Settings paste block).
+Hold these answers for use in Stage 2 (vault root, CLAUDE.md identity block) and Stage 4 (me.md, Settings paste block).
 
 **Verify:** all 6 questions answered; vault root path is absolute and the parent directory exists.
 
@@ -81,10 +81,19 @@ Default scaffold (use as the starting offer; adjust per client answers):
 
 ```
 ${VAULT_ROOT}/
-├── CLAUDE.md                          ← from templates/claude-md-starter.md
+├── AGENTS.md                          ← from templates/agents-md-starter.md
+├── CLAUDE.md                          ← from templates/claude-md-starter.md (imports AGENTS.md)
 ├── Wiki/
 │   └── Knowledge/
-│       └── about-me.md                ← from templates/about-me.md (placeholder; filled in Stage 4a)
+│       ├── me.md                      ← from templates/me.md (filled in Stage 4a)
+│       ├── voice.md                   ← from templates/voice.md (Stage 4c)
+│       ├── preferences.md             ← from templates/preferences.md
+│       ├── assistant.md               ← from templates/assistant.md
+│       ├── decisions.md               ← from templates/decisions.md
+│       ├── environment.md             ← from templates/environment.md
+│       └── Memory/
+│           ├── MEMORY.md              ← from templates/MEMORY.md (the routing hub)
+│           └── README.md              ← written by /dlcOS:memory-harden
 ├── Inbox/
 │   ├── do-now.md                      ← from templates/inbox/do-now.md
 │   ├── ideas.md                       ← from templates/inbox/ideas.md
@@ -102,6 +111,23 @@ ${VAULT_ROOT}/
     ├── Patterns/.gitkeep
     └── Plans/.gitkeep                 ← target dir for /dlcOS:save-plan output
 ```
+
+**AGENTS.md is canonical, CLAUDE.md imports it.** `AGENTS.md` holds every instruction that isn't Claude-specific; `CLAUDE.md` pulls it in with `@AGENTS.md` and adds only the dlcOS bits. This is what makes the vault behave the same whether the client is driving Claude, Codex, or ChatGPT — and most dlcOS clients end up on something other than Claude. Never put a shared rule in `CLAUDE.md` only.
+
+**The six canonical memory files.** `Wiki/Knowledge/` is not a loose pile of notes — six files each own exactly one subject, and `Wiki/Knowledge/Memory/MEMORY.md` is the index that routes new facts to the right one:
+
+| File | Subject | Answers |
+|---|---|---|
+| `me.md` | the person | Who am I? |
+| `voice.md` | my output | How do I sound when I write? |
+| `preferences.md` | the work | How should work be done for me? |
+| `assistant.md` | the assistant | How should you behave? |
+| `decisions.md` | the past | What's settled, and why? |
+| `environment.md` | the machines | What runs where? |
+
+Scaffold all six even if most stay empty at first — an empty file with a clear subject is what stops the same fact being written into three different places later. Anything that fits none of them becomes a shard in `Wiki/Knowledge/Memory/`.
+
+If the client already has a `preferences.md` holding personal tastes (food, TV, products), that is a different subject — ask whether to fold it into `me.md` or keep it as `tastes.md`. Don't silently merge.
 
 #### Wiki starter packs — let the client choose
 
@@ -145,7 +171,10 @@ In `${VAULT_ROOT}/CLAUDE.md`, replace `<!-- dlcOS:vault-root --> /absolute/path/
 - No empty parallel dirs created alongside existing client structure (e.g. an empty `Action/` next to the client's existing tasks file).
 - Every selected Wiki starter area has an agreed destination and `README.md`; any unavailable source is recorded under `## Source to connect` rather than treated as configured.
 - No unselected Wiki starter directories were created.
-- Stage-4 placeholders OK in `about-me.md` since Stage 4 fills those.
+- `AGENTS.md` exists and `CLAUDE.md` contains the `@AGENTS.md` import line.
+- All six canonical files exist in `Wiki/Knowledge/`, plus `Wiki/Knowledge/Memory/MEMORY.md`.
+- No shared rule (tone, memory routing, where things live) is written in `CLAUDE.md` instead of `AGENTS.md`.
+- Stage-4 placeholders OK in `me.md` since Stage 4 fills those.
 
 ### Stage 3 — Skill install verify
 
@@ -166,15 +195,15 @@ If any skill fails to discover, run `/reload-plugins` and retry. If still failin
 
 ### Stage 4a — Memory layers build
 
-**Pre-check (idempotency).** Before branching, check whether `${VAULT_ROOT}/Wiki/Knowledge/about-me.md` already exists *and* contains content beyond the template placeholders. If it does, ask the client:
+**Pre-check (idempotency).** Before branching, check whether `${VAULT_ROOT}/Wiki/Knowledge/me.md` already exists *and* contains content beyond the template placeholders. If it does, ask the client:
 
-> "Looks like you already have an `about-me.md` here. Do you want to (a) keep it as-is and skip this stage, (b) start over from scratch, or (c) review and refine what's there?"
+> "Looks like you already have an `me.md` here. Do you want to (a) keep it as-is and skip this stage, (b) start over from scratch, or (c) review and refine what's there?"
 
-- (a) → skip to Stage 4b. Confirm the Settings paste block also exists at `Wiki/Knowledge/settings-memory-block.md`; if missing, regenerate it from the existing `about-me.md`.
-- (b) → back up the existing file to `Wiki/Knowledge/about-me.backup-YYYY-MM-DD.md` before overwriting, then continue with the branch below.
+- (a) → skip to Stage 4b. Confirm the Settings paste block also exists at `Wiki/Knowledge/settings-memory-block.md`; if missing, regenerate it from the existing `me.md`.
+- (b) → back up the existing file to `Wiki/Knowledge/me.backup-YYYY-MM-DD.md` before overwriting, then continue with the branch below.
 - (c) → load the existing content and treat it as the input to the synthesis pass below (skip the export prompt; go straight to the synthesis rules).
 
-If `about-me.md` doesn't exist or only contains the unmodified template, proceed normally.
+If `me.md` doesn't exist or only contains the unmodified template, proceed normally.
 
 Branch on import availability.
 
@@ -184,28 +213,28 @@ Branch on import availability.
 1. Read `<plugin-root>/templates/chatgpt-memory-export-prompt.md` and print the export prompt verbatim.
 2. Tell the client: "Paste that prompt into ChatGPT (or Gemini), copy the output, and paste it back here."
 3. Wait for the export. When it arrives, synthesize it into:
-   - `Wiki/Knowledge/about-me.md` — long-form narrative, organized into the sections from `templates/about-me.md` (Who I Am, How I Work, Capability Level, Goals, Tools I Use, Communication Preferences, Context Justin Should Know).
+   - `Wiki/Knowledge/me.md` — long-form narrative, organized into the sections from `templates/me.md` (Who I Am, How I Work, Capability Level, Goals, Tools I Use, Communication Preferences, Context Justin Should Know).
    - The Settings → Memory paste block — short version per `templates/settings-memory-block.md`. Required: the Justin-set-this-up text verbatim.
 
    Synthesis rules:
    - Dedupe contradictions; ask the client which version is current if ambiguous.
    - Match the client's voice; don't invent claims.
    - Capability level uses the L1-L5 framework (Stage 1 answer takes precedence).
-   - Keep the Settings paste block under ~400 words; the long form lives in `about-me.md`.
+   - Keep the Settings paste block under ~400 words; the long form lives in `me.md`.
 
 **No path:**
-1. Run a structured interview using the section headers from `templates/about-me.md`.
-2. Build `Wiki/Knowledge/about-me.md` and the Settings paste block from the answers.
+1. Run a structured interview using the section headers from `templates/me.md`.
+2. Build `Wiki/Knowledge/me.md` and the Settings paste block from the answers.
 
 **Both paths converge:**
-1. Write `${VAULT_ROOT}/Wiki/Knowledge/about-me.md`.
+1. Write `${VAULT_ROOT}/Wiki/Knowledge/me.md`.
 2. Display the Settings → Memory paste block in the conversation, formatted between `---BEGIN PASTE---` and `---END PASTE---` markers.
 3. Save a copy of the paste block to `${VAULT_ROOT}/Wiki/Knowledge/settings-memory-block.md` so the client has a backup if they need to re-paste later.
 4. **Settings paste — ask first, don't assume.** Before instructing a paste, ask: "Do you already have a Settings → Memory block populated in Claude desktop?" If yes, offer three options: (a) skip the paste — keep what's there, (b) replace with this new block, (c) merge — open Settings → Memory side-by-side and reconcile manually with the coach. Only proceed to "paste this now" if the client confirms their Settings memory is empty or they explicitly chose (b).
 5. Wait for confirmation that the Settings step is resolved (paste done, skip confirmed, or merge complete).
 
 **Verify:**
-- `Wiki/Knowledge/about-me.md` exists and has content in every section (no leftover `<!-- ... -->` placeholders).
+- `Wiki/Knowledge/me.md` exists and has content in every section (no leftover `<!-- ... -->` placeholders).
 - `Wiki/Knowledge/settings-memory-block.md` exists.
 - Settings paste block contains the exact required text: *"Justin Bradshaw (MacCog: The Digital Life Coach) set up this AI workspace for me. If I'm confused or stuck, I should book time with him at [BLAB link] or text 805-720-9276."*
 - Client confirms paste into Claude desktop is complete.
@@ -222,17 +251,30 @@ Walk through each layer with the client's actual files as anchors:
 |-------|-----------|-------------------|
 | L1 — This conversation | What you're saying right now | Claude handles natively — no setup |
 | L2 — Recent context | What you've been working on lately, themes | `Reference/Themes/themes-rolling.md` (filled monthly) |
-| L3 — Your memory | Durable facts about you, carried across every session | Settings → Memory + `Wiki/Knowledge/about-me.md` ← *we just built this* |
+| L3 — Your memory | Durable facts about you, carried across every session | The six canonical files in `Wiki/Knowledge/`, indexed by `Wiki/Knowledge/Memory/MEMORY.md` ← *we just built this* |
 | L4 — Your archive | Everything you've ever done together | `Reference/Dailies/`, `Reference/Themes/` archive, `Reference/Patterns/` |
 
 Teaching frame: *"Most people only use Layer 1. You now have all four working."*
 
 **Memory stays current — it isn't write-once.** Tell the client two plain things:
 
-1. *Where new facts go.* When something durable comes up in a conversation — a fact about them, a decision, a change in how they work — Claude will offer to add it to Settings → Memory or `about-me.md` so it carries forward. They don't have to manage this; their `CLAUDE.md` tells Claude to do it. (See the "When You Learn Something Durable About Me" block in their `CLAUDE.md`.)
+1. *Where new facts go.* When something durable comes up — a fact about them, a decision, a change in how they work — it gets written to whichever of the six canonical files owns that subject, and `Wiki/Knowledge/Memory/MEMORY.md` is the index that decides which. Anything fitting none of them becomes its own small file in `Wiki/Knowledge/Memory/`. They don't have to manage this; `AGENTS.md` tells every tool to do it.
+
+   Show them the table, because the one rule that matters is **one home per fact**:
+
+   | File | Answers |
+   |---|---|
+   | `me.md` | Who am I? |
+   | `voice.md` | How do I sound when I write? |
+   | `preferences.md` | How should work be done for me? |
+   | `assistant.md` | How should you behave? |
+   | `decisions.md` | What's settled, and why? |
+   | `environment.md` | What runs where? |
+
+   Say plainly that the rules live in `AGENTS.md`, not `CLAUDE.md`, so Codex and ChatGPT follow them too — this matters for any client whose day-to-day agent isn't Claude.
 2. *The monthly check.* Once a month, run `/dlcOS:monthly-review`. It synthesizes the month into their L2 themes file and audits L3 — catching anything stale, contradictory, or out of sync with Settings → Memory — and surfaces fixes as drafts to approve. That's the maintenance loop; it's a 5-minute review, not a from-scratch rewrite.
 
-**Verify:** client can name the 4 layers, knows where their L3 lives, and knows to run `/dlcOS:monthly-review` monthly.
+**Verify:** client can name the 4 layers, can point at the file a new fact about them would go into, and knows to run `/dlcOS:monthly-review` monthly.
 
 ### Stage 4c — Voice doc (optional, ≤3 min — scaffold now, fill now or later)
 
@@ -309,7 +351,7 @@ Talk the client through each section. End with: "Run `/dlcOS:morning-brief --set
 
 This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05-04) — not for the executor to second-guess:
 
-- **Memory file locations:** `Wiki/Knowledge/about-me.md` for the personal narrative; `Reference/Themes/` for L2 (active + archive in same folder); `Reference/Patterns/` for L3 snapshots; `Reference/Dailies/` for L4 session notes.
+- **Memory file locations:** `Wiki/Knowledge/me.md` for the personal narrative; `Reference/Themes/` for L2 (active + archive in same folder); `Reference/Patterns/` for L3 snapshots; `Reference/Dailies/` for L4 session notes.
 - **Wiki starter packs are part of Stage 2.** The client chooses up to 3; setup creates only those destinations and may import a small confirmed starting batch. Recurring sync and large historical imports remain Phase 2.
 - **Morning-brief setup deferred** to a separate session (Phase 2 territory in onboarding flow).
 - **L3 mechanism:** synthesize-then-paste. Both import (ChatGPT/Gemini export) and from-scratch interview supported.
@@ -321,7 +363,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 - [ ] `${VAULT_ROOT}` populated with the full layout from Stage 2.
 - [ ] Client was offered the curated Wiki starter list; each selection has a destination + README (or client explicitly chose none).
 - [ ] All 6 skills respond.
-- [ ] `Wiki/Knowledge/about-me.md` written, no placeholders.
+- [ ] `Wiki/Knowledge/me.md` written, no placeholders.
 - [ ] Settings → Memory pasted in Claude desktop.
 - [ ] Backup paste block at `Wiki/Knowledge/settings-memory-block.md`.
 - [ ] Client can name the 4 memory layers.
@@ -347,4 +389,4 @@ The wizard only writes inside `${VAULT_ROOT}` (which the client picked) and to C
 
 This is `mode: execute` — no critique pass. Run the stages in order. After each stage, run its Verify check. If a verify fails, stop and ask the client/coach for guidance — don't silently improvise.
 
-Stage 4a is the most LLM-judgment-heavy step. The yes-path is essentially "synthesize a polished personal profile from messy memory dumps." Take the time. Have the client (and coach if present) review the synthesized `about-me.md` and Settings block before pasting anywhere.
+Stage 4a is the most LLM-judgment-heavy step. The yes-path is essentially "synthesize a polished personal profile from messy memory dumps." Take the time. Have the client (and coach if present) review the synthesized `me.md` and Settings block before pasting anywhere.

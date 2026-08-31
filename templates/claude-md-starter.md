@@ -1,16 +1,20 @@
 # CLAUDE.md
 
-*This file orchestrates Claude's behavior in your dlcOS-managed vault. The markers below are read by dlcOS skills at runtime — leave them in place even if you're not using a feature yet.*
+*Claude Code reads this file, not `AGENTS.md`. The shared instructions are canonical in `AGENTS.md` and imported below, so every tool — Claude, Codex, ChatGPT — behaves the same way.*
+
+*Edit `AGENTS.md` for anything that isn't Claude- or dlcOS-specific. Only the sections below the import belong here.*
 
 <!-- dlcOS:vault-root --> /absolute/path/to/your/vault
 <!-- dlcOS:office-hours-ical --> https://example.com/office-hours.ics  (replace with your coach's calendar URL, or delete this line to disable Office Hours nudges)
 <!-- dlcOS:gcal-enabled -->  (delete this line to disable Google Calendar integration in /dlcOS:weekly-review)
 
+@AGENTS.md
+
 ---
 
-## Who I Am
+# Claude- and dlcOS-specific
 
-See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by `/dlcOS:setup` Stage 4a, kept current by `/dlcOS:monthly-review`.
+*Everything above comes from the canonical file. The rest of this page is only used by Claude Code and the `/dlcOS:` skills.*
 
 ## Pending Plans
 
@@ -22,26 +26,13 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 - `setup-librarian-index` *(v2.0 add-on)* — Give the `librarian` agent a local semantic-search index so it finds things by meaning, not just keywords. Everything stays on your machine. Technical setup (needs Python + `uv`). Run `/dlcOS:setup-librarian-index` when ready.
 <!-- dlcOS:addons-end -->
 
-
 ## Session Context
 
 *Rolling 3 most recent daily notes, appended by `/dlcOS:end`.*
 
-## Memory Layers
+## dlcOS notes
 
-- **L1** — this conversation (handled natively by Claude)
-- **L2** — `Reference/Themes/themes-rolling.md` (rolling 90-day synthesis; kept current by `/dlcOS:monthly-review`)
-- **L3** — Claude Settings → Memory + [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md)
-- **L4** — `Reference/Dailies/`, `Reference/Themes/` archive, `Reference/Patterns/`
+- L2 (`Reference/Themes/themes-rolling.md`) is maintained by `/dlcOS:monthly-review`. Don't write it by hand.
+- Memory routing lives in `AGENTS.md` and `Wiki/Knowledge/Memory/MEMORY.md`, not here — so that Codex and every other tool get the same rules. Don't restate them in this file.
 
-## When You Learn Something Durable About Me
-
-*(Instruction to Claude.)* If something comes up that will still be true next week — a fact about me, how I work, a decision I've made — it belongs in my memory, not just this chat. Route it:
-
-- **A lasting fact about who I am or how I work** → tell me to add it to **Claude Settings → Memory** (the short version I carry into every conversation), and offer to update [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) (the longer version) if my vault is open.
-- **Something true for just one project** → put it in that project's notes, not my global memory.
-- **When in doubt** → ask me where it goes. One home per fact — don't scatter the same fact across several places.
-
-Don't write to `Reference/Themes/` yourself — `/dlcOS:monthly-review` keeps that current and audits the rest of my memory monthly.
-
-See your coach if anything in this file looks unfamiliar — text **805-720-9276** or book at the BLAB link they shared.
+See your coach if anything here looks unfamiliar — text **805-720-9276** or book at the BLAB link they shared.

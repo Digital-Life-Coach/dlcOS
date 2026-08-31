@@ -54,7 +54,7 @@ This kicks off a ~45-minute guided onboarding with your coach. The wizard will:
 1. Ask you a few questions about who you are and what you want from AI coaching.
 2. Build your vault (a folder on disk where your work lives).
 3. Verify all five dlcOS skills are working.
-4. Build your **memory** — both the narrative version (`about-me.md`) and a paste block for Claude desktop's Settings → Memory.
+4. Build your **memory** — both the narrative version (`me.md`) and a paste block for Claude desktop's Settings → Memory.
 5. Walk you through the **four memory layers** so you understand how Claude remembers you across sessions.
 6. Hand off with a checklist of what to use when.
 

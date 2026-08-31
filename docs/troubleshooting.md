@@ -73,7 +73,7 @@ A few common causes:
 2. **You hit save?** After pasting, scroll down and confirm the change was saved. Some versions show a "Save" button; others auto-save.
 3. **You're in a different account.** Claude desktop and Claude Code need to be signed into the same account. Check the account menu in each.
 
-To verify it took: in Claude desktop, ask "what do you remember about me?" — Claude should reference the about-me content.
+To verify it took: in Claude desktop, ask "what do you remember about me?" — Claude should reference the content of `Wiki/Knowledge/me.md`.
 
 ---
 
@@ -109,7 +109,7 @@ If something feels weird after running `/dlcOS:setup`, here's the full list of p
 **Inside your vault folder** (the path you gave the wizard in Stage 2):
 - Creates `CLAUDE.md` with the `<!-- dlcOS:vault-root -->` marker and your identity block.
 - Creates `Inbox/`, `Action/`, `Wiki/Knowledge/`, `Reference/Themes/`, `Reference/Patterns/`, `Reference/Dailies/`.
-- Writes `Wiki/Knowledge/about-me.md` (your L3 memory narrative).
+- Writes `Wiki/Knowledge/me.md` (your L3 memory narrative).
 - Writes `Wiki/Knowledge/settings-memory-block.md` (a backup of the paste block).
 - Drops template files into `Inbox/` and `Action/` (do-now, ideas, thoughts, TASKS, PROJECTS, SOMEDAY, IDEAS, COMPLETED).
 

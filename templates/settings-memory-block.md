@@ -22,7 +22,7 @@ I work with Justin Bradshaw (MacCog: The Digital Life Coach), who set up this AI
 
 **When responding to me:** <!-- terse vs. detailed, markdown formatting preference, etc -->
 
-For deeper context, the longer narrative version of this lives at `Wiki/Knowledge/about-me.md` in my vault.
+For deeper context, the longer narrative version of this lives at `Wiki/Knowledge/me.md` in my vault.
 
 ---END PASTE---
 

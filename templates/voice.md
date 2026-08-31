@@ -1,4 +1,8 @@
-# My Voice
+# Voice
+
+*Subject: **my output.** Answers: **How do I sound when I write?***
+
+*One of the six canonical memory files — see [`Memory/MEMORY.md`](Memory/MEMORY.md) for the routing rule. This file is about how I sound; how I want work delivered is `preferences.md`, and how the assistant should behave is `assistant.md`.*
 
 *This is the rulebook the `drafter` agent reads every time it writes something in your name. The more honest and specific you make it, the more a draft sounds like you instead of like generic AI. Replace every prompt below with your own answer. Delete anything that doesn't apply. There are no wrong answers — this is your voice, not a test.*
 

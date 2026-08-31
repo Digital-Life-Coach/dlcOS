@@ -1,6 +1,6 @@
 # Memory Export Prompt
 
-*Used during `/dlcOS:setup` Stage 4a (yes-path). Paste this into ChatGPT or Gemini to dump everything they remember about you. Bring the output back into the Code session — the wizard will synthesize it into your `about-me.md` and Settings → Memory paste block.*
+*Used during `/dlcOS:setup` Stage 4a (yes-path). Paste this into ChatGPT or Gemini to dump everything they remember about you. Bring the output back into the Code session — the wizard will synthesize it into your `me.md` and Settings → Memory paste block.*
 
 *Source: `claude.com/import-memory`. If Anthropic updates their import flow, refresh this template.*
 
@@ -29,6 +29,6 @@ Output only the memory content — no preamble, no summary, no commentary.
 
 1. Copy the entire response from ChatGPT / Gemini.
 2. Come back to your Claude Code session and paste it as your next message.
-3. The wizard takes it from there — synthesizes, dedupes, writes your `about-me.md`, and builds your Settings → Memory paste block.
+3. The wizard takes it from there — synthesizes, dedupes, writes your `me.md`, and builds your Settings → Memory paste block.
 
 *If you don't have a ChatGPT or Gemini history, no problem — pick the "no" path in Stage 4a and the wizard runs a structured interview from scratch.*

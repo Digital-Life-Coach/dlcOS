@@ -1,6 +1,6 @@
 ---
 name: monthly-review
-description: Monthly memory + horizon check. Synthesizes the month's daily notes into an L2 themes-rolling entry, audits L3 memory (about-me.md, Settings → Memory backup, themes hygiene, duplicate facts) and surfaces fixes as approval drafts, then asks one 90-day horizon question and one cutting-time check-in. Cut from the same cloth as /dlcOS:weekly-review — same Step 0, same pre-flight briefing, same collect-then-apply pattern, same wrap. Use when the user says /dlcOS:monthly-review, "monthly review", "memory health check", "refresh my memory", or at the start of a new month.
+description: Monthly memory + horizon check. Synthesizes the month's daily notes into an L2 themes-rolling entry, audits L3 memory (me.md, Settings → Memory backup, themes hygiene, duplicate facts) and surfaces fixes as approval drafts, then asks one 90-day horizon question and one cutting-time check-in. Cut from the same cloth as /dlcOS:weekly-review — same Step 0, same pre-flight briefing, same collect-then-apply pattern, same wrap. Use when the user says /dlcOS:monthly-review, "monthly review", "memory health check", "refresh my memory", or at the start of a new month.
 ---
 
 # monthly-review — Monthly Memory + Horizon Check
@@ -11,7 +11,7 @@ Built to feel like `/dlcOS:weekly-review` — same Step 0, same pre-flight brief
 
 Three jobs:
 1. **Look back (L2)** — synthesize the past month's daily notes into a new `themes-rolling.md` entry; roll the oldest entry to archive when there are more than three.
-2. **Audit (L3)** — check `about-me.md`, your Settings → Memory backup, and `themes-rolling.md` for staleness, contradictions, and drift. Every fix is surfaced as a **draft for your approval** — this skill never rewrites your memory on its own.
+2. **Audit (L3)** — check `me.md`, your Settings → Memory backup, and `themes-rolling.md` for staleness, contradictions, and drift. Every fix is surfaced as a **draft for your approval** — this skill never rewrites your memory on its own.
 3. **Look forward** — one 90-day horizon question and one cutting-time check-in. Verbatim answers feed the daily note; they're seed material for next month's review.
 
 **Arguments:**
@@ -50,13 +50,13 @@ List `${VAULT_ROOT}/Reference/Dailies/`. Read every daily note inside the window
 ### 0c. Read current L3
 
 Read:
-- `${VAULT_ROOT}/Wiki/Knowledge/about-me.md` — the long-form L3 narrative.
+- `${VAULT_ROOT}/Wiki/Knowledge/me.md` — the long-form L3 narrative.
 - `${VAULT_ROOT}/Wiki/Knowledge/settings-memory-block.md` — the saved backup of what *should* be in Claude Settings → Memory.
 
 ### 0d. Read forward-look anchors
 
 For Phase 3, silently pull context so you can listen with grounding (don't lecture the client back with these):
-- `${VAULT_ROOT}/Wiki/Knowledge/about-me.md` § Goals — the 1–2 year horizon the client wrote during onboarding.
+- `${VAULT_ROOT}/Wiki/Knowledge/me.md` § Goals — the 1–2 year horizon the client wrote during onboarding.
 - `${VAULT_ROOT}/Action/PROJECTS.md` — what's P1 right now.
 - The two prior `themes-rolling.md` entries — recurring themes vs. one-shots.
 
@@ -74,7 +74,7 @@ Present as a structured summary, then ask to proceed:
 📓 DAILIES IN WINDOW: [N] notes ([date range])
 📊 THEMES-ROLLING: [N] entries (newest: [Month YYYY])
 🧠 ABOUT-ME: last refreshed [date from file footer]
-🎯 GOALS (about-me): [N] populated / [N] empty
+🎯 GOALS (me): [N] populated / [N] empty
 📁 P1 PROJECTS: [N] active
 ⏸️ STALLED FROM LAST MONTH: [N] flagged
 ```
@@ -129,12 +129,12 @@ Same pattern as `/dlcOS:weekly-review` Phase 2: collect every finding silently a
 
 Initialize an empty drafts collector.
 
-### 2a. about-me.md vs. recent reality
+### 2a. me.md vs. recent reality
 
-Compare `about-me.md` against the month's dailies. Flag:
-- **Contradictions** — `about-me.md` says something the dailies show is no longer true (e.g. "focused on launching X" when the dailies show X shipped weeks ago).
+Compare `me.md` against the month's dailies. Flag:
+- **Contradictions** — `me.md` says something the dailies show is no longer true (e.g. "focused on launching X" when the dailies show X shipped weeks ago).
 - **Staleness** — a section that hasn't kept up: a capability level that has clearly grown, goals that have been met or abandoned, tools no longer used.
-- **Gaps** — something the dailies show is now central to the client's work or life that `about-me.md` never mentions.
+- **Gaps** — something the dailies show is now central to the client's work or life that `me.md` never mentions.
 
 For each, add a draft to the collector: specific old → new edit.
 
@@ -142,7 +142,7 @@ For each, add a draft to the collector: specific old → new edit.
 
 Claude cannot read the Settings → Memory GUI directly — so this check works against the `settings-memory-block.md` backup file.
 
-Regenerate the short Settings block from the *current* `about-me.md` (same shape as `templates/settings-memory-block.md` — under ~400 words; keep the required coach-contact sentence verbatim). Diff it against the saved `settings-memory-block.md`.
+Regenerate the short Settings block from the *current* `me.md` (same shape as `templates/settings-memory-block.md` — under ~400 words; keep the required coach-contact sentence verbatim). Diff it against the saved `settings-memory-block.md`.
 
 If they differ, the client's actual Settings → Memory is probably stale too. Add to the collector: an updated `settings-memory-block.md` **and** a clean paste block for the client to copy into Claude desktop → Settings → Memory.
 
@@ -155,7 +155,7 @@ Check `themes-rolling.md`:
 
 ### 2d. One home per fact
 
-Scan for the same durable fact living in two places (`about-me.md` *and* the Settings block *and* a project file). Memory should have one home per fact. Add a draft: pick the right home, remove the duplicates.
+Scan for the same durable fact living in two places (`me.md` *and* the Settings block *and* a project file). Memory should have one home per fact. Add a draft: pick the right home, remove the duplicates.
 
 ### 2e. Surface drafts for approval
 
@@ -164,10 +164,10 @@ Present every collected draft as a numbered list. Keep it short — if the audit
 ```
 === MEMORY AUDIT — [N] drafts ===
 
-1. about-me.md — [what's stale/wrong]
+1. me.md — [what's stale/wrong]
    [old] → [new]
 
-2. Settings → Memory — out of sync with about-me.md
+2. Settings → Memory — out of sync with me.md
    → updated paste block ready below
 
 3. themes-rolling.md — [N] un-rolled entries
@@ -179,7 +179,7 @@ Apply which? (all / numbers / none)
 ### 2f. Apply approved drafts
 
 Apply only what the client approved:
-- **about-me.md edits** — edit the file, update its `*Last refreshed:*` footer to today.
+- **me.md edits** — edit the file, update its `*Last refreshed:*` footer to today.
 - **Settings → Memory** — overwrite `settings-memory-block.md`, then display the new paste block between `---BEGIN PASTE---` / `---END PASTE---` markers and tell the client to paste it into Claude desktop → Settings → Memory. Wait for them to confirm the paste is done.
 - **themes-rolling rolls / fixes** — apply the file moves and edits.
 
@@ -201,7 +201,7 @@ You silently have the forward-look anchors from Phase 0d (Goals, P1 projects, re
 
 Wait for the answer. Capture verbatim.
 
-If the answer names a specific outcome that has no home in `Action/PROJECTS.md` or `about-me.md` § Goals, offer to capture it — but as an *idea* in `Inbox/ideas.md`, not as a P1 task. Don't push the GTD machinery on a horizon answer.
+If the answer names a specific outcome that has no home in `Action/PROJECTS.md` or `me.md` § Goals, offer to capture it — but as an *idea* in `Inbox/ideas.md`, not as a P1 task. Don't push the GTD machinery on a horizon answer.
 
 ### 3b. Cutting-time check-in
 
@@ -245,7 +245,7 @@ Append to `${VAULT_ROOT}/Reference/Dailies/YYYY-MM-DD.md` (create if needed). Mi
 
 ### 4b. Update timestamps
 
-If `about-me.md` was edited, confirm its `*Last refreshed:*` footer shows today's date.
+If `me.md` was edited, confirm its `*Last refreshed:*` footer shows today's date.
 
 ### 4c. Git commit (conditional)
 
