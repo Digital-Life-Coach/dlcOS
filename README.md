@@ -36,7 +36,7 @@ Coming later: `/dlcOS:inbox-triage` for inbox-zero workflow.
 
 ## Agents
 
-Subagents are specialists Claude Code can hand a focused task to (Claude Code only — see the note under **Install** for how these skills behave in Codex). They're auto-discovered under scoped names (`dlcOS:<name>`) and each resolves your vault path automatically. Invoke one with `@dlcOS:<name>`, ask Claude in plain language ("use webscout to research X"), or let a skill spawn it.
+Subagents are specialists an agent can hand a focused task to. In Claude Code they auto-discover under scoped names; in Codex the same instructions are handed to a `spawn_agent` subagent (see the note under **Install**). Each resolves your vault path automatically. In Claude Code, invoke one with `@dlcOS:<name>`, ask in plain language ("use webscout to research X"), or let a skill spawn it.
 
 | Agent | What it does |
 |---|---|
@@ -66,7 +66,7 @@ codex plugin add dlcOS@dlcOS
 
 Then run `/dlcOS:setup` to scaffold your AI workspace. Setup writes both `CLAUDE.md` and `AGENTS.md`, so either agent arrives knowing the same things about you.
 
-**One difference worth knowing:** Codex has no subagent mechanism, so the four agents below don't auto-load there. The skills that use them (`draft`, `vault-lint`, `vault-sweep`) carry an inline fallback and still work — the agent instructions ship in the plugin either way. Slower and noisier, not broken.
+**One difference worth knowing:** both harnesses have subagents, but only Claude Code has a *named agent registry* — the four agents below auto-discover there as `dlcOS:<name>`. Codex spawns anonymous subagents instead (`spawn_agent`), so the skills that use agents pass the agent file's instructions as the task. The agent markdown ships in both plugin caches, so nothing is lost; you just name the work instead of naming the worker.
 
 ## Updates
 

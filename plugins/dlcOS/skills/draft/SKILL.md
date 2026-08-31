@@ -8,7 +8,10 @@ description: Spawn the drafter subagent for a piece of prose (email, proposal, b
 Thin wrapper around the `dlcOS:drafter` subagent. Drafter returns a draft string only; this skill closes the loop by letting you pick what happens to it.
 
 
-> **Harness note.** Subagents are a Claude Code feature. In Codex or any harness without them, don't stop — **do the work inline in this session** using the same instructions the agent file carries (`agents/drafter.md` in the plugin). The agent exists to keep the main context clean, not because the work needs a separate process. A run without it is slower and noisier, not wrong.
+> **Harness note — how to reach the agent.**
+> - **Claude Code:** `Agent` tool with `subagent_type: dlcOS:drafter` (auto-discovered from the plugin).
+> - **Codex:** no named-agent registry, but `spawn_agent` exists. Spawn one and pass the contents of `agents/drafter.md` as its instructions — the file ships in the Codex plugin cache too. A Codex subagent inherits the parent's tools, so it can do everything the Claude one can.
+> - **Neither:** do the work inline in this session, following `agents/drafter.md`. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
 
 ## Steps
 
@@ -27,7 +30,7 @@ Quick check — is this actually a drafter job? Push back if:
 
 Use the `Agent` tool with `subagent_type: dlcOS:drafter` (the scoped plugin name). Pass the brief plus any context already loaded (recipient note, prior thread, facts).
 
-Without subagent support, read `agents/drafter.md` and follow it inline — including the step it never skips: load `Wiki/Knowledge/voice.md` before writing a word, and run the avoid-list lint pass after. Losing the subagent must not mean losing the voice doc.
+In Codex, `spawn_agent` passing `agents/drafter.md` as the instructions. With no subagents at all, follow it inline. Either way, do not lose the step it never skips: load `Wiki/Knowledge/voice.md` before writing a word, and run the avoid-list lint pass after. Losing the subagent must not mean losing the voice doc.
 
 Drafter returns a `**Draft:**` block followed by a metadata block (format hint, register, subject line, suggested delivery, notes).
 

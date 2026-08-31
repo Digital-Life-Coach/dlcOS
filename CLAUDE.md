@@ -27,7 +27,7 @@ dlcOS is a combo of three components:
 | `source` in marketplace | string (`"./plugins/dlcOS"`) | **object** (`{"source":"local","path":"./plugins/dlcOS"}`) |
 | skills field | `"skills": "./skills/"` | identical |
 | `SKILL.md` frontmatter | `name` + `description` | identical |
-| subagents | `"agents": [...]`, auto-discovered | **no equivalent** — field is ignored |
+| subagents | `"agents": [...]`, auto-discovered as `dlcOS:<name>` | **subagents exist** (`spawn_agent`, `features.multi_agent`), but there is **no named-agent registry** — the `agents` field is ignored. Hand the agent file's contents to `spawn_agent` instead. |
 
 **Every version bump must touch BOTH manifests.** There's no shared source; they drift silently, and a stale Codex version installs the wrong number with no error. Check with:
 
@@ -41,5 +41,11 @@ claude plugin validate plugins/dlcOS
 codex plugin marketplace add . && codex plugin add dlcOS@dlcOS && codex plugin list | grep dlcOS@
 ```
 
-**What doesn't port, and shouldn't be papered over:** Codex has no subagent mechanism. The four agents don't auto-load there, and the librarian/drafter companion-memory loop (`/dlcOS:promote-lessons`) is Claude-only in practice. The three skills that spawn agents carry inline fallbacks — the agent markdown ships in the Codex plugin cache too, so "read the agent file and do it inline" is a real instruction, not a shrug. Don't write a skill that *requires* a subagent without a fallback.
+**What doesn't port, and shouldn't be papered over:** the *named agent registry*. Codex has real subagents — `spawn_agent`, hierarchical task names, inter-agent messaging, `SubagentStart`/`SubagentStop` hooks, `features.multi_agent` stable and on by default — but they're anonymous and inherit the parent's tools, defined by the task you hand them rather than by a persona file the harness discovered. So `subagent_type: dlcOS:drafter` has no equivalent; passing `agents/drafter.md` to `spawn_agent` does.
+
+The three agent-using skills carry a three-way harness note (Claude `subagent_type` → Codex `spawn_agent` + agent file → inline). **Don't write a skill that *requires* a named subagent without that ladder.**
+
+Genuinely Claude-only in practice: the librarian/drafter **companion-memory loop** (`/dlcOS:promote-lessons` writing `~/.claude/agents/<name>-learned.md`), because it depends on a persistent named agent identity to attach lessons to. If that matters on Codex, it needs a different home — a vault file the spawn prompt reads, not a harness path.
+
+⚠️ **Verify before asserting a capability gap.** The claim "Codex has no subagents" was made here on 2026-08-31 from weak evidence (no `agents/` dir in bundled plugins) and was wrong — `codex features list | grep multi_agent` and `strings` on the real binary both showed otherwise. The `codex` on PATH may be a cmux shim; the real binary is under the npm global prefix or `~/.codex/packages/standalone/`.
 - Client-facing docs: `docs/client-quickstart.md`, `docs/skills-reference.md`, `docs/troubleshooting.md`

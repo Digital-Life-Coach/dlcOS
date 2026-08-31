@@ -8,11 +8,14 @@ description: Run a vault health check interactively — spawn the dlcOS:vault-hy
 Thin wrapper that spawns the `dlcOS:vault-hygiene` subagent in **fix mode** and surfaces its report.
 
 
-> **Harness note.** Subagents are a Claude Code feature. In Codex or any harness without them, don't stop — **do the work inline in this session** using the same instructions the agent file carries (`agents/vault-hygiene.md` in the plugin). The agent exists to keep the main context clean, not because the work needs a separate process. A run without it is slower and noisier, not wrong.
+> **Harness note — how to reach the agent.**
+> - **Claude Code:** `Agent` tool with `subagent_type: dlcOS:vault-hygiene` (auto-discovered from the plugin).
+> - **Codex:** no named-agent registry, but `spawn_agent` exists. Spawn one and pass the contents of `agents/vault-hygiene.md` as its instructions — the file ships in the Codex plugin cache too. A Codex subagent inherits the parent's tools, so it can do everything the Claude one can.
+> - **Neither:** do the work inline in this session, following `agents/vault-hygiene.md`. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
 
 ## Steps
 
-1. **Spawn the agent** *(where subagents exist)*. Use the `Agent` tool with `subagent_type: dlcOS:vault-hygiene`. Tell it explicitly: *"Run in FIX mode. Resolve the vault root from the `dlcOS:vault-root` marker."* Without subagent support, read `agents/vault-hygiene.md` and run its FIX-mode instructions inline.
+1. **Spawn the agent** *(where subagents exist)*. Use the `Agent` tool with `subagent_type: dlcOS:vault-hygiene`. Tell it explicitly: *"Run in FIX mode. Resolve the vault root from the `dlcOS:vault-root` marker."* In Codex, `spawn_agent` with that file's contents as the task. Without either, run its FIX-mode instructions inline.
 2. **Present the report verbatim.** The agent returns a structured markdown report (broken links found/fixed, aging Inbox items, empty sections). Show it.
 3. **Walk through anything it flagged for manual review.** For ambiguous broken links (multiple candidate targets) or aging Inbox items, ask the user how to resolve each — the agent deliberately doesn't auto-fix these. Use `AskUserQuestion` (multiSelect where it's a batch) if the harness has it; otherwise a numbered list.
 4. **Confirm.** Report how many links were auto-fixed and how many items still need the user's judgment.
