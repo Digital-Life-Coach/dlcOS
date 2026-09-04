@@ -249,6 +249,8 @@ If `about-me.md` was edited, confirm its `*Last refreshed:*` footer shows today'
 
 ### 4c. Git commit (conditional)
 
+Not every dlcOS client's vault is a git repo. If it isn't, skip this silently — no mention of git in the reply to the user at all; don't narrate the check or the skip.
+
 ```bash
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then

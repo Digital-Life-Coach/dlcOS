@@ -10,12 +10,12 @@ Thin wrapper that spawns the `dlcOS:vault-hygiene` subagent in **report-only mod
 
 > **Harness note — how to reach the agent.**
 > - **Claude Code:** `Agent` tool with `subagent_type: dlcOS:vault-hygiene` (auto-discovered from the plugin).
-> - **Codex:** no named-agent registry, but `spawn_agent` exists. Spawn one and pass the contents of `agents/vault-hygiene.md` as its instructions — the file ships in the Codex plugin cache too. A Codex subagent inherits the parent's tools, so it can do everything the Claude one can.
-> - **Neither:** do the work inline in this session, following `agents/vault-hygiene.md`. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
+> - **Codex:** no named-agent registry, but `spawn_agent` exists. **Check the file is actually there first** (`ls agents/vault-hygiene.md` relative to the plugin dir) — it ships today because Codex copies the whole plugin directory into its cache, not because `.codex-plugin/plugin.json` declares an `agents` key (it has none). That's an undeclared side effect, not a contract; if a future Codex version narrows to manifest-declared copying, the file silently stops shipping. If present, spawn and pass its contents as instructions. If missing, drop straight to the inline rung below rather than erroring.
+> - **Neither (or the Codex file check above came up empty):** do the work inline in this session, following `agents/vault-hygiene.md` if you can find a copy of it, or its intent (report-only detection) if you can't. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
 
 ## Steps
 
-1. **Spawn the agent** *(Claude `Agent` tool, or Codex `spawn_agent` passing `agents/vault-hygiene.md`; inline if neither)*. Use the `Agent` tool with `subagent_type: dlcOS:vault-hygiene`. Tell it explicitly: *"Run in REPORT-ONLY mode. Resolve the vault root from the `dlcOS:vault-root` marker. Detect only; write the report to `Reference/Dailies/vault-lint-YYYY-MM-DD.md`; make no other file writes."*
+1. **Spawn the agent** *(Claude `Agent` tool, or Codex `spawn_agent` passing `agents/vault-hygiene.md` — check it exists first, see harness note above; inline if neither)*. Use the `Agent` tool with `subagent_type: dlcOS:vault-hygiene`. Tell it explicitly: *"Run in REPORT-ONLY mode. Resolve the vault root from the `dlcOS:vault-root` marker. Detect only; write the report to `Reference/Dailies/vault-lint-YYYY-MM-DD.md`; make no other file writes."*
 2. **Surface the summary.** Report the headline counts (broken links, aging Inbox items, empty sections) and the path to the log it wrote.
 3. **If issues were found, suggest the fix path:** *"Run `/dlcOS:vault-lint` to repair the broken links interactively."*
 

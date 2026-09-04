@@ -338,6 +338,8 @@ Update the "Last updated" line in:
 
 ### 4d. Git commit (conditional)
 
+Not every dlcOS client's vault is a git repo. If it isn't, skip this silently — no mention of git in the reply to the user at all; don't narrate the check or the skip.
+
 ```bash
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then
@@ -352,6 +354,8 @@ Update (or add, if missing) this line in the nearest `CLAUDE.md`, near the other
 ```
 <!-- dlcOS:weekly-review-last --> YYYY-MM-DD
 ```
+
+**Precedence rule (applies to every dlcOS marker, not just this one):** if both `CLAUDE.md` and `AGENTS.md` carry the marker and they disagree, `CLAUDE.md` is authoritative — overwrite `AGENTS.md`'s value to match rather than picking one ad hoc. This keeps divergence from becoming self-perpetuating: a stale `AGENTS.md`-only value (e.g. from a run that wrote CLAUDE.md-only before this mirror step existed) would otherwise keep computing the wrong overdue count on a Codex-only vault forever, since nothing would ever correct it. Reconcile silently; no need to call it out to the user unless the dates were far enough apart to suggest a real missed run rather than drift.
 
 Use today's date. `/dlcOS:end` reads this marker to nudge the client when a review is overdue — without it, every session looks overdue.
 

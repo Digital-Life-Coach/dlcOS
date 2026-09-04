@@ -58,11 +58,18 @@ client to run `/dlcOS:setup` first — the dashboard needs a vault to point at.
 The dashboard source (`shared/`, `hq/`, `today/`, `starts/`, `orchestrator/`,
 plus each module's `package.json`) is not part of the plugin's skill/agent
 tree — like the `/dlcOS:setup` wizard plan, it's a payload that ships
-alongside the marketplace clone. Look for it at:
+alongside the marketplace clone, **not** the plugin install/cache dir on either
+harness. Look for it at:
 
-1. `~/.claude/plugins/marketplaces/dlcOS/dashboards/` — canonical path, present
-   once the client has run `/plugin marketplace add Digital-Life-Coach/dlcOS`.
-2. If running from a development checkout: `<repo-root>/dashboards/`.
+1. Claude Code: `~/.claude/plugins/marketplaces/dlcOS/dashboards/` — canonical
+   path, present once the client has run
+   `/plugin marketplace add Digital-Life-Coach/dlcOS`.
+2. Codex: the marketplace clone isn't a fixed path — read it from
+   `[marketplaces.dlcOS]` → `source` in `~/.codex/config.toml`
+   (`awk '/^\[marketplaces\.dlcOS\]/{f=1;next} /^\[/{f=0} f' ~/.codex/config.toml`),
+   then `${that path}/dashboards/`.
+3. If running from a development checkout (either harness):
+   `<repo-root>/dashboards/`.
 
 **Known gap (2026-08-24):** as of this writing, `dashboards/` has not yet been
 published into the public dlcOS repo — only `Work/Dashboards/` in Justin's own

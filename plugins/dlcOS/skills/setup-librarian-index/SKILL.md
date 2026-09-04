@@ -80,7 +80,7 @@ Adapt the exact mechanism to the user's OS; the job is just a daily `libr add "$
 
 ## Step 6 — Write the marker
 
-Add the marker to the project `CLAUDE.md` (near the other `dlcOS:` markers) so the librarian agent knows the index exists and switches to semantic mode:
+Add the marker to the project `CLAUDE.md` (near the other `dlcOS:` markers) so the librarian agent knows the index exists and switches to semantic mode — and mirror the same line into `AGENTS.md` if that file exists, so a Codex-driven vault (which auto-loads only `AGENTS.md`) sees it too:
 
 ```
 <!-- dlcOS:librarian-index -->  (semantic index provisioned; librarian uses ranked search. Delete this line to force keyword-only mode.)

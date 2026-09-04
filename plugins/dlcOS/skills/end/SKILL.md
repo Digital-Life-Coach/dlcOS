@@ -188,7 +188,7 @@ Do NOT attempt to run `/compact` yourself — it's a CLI command that only the u
 
 ## Step 6: Git Commit + Worktree Merge-Back
 
-Two cases. Both run from any cwd inside a git repo; skip silently if not in one.
+Two cases. Both run from any cwd inside a git repo; skip silently if not in one — and "silently" means **don't narrate it to the user at all.** Not every dlcOS client's vault is a git repo (plenty aren't); a running commentary like "checking for a git repo... not one, skipping the commit" is confusing, unrequested detail to someone who's never heard of git and didn't ask. Check `git rev-parse --git-dir` first; if it fails, move straight to Step 6b with zero mention of git in this session's reply. Only speak up if a commit actually happens (or a real merge conflict needs the user's attention) — mundane version-control plumbing on a vault where it never came up isn't a visible session-close item.
 
 ```bash
 GIT_DIR=$(git rev-parse --git-dir 2>/dev/null) || exit 0
@@ -257,7 +257,11 @@ One compact, low-noise block. If nothing below is `pending` or overdue, print no
 
 ### Setup checklist
 
-Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `~/.claude/plugins/marketplaces/dlcOS/templates/setup-checklist.md` (the marketplace clone — the plugin install cache has no `templates/` dir) (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature).
+Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `${TEMPLATES}/setup-checklist.md` (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature). Resolve `${TEMPLATES}` the same way `/dlcOS:setup` Step 2 does — it is **not** the plugin install/cache dir on either harness:
+
+- Claude Code: `~/.claude/plugins/marketplaces/dlcOS/templates/`
+- Codex: `<source from [marketplaces.dlcOS] in ~/.codex/config.toml>/templates/` — not a fixed path; read the marketplace registration
+- Dev checkout (either harness): `<repo-root>/templates/`
 
 **Auto-flip detectable items to `done`** before reading pending state (edit the file in place, don't just report — the client should see the table itself update over time):
 - "See what Claude remembers locally" → `done` if `${VAULT_ROOT}/Reference/Memory/README.md` exists.
@@ -274,7 +278,7 @@ For every row still `pending`, add one line to the nudge block:
 
 ### Weekly / monthly review due-dates
 
-Read `<!-- dlcOS:weekly-review-last --> YYYY-MM-DD` and `<!-- dlcOS:monthly-review-last --> YYYY-MM-DD` from the nearest `CLAUDE.md` or `AGENTS.md`. For each:
+Read `<!-- dlcOS:weekly-review-last --> YYYY-MM-DD` and `<!-- dlcOS:monthly-review-last --> YYYY-MM-DD` from the nearest `CLAUDE.md` or `AGENTS.md`. If both files carry the marker and disagree, `CLAUDE.md`'s value is authoritative — use it, and reconcile `AGENTS.md` to match (see the precedence rule in `weekly-review/SKILL.md` Step 4e) so a stale value doesn't keep computing the wrong overdue count on every future run. For each:
 
 - **Marker absent** → treat as overdue (never run). Don't say "never run" alarmingly; just nudge.
 - **Marker present** → compute days since that date against today.

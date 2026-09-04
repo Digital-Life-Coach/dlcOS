@@ -10,8 +10,8 @@ Thin wrapper around the `dlcOS:drafter` subagent. Drafter returns a draft string
 
 > **Harness note — how to reach the agent.**
 > - **Claude Code:** `Agent` tool with `subagent_type: dlcOS:drafter` (auto-discovered from the plugin).
-> - **Codex:** no named-agent registry, but `spawn_agent` exists. Spawn one and pass the contents of `agents/drafter.md` as its instructions — the file ships in the Codex plugin cache too. A Codex subagent inherits the parent's tools, so it can do everything the Claude one can.
-> - **Neither:** do the work inline in this session, following `agents/drafter.md`. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
+> - **Codex:** no named-agent registry, but `spawn_agent` exists. **Check the file is actually there first** (`ls agents/drafter.md` relative to the plugin dir) — it ships today because Codex copies the whole plugin directory into its cache, not because `.codex-plugin/plugin.json` declares an `agents` key (it has none). That's an undeclared side effect, not a contract; if a future Codex version narrows to manifest-declared copying, the file silently stops shipping. If present, spawn and pass its contents as instructions — a Codex subagent inherits the parent's tools, so it can do everything the Claude one can. If missing, drop straight to the inline rung below rather than erroring.
+> - **Neither (or the Codex file check above came up empty):** do the work inline in this session, following `agents/drafter.md` if you can find a copy of it, or the drafter agent's intent (voice doc first, avoid-list lint after) if you can't. The agent exists to keep the main context clean, not because the work needs a separate process. Slower and noisier, never wrong.
 
 ## Steps
 
@@ -30,7 +30,7 @@ Quick check — is this actually a drafter job? Push back if:
 
 Use the `Agent` tool with `subagent_type: dlcOS:drafter` (the scoped plugin name). Pass the brief plus any context already loaded (recipient note, prior thread, facts).
 
-In Codex, `spawn_agent` passing `agents/drafter.md` as the instructions. With no subagents at all, follow it inline. Either way, do not lose the step it never skips: load `Wiki/Knowledge/voice.md` before writing a word, and run the avoid-list lint pass after. Losing the subagent must not mean losing the voice doc.
+In Codex, check `agents/drafter.md` exists before spawning (see harness note above); if it does, `spawn_agent` passing its contents as the instructions. With no subagents at all, or the file missing, follow it inline. Either way, do not lose the step it never skips: load `Wiki/Knowledge/voice.md` before writing a word, and run the avoid-list lint pass after. Losing the subagent must not mean losing the voice doc.
 
 Drafter returns a `**Draft:**` block followed by a metadata block (format hint, register, subject line, suggested delivery, notes).
 

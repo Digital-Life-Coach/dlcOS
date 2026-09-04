@@ -224,7 +224,7 @@ as a sales pitch.
 
 ## Step 4 — Write the marker (draft-writing paths only)
 
-Add to the project `CLAUDE.md`, near the other `dlcOS:` markers:
+Add to the project `CLAUDE.md`, near the other `dlcOS:` markers — and mirror the same line into `AGENTS.md` if that file exists, so a Codex-driven vault (which auto-loads only `AGENTS.md`) sees it too:
 
 Only reachable from **Fastmail** (Step 3a) or **Gmail Tier 2** (Step 3b), and
 only after a draft has actually landed in the client's Drafts folder.

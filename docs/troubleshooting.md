@@ -25,7 +25,7 @@ Then try `/dlcOS:` again. The slash menu should populate.
 
 ## "`/dlcOS:setup` says it can't find the wizard plan"
 
-The wizard plan lives at `~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md`. That path only exists if you ran `/plugin marketplace add Digital-Life-Coach/dlcOS` (not just `/plugin install`).
+**Claude Code:** the wizard plan lives at `~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md`. That path only exists if you ran `/plugin marketplace add Digital-Life-Coach/dlcOS` (not just `/plugin install`).
 
 Check it with:
 
@@ -34,6 +34,15 @@ ls ~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md
 ```
 
 If the file is missing, re-run the marketplace add command. If it exists but the skill still can't find it, run `/reload-plugins` and try again.
+
+**Codex:** there's no fixed path — the marketplace clone location comes from your own Codex registration. Check:
+
+```
+awk '/^\[marketplaces\.dlcOS\]/{f=1;next} /^\[/{f=0} f' ~/.codex/config.toml
+ls "<the source path from that output>/plans/dlc-setup.md"
+```
+
+If `[marketplaces.dlcOS]` isn't in `~/.codex/config.toml` at all, re-run `codex plugin marketplace add https://github.com/Digital-Life-Coach/dlcOS`.
 
 ---
 

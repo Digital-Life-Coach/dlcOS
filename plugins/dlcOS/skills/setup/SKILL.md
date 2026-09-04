@@ -43,21 +43,25 @@ If anything is missing, pause and tell them what to do before continuing.
 
 ## Step 2 — Locate the wizard plan
 
-The wizard plan lives in the marketplace clone, not the plugin install cache. Find it at one of:
+The wizard plan and `templates/` live in the **marketplace clone**, not the plugin install/cache directory. The two harnesses put the marketplace clone in different places, and neither is the plugin cache — resolve by harness:
 
-1. `~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md` — created when the client ran `/plugin marketplace add Digital-Life-Coach/dlcOS`. **This is the canonical path.**
-2. If running from a development checkout: `<repo-root>/plans/dlc-setup.md`.
+**Claude Code:**
+1. `~/.claude/plugins/marketplaces/dlcOS/` — created when the client ran `/plugin marketplace add Digital-Life-Coach/dlcOS`. **Canonical.**
+2. Plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`) contains only the plugin subdirectory — no `plans/`, no `templates/`. Don't look there.
 
-Use the marketplace path first; fall back to the repo path. If neither exists, the marketplace was never added — tell the client to run `/plugin marketplace add Digital-Life-Coach/dlcOS` (not just `/plugin install`) and try again.
+**Codex:** the marketplace clone location is not a fixed path — read it out of Codex's own registration:
+1. Find the `source` under `[marketplaces.dlcOS]` in `~/.codex/config.toml`:
+   ```bash
+   awk '/^\[marketplaces\.dlcOS\]/{f=1;next} /^\[/{f=0} f' ~/.codex/config.toml
+   ```
+   That `source` value **is** the marketplace root — use it directly, whether it's a git-clone under `~/.codex/.tmp/marketplaces/dlcOS/` or (in a dev checkout) the repo root itself.
+2. Plugin cache (`~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`) contains only `agents/`, `skills/`, `.claude-plugin/`, `.codex-plugin/`, `README.md` — confirmed empirically 2026-08-31, no `plans/`, no `templates/`. Don't look there. **This is the exact bug v2.1.0 shipped to fix, reintroduced by the v2.2.0 Codex port** — do not regress it a third time.
 
-Note: the plugin install cache (`~/.claude/plugins/cache/dlcOS/dlcOS/<version>/`) contains only the plugin subdirectory and does NOT include `plans/`. Don't look there.
+**Either harness, dev checkout:** `<repo-root>/plans/dlc-setup.md` and `<repo-root>/templates/` — use if running from a git checkout of the dlcOS repo rather than an installed plugin.
 
-**`templates/` lives in the same place, and for the same reason.** Every template the wizard copies (`claude-md-starter.md`, `agents-md-starter.md`, `START-HERE.md`, `about-me.md`, `settings-memory-block.md`, `chatgpt-memory-export-prompt.md`, `voice.md`, `setup-checklist.md`, `action/`, `inbox/`) resolves against the **marketplace root**, not the plugin root:
+Set `${MARKETPLACE_ROOT}` to whichever of the above resolves, and derive `${TEMPLATES}` = `${MARKETPLACE_ROOT}/templates/`, wizard plan = `${MARKETPLACE_ROOT}/plans/dlc-setup.md`. If nothing resolves, the marketplace was never added — tell the client to run the marketplace-add command for their harness (`/plugin marketplace add Digital-Life-Coach/dlcOS` for Claude Code, `codex plugin marketplace add https://github.com/Digital-Life-Coach/dlcOS` for Codex) and try again.
 
-1. `~/.claude/plugins/marketplaces/dlcOS/templates/` — **canonical.**
-2. `<repo-root>/templates/` — development checkout fallback.
-
-Set `${TEMPLATES}` to whichever exists and use it for every copy in the plan. Anywhere the wizard plan says `templates/<x>`, read it as `${TEMPLATES}/<x>`. The plugin install cache has no `templates/` directory at all — a copy from there fails, and on a live run it fails silently mid-stage.
+**`templates/` lives in the same place, and for the same reason.** Every template the wizard copies (`claude-md-starter.md`, `agents-md-starter.md`, `START-HERE.md`, `about-me.md`, `settings-memory-block.md`, `chatgpt-memory-export-prompt.md`, `voice.md`, `setup-checklist.md`, `action/`, `inbox/`) resolves against `${TEMPLATES}`. Anywhere the wizard plan says `templates/<x>`, read it as `${TEMPLATES}/<x>`. The plugin cache has no `templates/` directory at all, on either harness — a copy from there fails, and on a live run it fails silently mid-stage.
 
 **On a fresh Mac, `/plugin marketplace add` / `/plugin install` will not run from inside the Claude desktop app at all — this is not optional.** Confirmed on Ted Humphrey's onboarding call (2026-08-18): the desktop app has no way to install plugins itself, so the coach has to run the install from a terminal, which on a Mac that's never had developer tools means installing three things first, in order:
 
