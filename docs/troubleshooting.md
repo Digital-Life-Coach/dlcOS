@@ -53,7 +53,7 @@ If `[marketplaces.dlcOS]` isn't in `~/.codex/config.toml` at all, re-run `codex 
 
 ## "Every dlcOS command shows up twice in Codex"
 
-Observed once on a client machine (pre-2026-09-06); after a marketplace upgrade + plugin reinstall it does **not** reproduce — Codex's own `skills/list` API (codex 0.151.0, `forceReload: true`) returns each skill exactly once, resolved to the plugin cache copy. If you see doubles, run the reinstall sequence below first; if they persist, capture `codex plugin list` output and report it — the cause on the original machine was never pinned down.
+**Cause pinned 2026-09-06: it's a Codex iOS app display bug, not an install problem.** The same machine, same session state, shows each skill once in the Mac app and twice in the iOS app's slash-command autocomplete. Codex's `skills/list` API (codex 0.151.0, `forceReload: true`) returns each skill exactly once, resolved to the plugin cache copy — the Mac client deduplicates at presentation, the iOS client does not. Nothing to fix locally; either listed entry runs the same skill. Workarounds: force-quit and reopen the iOS app; report to OpenAI as "Codex iOS displays every skill in a git-installed plugin twice; Mac shows each once."
 
 Background you still need: a git-sourced marketplace add leaves a full staging clone at `~/.codex/.tmp/marketplaces/dlcOS/`, and installing the plugin copies it again to `~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`. Two copies of every skill exist on disk by design. **Do not delete the `.tmp/marketplaces` clone**: it's the only copy holding `plans/` and `templates/`, and `/dlcOS:setup` and `/dlcOS:end` read from it.
 
