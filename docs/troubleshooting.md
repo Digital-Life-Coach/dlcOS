@@ -53,11 +53,11 @@ If `[marketplaces.dlcOS]` isn't in `~/.codex/config.toml` at all, re-run `codex 
 
 ## "Every dlcOS command shows up twice in Codex"
 
-Known Codex behavior, not a broken install. Adding a marketplace from a git URL leaves a full staging clone at `~/.codex/.tmp/marketplaces/dlcOS/`, and installing the plugin copies it again to `~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`. Codex enumerates skills from **both** trees, so each command appears twice with the same description.
+Observed once on a client machine (pre-2026-09-06); after a marketplace upgrade + plugin reinstall it does **not** reproduce — Codex's own `skills/list` API (codex 0.151.0, `forceReload: true`) returns each skill exactly once, resolved to the plugin cache copy. If you see doubles, run the reinstall sequence below first; if they persist, capture `codex plugin list` output and report it — the cause on the original machine was never pinned down.
 
-On a fresh install the two copies are byte-identical, so either one works — the duplicate listing is cosmetic. **Do not delete the `.tmp/marketplaces` clone**: it's the only copy holding `plans/` and `templates/`, and `/dlcOS:setup` and `/dlcOS:end` read from it.
+Background you still need: a git-sourced marketplace add leaves a full staging clone at `~/.codex/.tmp/marketplaces/dlcOS/`, and installing the plugin copies it again to `~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`. Two copies of every skill exist on disk by design. **Do not delete the `.tmp/marketplaces` clone**: it's the only copy holding `plans/` and `templates/`, and `/dlcOS:setup` and `/dlcOS:end` read from it.
 
-It stops being cosmetic if the copies diverge — which happens when someone edits one tree in place (a coach hotfix) or upgrades the marketplace without reinstalling the plugin. Then which copy runs is unpredictable. Rule for coaches: **never hand-edit skill files on a client machine in one tree only.** Update both, or better, ship the fix upstream and run:
+The real hazard is the trees **diverging**: skills execute from the cache, but templates and plans are read from the clone — so a hotfix landed in one tree splits behavior between skills. Divergence happens when someone edits one tree in place (a coach hotfix) or upgrades the marketplace without reinstalling the plugin. Rule for coaches: **never hand-edit skill files on a client machine in one tree only.** Update both, or better, ship the fix upstream and run:
 
 ```
 codex plugin marketplace upgrade dlcOS
