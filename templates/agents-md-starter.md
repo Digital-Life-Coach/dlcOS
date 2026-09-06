@@ -42,7 +42,17 @@ My writing voice, if you're drafting anything in my name: [`Wiki/Knowledge/voice
 
 ## Memory — when you learn something durable about me
 
-If something comes up that will still be true next week — a fact about me, how I work, a decision I've made — it belongs in my memory, not just this chat. Route it:
+If something comes up that will still be true next week — a fact about me, how I work, a decision I've made — it belongs in my memory, not just this chat.
+
+**Write it in the same turn I say it. Do not wait for the end of the session.**
+
+There may not be an end. Threads run for days and auto-compact as they grow, so by the time any end-of-session wrap-up runs, the part of the conversation holding the fact may already have been summarized away. A sweep at the end can only save what's still in context; writing as you go saves everything. Don't wait for me to ask, and don't batch it up for later.
+
+You always know when you're about to reply. That's the checkpoint — not some natural stopping point that may never arrive. Before you send, ask whether I stated something durable in this turn. If I did, route and write it. If you judge it not durable enough to keep, that's a fine answer — but make the judgment now rather than deferring it.
+
+**Check before you overwrite.** Editing a fact in place is the right default — the vault should stay small. But verify two things first. *Is the existing value actually wrong?* "Today" is when someone typed, not when the thing happened; resolve relative dates with `date`/`stat` rather than from the sentence. *And is it an identifier?* Headings, filenames, folders and slugs are addresses other files resolve against; grep for inbound references before changing one, and fix them all in the same edit. A broken WikiLink renders as ordinary text — nothing fails, nothing logs.
+
+Route it:
 
 - **A lasting fact about who I am or how I work** → offer to update [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md), and tell me to also add the short version to my Claude Settings → Memory (which lives on Claude's side and is the one thing you can't write for me).
 - **Something true for just one project** → put it in that project's notes, not my global memory.

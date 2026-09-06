@@ -35,14 +35,41 @@ ls ~/.claude/plugins/marketplaces/dlcOS/plans/dlc-setup.md
 
 If the file is missing, re-run the marketplace add command. If it exists but the skill still can't find it, run `/reload-plugins` and try again.
 
-**Codex:** there's no fixed path — the marketplace clone location comes from your own Codex registration. Check:
+**Codex:** on a normal install (added from the GitHub URL), the marketplace clone lives at:
+
+```
+ls ~/.codex/.tmp/marketplaces/dlcOS/plans/dlc-setup.md
+```
+
+If your registration uses a local path instead (a dev checkout), the `source` line under `[marketplaces.dlcOS]` in `~/.codex/config.toml` points at the marketplace root:
 
 ```
 awk '/^\[marketplaces\.dlcOS\]/{f=1;next} /^\[/{f=0} f' ~/.codex/config.toml
-ls "<the source path from that output>/plans/dlc-setup.md"
 ```
 
 If `[marketplaces.dlcOS]` isn't in `~/.codex/config.toml` at all, re-run `codex plugin marketplace add https://github.com/Digital-Life-Coach/dlcOS`.
+
+---
+
+## "Every dlcOS command shows up twice in Codex"
+
+Known Codex behavior, not a broken install. Adding a marketplace from a git URL leaves a full staging clone at `~/.codex/.tmp/marketplaces/dlcOS/`, and installing the plugin copies it again to `~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`. Codex enumerates skills from **both** trees, so each command appears twice with the same description.
+
+On a fresh install the two copies are byte-identical, so either one works — the duplicate listing is cosmetic. **Do not delete the `.tmp/marketplaces` clone**: it's the only copy holding `plans/` and `templates/`, and `/dlcOS:setup` and `/dlcOS:end` read from it.
+
+It stops being cosmetic if the copies diverge — which happens when someone edits one tree in place (a coach hotfix) or upgrades the marketplace without reinstalling the plugin. Then which copy runs is unpredictable. Rule for coaches: **never hand-edit skill files on a client machine in one tree only.** Update both, or better, ship the fix upstream and run:
+
+```
+codex plugin marketplace upgrade dlcOS
+codex plugin remove dlcOS@dlcOS
+codex plugin add dlcOS@dlcOS
+```
+
+To check whether your two trees match:
+
+```
+diff -rq ~/.codex/.tmp/marketplaces/dlcOS/plugins/dlcOS/skills ~/.codex/plugins/cache/dlcOS/dlcOS/*/skills
+```
 
 ---
 

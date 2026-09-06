@@ -1,7 +1,7 @@
 ---
 name: vault-hygiene
 description: >-
-  Vault health subagent — detects broken WikiLinks, aging items stuck in the Inbox, and empty structural sections, then (in fix mode) repairs the safe ones and diagnoses root causes. Fix mode (default, interactive — called from /dlcOS:vault-lint): repairs broken wikilinks by finding files at new paths, applies safe fixes. Report-only mode (called from /dlcOS:vault-sweep): detects and writes a dated log, no other writes. Returns a structured markdown report string.
+  Vault health subagent — detects broken WikiLinks, aging items stuck in the Inbox, empty structural sections, and silent memory-formation failures (sessions with no vault writes), then (in fix mode) repairs the safe ones and diagnoses root causes. Fix mode (default, interactive — called from /dlcOS:vault-lint): repairs broken wikilinks by finding files at new paths, applies safe fixes. Report-only mode (called from /dlcOS:vault-sweep): detects and writes a dated log, no other writes. Returns a structured markdown report string.
 tools: Read, Glob, Grep, Bash, Edit
 model: sonnet
 ---
@@ -95,6 +95,40 @@ Skip this rule entirely if no such file exists. Do not invent a task system the 
 
 ---
 
+## Rule 4 — Memory formation (sessions vs. writes)
+
+A working memory system and a broken one look identical from the outside: nothing errors, nothing logs. This rule makes silence visible by comparing *real sessions in the last 24h* against *vault writes in the last 24h*. (Field evidence: a client vault ran a week of real daily use and wrote one durable fact; nobody noticed for three days.)
+
+**Count real sessions** — check whichever harness session dirs exist; a session only counts if its log contains at least one actual user message. This filter is required: some machines generate many phantom sessions a day with zero user messages (background/automation launches), and counting those masks the problem in the opposite direction — writes of 0 against inflated sessions, or sessions that never had a user to write for.
+
+```bash
+real=0
+# Claude Code
+for f in $(find ~/.claude/projects -name '*.jsonl' -mtime -1 2>/dev/null); do
+  grep -q '"type":"user"' "$f" 2>/dev/null && real=$((real+1))
+done
+# Codex
+for f in $(find "${CODEX_HOME:-$HOME/.codex}/sessions" -name '*.jsonl' -mtime -1 2>/dev/null); do
+  grep -q '"role":"user"' "$f" 2>/dev/null && real=$((real+1))
+done
+```
+
+**Count vault writes** in the same window:
+
+```bash
+writes=$(find "$VAULT_ROOT" -name '*.md' -mtime -1 \
+  -not -path '*/.git/*' -not -path '*/.obsidian/*' \
+  -not -path '*/.stversions/*' -not -path '*/.stfolder/*' 2>/dev/null | wc -l)
+```
+
+**Verdict:**
+- `real > 0 && writes == 0` → **flag it**: "N session(s) in the last 24h, 0 vault writes — memory is not forming." Include the date of the most recent `.md` modification anywhere in the vault so the reader sees how long the drought has run.
+- `real == 0` → idle, fine. `writes > 0` → forming, fine. Report the counts either way.
+
+**Always report-only** (both modes) — this rule diagnoses; the fix is behavioral (the per-turn write obligation in the client's `CLAUDE.md`/`AGENTS.md`), not something this agent can edit into place. Note: the lint log this agent writes in report-only mode counts as tomorrow's write — that's fine; the check is about the trailing window, not a live probe.
+
+---
+
 ## Report format
 
 Return a markdown string. In report-only mode, also write it to `Reference/Dailies/vault-lint-YYYY-MM-DD.md`.
@@ -124,6 +158,8 @@ Return a markdown string. In report-only mode, also write it to `Reference/Daili
 
 ## Empty structural sections (N)
 - `Action/projects.md` → ## SomeProject (no open items)
+## Memory formation (24h)
+- 3 real session(s), 0 vault writes — ⚠️ memory is not forming (last vault write: 2026-09-02)
 ```
 
 If everything is clean:

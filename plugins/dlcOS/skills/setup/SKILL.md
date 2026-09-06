@@ -54,7 +54,9 @@ The wizard plan and `templates/` live in the **marketplace clone**, not the plug
    ```bash
    awk '/^\[marketplaces\.dlcOS\]/{f=1;next} /^\[/{f=0} f' ~/.codex/config.toml
    ```
-   That `source` value **is** the marketplace root — use it directly, whether it's a git-clone under `~/.codex/.tmp/marketplaces/dlcOS/` or (in a dev checkout) the repo root itself.
+   Read the `source` value by type — it is **not** always a path (confirmed on a clean git install 2026-09-06):
+   - `source_type = "local"` (dev checkout): `source` is a directory path — that path **is** the marketplace root.
+   - `source_type = "git"` (normal client install): `source` is the repo **URL**, not a path. The marketplace root is the staging clone Codex made at `~/.codex/.tmp/marketplaces/dlcOS/` (`$CODEX_HOME/.tmp/marketplaces/dlcOS/` if `CODEX_HOME` is set). Verify with `ls ~/.codex/.tmp/marketplaces/dlcOS/plans/dlc-setup.md`.
 2. Plugin cache (`~/.codex/plugins/cache/dlcOS/dlcOS/<version>/`) contains only `agents/`, `skills/`, `.claude-plugin/`, `.codex-plugin/`, `README.md` — confirmed empirically 2026-08-31, no `plans/`, no `templates/`. Don't look there. **This is the exact bug v2.1.0 shipped to fix, reintroduced by the v2.2.0 Codex port** — do not regress it a third time.
 
 **Either harness, dev checkout:** `<repo-root>/plans/dlc-setup.md` and `<repo-root>/templates/` — use if running from a git checkout of the dlcOS repo rather than an installed plugin.

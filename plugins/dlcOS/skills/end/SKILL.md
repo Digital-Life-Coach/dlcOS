@@ -260,7 +260,7 @@ One compact, low-noise block. If nothing below is `pending` or overdue, print no
 Look for `${VAULT_ROOT}/Reference/dlcOS-setup-checklist.md`. If it doesn't exist, copy it from `${TEMPLATES}/setup-checklist.md` (silent, one-time — this is what retrofits the checklist onto a vault that predates this feature). Resolve `${TEMPLATES}` the same way `/dlcOS:setup` Step 2 does — it is **not** the plugin install/cache dir on either harness:
 
 - Claude Code: `~/.claude/plugins/marketplaces/dlcOS/templates/`
-- Codex: `<source from [marketplaces.dlcOS] in ~/.codex/config.toml>/templates/` — not a fixed path; read the marketplace registration
+- Codex: git install (`source_type = "git"`) → `~/.codex/.tmp/marketplaces/dlcOS/templates/`; local registration (`source_type = "local"`) → `<source path from [marketplaces.dlcOS] in ~/.codex/config.toml>/templates/`. The `source` value is a URL on git installs — never treat it as a path without checking `source_type`.
 - Dev checkout (either harness): `<repo-root>/templates/`
 
 **Auto-flip detectable items to `done`** before reading pending state (edit the file in place, don't just report — the client should see the table itself update over time):
