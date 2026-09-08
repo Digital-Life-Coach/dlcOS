@@ -133,7 +133,7 @@ When all stages pass:
 1. Update plan frontmatter: `status: complete`, `completed: <timestamp>`.
 2. Append an `## Outcome` section summarizing what shipped, total wizard runtime, any oddities.
 3. Remove the pointer from `${VAULT_ROOT}/CLAUDE.md` `## Pending Plans`.
-4. Move the plan file to `${VAULT_ROOT}/Reference/Plans/archive/dlcOS-setup.md`.
+4. Move the plan file to `${VAULT_ROOT}/Reference/Plans/completed/dlcOS-setup.md`.
 5. Tell the client + coach: "You're set up. Run `/dlcOS:morning-brief --setup` when you're ready to configure your daily brief — but not today."
 
 ---

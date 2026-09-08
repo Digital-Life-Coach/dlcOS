@@ -141,7 +141,7 @@ In that CLAUDE.md, find or create a top-level `## Pending Plans` section (place 
 - [`<slug>`](Reference/Plans/YYYY-MM-DD-<slug>.md) — <one-line goal> *(saved YYYY-MM-DD by <model>, audience: <audience>, mode: <mode>)*
 ```
 
-Use a path relative to the CLAUDE.md's directory. Keep each entry to one line. If the section grows past ~5 entries, ask the user which to retire (move to `Reference/Plans/archive/`).
+Use a path relative to the CLAUDE.md's directory. Keep each entry to one line. If the section grows past ~5 entries, ask the user which to retire (move to `Reference/Plans/completed/`).
 
 If a `## Pending Plans` section already exists, append to it. Do NOT remove existing entries.
 

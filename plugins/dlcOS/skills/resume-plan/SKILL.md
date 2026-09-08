@@ -99,8 +99,9 @@ When all steps are done and success criteria pass:
 1. Update frontmatter: `status: complete`, add `completed: YYYY-MM-DD HH:MM`.
 2. Append a `## Outcome` section: what shipped, what changed vs. the plan, any follow-up tasks (route those to `${VAULT_ROOT}/Action/TASKS.md` per project conventions, NOT into the plan file).
 3. Remove the plan's pointer line from `## Pending Plans` in CLAUDE.md.
-4. Move the file to `${VAULT_ROOT}/Reference/Plans/archive/<original-filename>` (create the dir if needed).
-5. Tell the user where the archived plan lives and summarize the outcome in 2-3 sentences. Suggest `/dlcOS:end` if the session is wrapping.
+4. **Move** the file to `${VAULT_ROOT}/Reference/Plans/completed/<original-filename>` (create the dir if needed) — `git mv` if tracked, else `mv`. Legacy vaults: if `Reference/Plans/archive/` exists from an earlier dlcOS version, rename it to `completed/` first (`git mv archive completed`) rather than leaving two folders. A move, never a copy: the top-level path must not still hold the plan afterwards.
+5. **Verify the move.** `ls ${VAULT_ROOT}/Reference/Plans/<original-filename>` must fail and `ls ${VAULT_ROOT}/Reference/Plans/completed/<original-filename>` must succeed. If the old path survives, delete it — a leftover copy carries the *pre-execution* frontmatter (`status: pending`), so it reads as live work forever and a future `/dlcOS:resume-plan` will try to redo finished work.
+6. Tell the user where the archived plan lives and summarize the outcome in 2-3 sentences. Suggest `/dlcOS:end` if the session is wrapping.
 
 If success criteria don't all pass, leave `status: in-progress`, leave the CLAUDE.md pointer, and tell the user exactly which criteria failed.
 
@@ -108,7 +109,7 @@ If success criteria don't all pass, leave `status: in-progress`, leave the CLAUD
 
 ## If the plan is partially done and the user wants to abandon it
 
-Update frontmatter `status: abandoned`, append `## Abandoned` section explaining why, move to `${VAULT_ROOT}/Reference/Plans/archive/`, remove pointer from CLAUDE.md. Don't silently delete.
+Update frontmatter `status: abandoned`, append `## Abandoned` section explaining why, move to `${VAULT_ROOT}/Reference/Plans/completed/`, remove pointer from CLAUDE.md. Don't silently delete. Same move-not-copy verification as Step 4.5.
 
 ---
 
@@ -118,4 +119,5 @@ Update frontmatter `status: abandoned`, append `## Abandoned` section explaining
 - ❌ Trusting the plan's "current state" snapshot without spot-checking — sessions in between may have changed things
 - ❌ Editing the plan file's history (sections 1-10) instead of appending — preserves the audit trail
 - ❌ Forgetting to clean up the CLAUDE.md pointer when done — leaves stale entries that bloat future sessions
+- ❌ Archiving by copy instead of by move — leaves a `status: pending` twin at the top-level path that looks like live work forever. Verify the old path is gone (Step 4.5).
 - ❌ Bundling multiple steps' execution before reporting — go step by step so the user can interrupt
