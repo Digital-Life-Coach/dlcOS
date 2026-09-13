@@ -5,6 +5,15 @@ description: "Install a client's own dlcOS Dashboards — a Bun+Hono operator su
 
 # dashboard-setup — Install the Client's Own Dashboards
 
+⚠ **Architecture superseded 2026-09-12, not yet rewritten.** The plan this
+skill was built from is abandoned in favor of dlcOS client dashboards
+eventually running as modules on the consortium CoreHub, not a per-client
+fork of `Work/Dashboards`. That CoreHub direction is not built yet — see
+`GTD/PROPOSED.md` (added 2026-09-12) and `Wiki/Knowledge/cogOS.md` § Consortium
+track. Until the CoreHub path exists, **check with Justin before running this
+skill with a client** — it still installs the retired fork-per-client-Mac
+shape described below.
+
 *Invoke as `/dlcOS:dashboard-setup`*
 
 Ships a client's own copy of `Work/Dashboards` — the Bun + Hono + HTMX operator
@@ -14,7 +23,7 @@ multi-tenant on Justin's hardware; each client's data never leaves their
 machine. Supported hosts: macOS (launchd) and Linux (systemd user units) —
 the latter covers the Linux-appliance delivery path in
 `docs/linux-appliance-setup.md`. Full
-design background: `Reference/Plans/2026-08-18-dlcos-dashboards.md` in
+design background: `Reference/Plans/archive/2026-08-18-dlcos-dashboards.md` in
 Justin's vault (not shipped to clients — reference for the coach only).
 
 This is a technical add-on, coach-run. It needs a terminal, `bun`, and cmux on
