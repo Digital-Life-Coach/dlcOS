@@ -23,7 +23,7 @@ multi-tenant on Justin's hardware; each client's data never leaves their
 machine. Supported hosts: macOS (launchd) and Linux (systemd user units) —
 the latter covers the Linux-appliance delivery path in
 `docs/linux-appliance-setup.md`. Full
-design background: `Reference/Plans/archive/2026-08-18-dlcos-dashboards.md` in
+design background: `Reference/Plans/completed/2026-08-18-dlcos-dashboards.md` in
 Justin's vault (not shipped to clients — reference for the coach only).
 
 This is a technical add-on, coach-run. It needs a terminal, `bun`, and cmux on

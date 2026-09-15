@@ -119,6 +119,16 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 
 ---
 
+## `/dlcOS:vault-deep-clean`
+
+**What it does.** A twice-a-year clean-out. Scans permissions and plaintext secrets, drift between `CLAUDE.md` and `AGENTS.md`, memory files that name things which no longer exist, old sweep logs, and stale copies. Dead files move to the archive folder that `/dlcOS:setup` created next to your vault. Nothing is deleted, and every move is listed in `Reference/Archive Manifest.md`.
+
+**When to use it.** When `/dlcOS:monthly-review` says it has been more than six months. Your coach runs it with you. It only reports unless run with `--apply`, and nothing changes without your yes.
+
+**What it produces.** `Reference/Deep Clean - YYYY-MM-DD.md`, compared against the last run's report.
+
+---
+
 ## `/dlcOS:promote-lessons`
 
 **What it does.** When a learning agent (`librarian` or `drafter`) ends a run by proposing small lessons, this surfaces them for your approval and writes the approved ones into that agent's private companion file — so it gets sharper over time.

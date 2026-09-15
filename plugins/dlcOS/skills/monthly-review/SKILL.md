@@ -274,6 +274,7 @@ Tell the client:
 - Files changed and what moved (mirror the way `/dlcOS:weekly-review` reports its wrap).
 - What was skipped and why.
 - Anything **stalled from last month** that's gone a second month without movement — flag it as a candidate to let go or recommit to (named, not lectured).
+- **Deep-clean nudge:** if the newest `Reference/Deep Clean - *.md` is more than 180 days old, or none exists and the vault is more than 180 days old, say once: "It's been six months: time for `/dlcOS:vault-deep-clean` with your coach." One line, no follow-up.
 - Suggest `/dlcOS:end` to close the session.
 
 ---

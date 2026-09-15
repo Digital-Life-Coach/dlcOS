@@ -26,6 +26,7 @@ All skills are namespaced under `/dlcOS:` — type `/dlcOS:` and tab-complete to
 | `/dlcOS:draft` | Draft an email, post, or proposal in your voice (spawns the `drafter` agent), then pick where it goes. |
 | `/dlcOS:vault-lint` | Interactively check your vault for broken links and fix the safe ones (spawns `vault-hygiene`). |
 | `/dlcOS:vault-sweep` | Unattended vault health sweep — detects and logs, fixes nothing. Good for a schedule. |
+| `/dlcOS:vault-deep-clean` | Twice-a-year clean-out. Audits config, CLAUDE.md/AGENTS.md drift, memory, and stale files; moves dead files to your archive folder, never deletes. Coach-run, report-only by default. |
 | `/dlcOS:promote-lessons` | Approve lessons your learning agents propose, so they get smarter over time. |
 | `/dlcOS:setup-email` | *(add-on)* Let Claude read your inbox. Saves drafts into Drafts on Fastmail (easy) or Gmail (needs your own Google Cloud project); read-only on Microsoft 365. Never sends. |
 | `/dlcOS:dashboard-setup` | *(add-on)* Install your own dashboard web app on your own machine (macOS or Linux). Coach-run. |

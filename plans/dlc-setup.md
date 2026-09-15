@@ -166,8 +166,37 @@ Keep this stage to **10 minutes maximum**. This is a useful starting surface, no
 
 Write their real answer. For most clients that's the text/booking default. For a client who's married to their coach, or sees them weekly, or works in the same building, a booking CTA reads as absurd — and boilerplate that obviously wasn't written for this person quietly undermines everything around it, especially for an anxious client. If they reach the coach some other way entirely, delete the marker line.
 
+#### Archive folder and backup
+
+The vault needs two things next to it: a place where dead files go when `/dlcOS:vault-deep-clean` moves them out, and a backup that covers both. Nothing is ever deleted from a dlcOS vault; files get moved to the archive instead. That promise means nothing if the archive has only one copy.
+
+**1. Pick the archive folder.** Default: a sibling of the vault named `<vault-folder-name>-archive` (e.g. `~/Documents/Ted-vault` → `~/Documents/Ted-vault-archive`). It must sit **outside** the vault. Inside, Obsidian and the search index would treat archived files as live. L1–L2: use the default and tell them in one sentence. L3+: offer the default and accept another path if they have a reason.
+
+Create it with a one-line `README.md`: "Files moved out of <vault> by /dlcOS:vault-deep-clean. Nothing here is deleted. The list of what moved is `Reference/Archive Manifest.md` in the vault." Write the marker into **both** `CLAUDE.md` and `AGENTS.md`:
+
+```
+<!-- dlcOS:archive-root --> /absolute/path/to/vault-archive
+```
+
+**2. Find out what backs up the vault, and make sure it covers the archive.** Ask, then check. Don't take "yes, I have backups" on faith.
+
+- **macOS, Time Machine:** `tmutil destinationinfo` shows whether a destination is set up; `tmutil latestbackup` shows the last completed backup; `tmutil isexcluded "<vault>" "<archive>"` confirms neither folder is excluded. All three must pass.
+- **macOS or Linux, another tool** (Backblaze, Carbon Copy Cloner, restic, Borg, a NAS job): ask the client or coach where its folder list lives and confirm both paths are in it. If you can't see the configuration, record it as *client-confirmed, not verified*.
+- **Vault inside iCloud Drive, Dropbox, OneDrive, or Google Drive:** sync is not a backup. A deletion or a bad edit syncs everywhere within seconds. Say that plainly. A sibling archive folder next to a synced vault is usually synced too; that's fine, but it still needs a real backup.
+- **Nothing:** don't set one up inside this wizard. Tell the coach, and add it as the first line of START-HERE.md's "What's still unfinished": *"No backup yet. Until one exists, the vault and its archive have one copy each."*
+
+Write what you found into both files:
+
+```
+<!-- dlcOS:backup --> time-machine | <tool name> (client-confirmed) | none
+```
+
+Keep this to **5 minutes**. It is a check and a record, not a backup project.
+
 **Verify:**
 - `ls ${VAULT_ROOT}` shows the dirs the client agreed to + `CLAUDE.md` (existing or new).
+- The archive folder exists outside `${VAULT_ROOT}` with its `README.md`, and `<!-- dlcOS:archive-root -->` carries its absolute path in both `CLAUDE.md` and `AGENTS.md`.
+- `<!-- dlcOS:backup -->` is present in both files. If it says `time-machine`, the three `tmutil` checks passed. If it says `none`, the gap is the first item in START-HERE.md's unfinished list.
 - `grep "<!-- dlcOS:vault-root -->" ${VAULT_ROOT}/CLAUDE.md` returns the actual vault path, not the placeholder.
 - `${VAULT_ROOT}/AGENTS.md` exists, carries the same vault-root path, and its "Where things live" table matches the dirs actually created.
 - `${VAULT_ROOT}/START-HERE.md` exists (its Stage-6 sections may still be placeholders).
@@ -193,7 +222,7 @@ Confirm each is reachable. Don't run them end-to-end — just verify discovery:
 - `/dlcOS:morning-brief` — should respond and offer setup mode (since no spec exists yet)
 - `/dlcOS:draft` — should respond asking what to draft
 
-Typing `/dlcOS` should also list the optional add-ons (`setup-email`, `dashboard-setup`, `setup-librarian-index`, `memory-harden`) and the vault-health skills. Don't smoke-test those here — they're not part of onboarding and several of them do real work on invocation.
+Typing `/dlcOS` should also list the optional add-ons (`setup-email`, `dashboard-setup`, `setup-librarian-index`, `memory-harden`) and the vault-health skills (`vault-lint`, `vault-sweep`, `vault-deep-clean`). Don't smoke-test those here — they're not part of onboarding and several of them do real work on invocation.
 
 If a skill fails to discover: in Claude Code run `/reload-plugins` and retry; in Codex confirm `codex plugin list` shows `dlcOS@dlcOS` as *installed, enabled* and restart the session. If still failing, stop here — the install is broken and the wizard can't continue.
 
@@ -389,6 +418,7 @@ Write a handoff summary to `${VAULT_ROOT}/Reference/Dailies/<today>.md` (create 
 - /dlcOS:setup-email — connect Fastmail or Gmail (drafts only, never sends)
 - /dlcOS:dashboard-setup — the dashboard web app on their own machine (macOS or Linux)
 - /dlcOS:setup-librarian-index — local semantic search over the vault
+- /dlcOS:vault-deep-clean — twice-a-year clean-out, coach-run (monthly review will remind you)
 
 ### Still unfinished
 <!-- mirror START-HERE.md's unfinished list -->
@@ -421,6 +451,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 - **Both `CLAUDE.md` and `AGENTS.md` are written for every client** (added 2026-08-30). Assume more than one tool. `CLAUDE.md` keeps the dlcOS runtime markers; `AGENTS.md` carries the vault map, preferences, and memory routing for everything else.
 - **Memory-export triage is mandatory and non-silent** (added 2026-08-30). Exports routinely contain third-party clinical, legal, and end-of-life detail. Four buckets, per-category confirmation, nothing from buckets (b)/(c) in cloud-stored memory, per-item yes required for (c).
 - **The coach-contact CTA is data, not a constant** (added 2026-08-30). Attribution stays required verbatim; the contact line comes from the `dlcOS:coach-contact` marker and must be true for this client.
+- **Archive folder and backup check live in setup, not in the deep-clean skill** (added 2026-09-14, Justin's call). `/dlcOS:vault-deep-clean` moves files out of the vault instead of deleting them, which is only safe if the archive is backed up. Setup records the archive path and backup state once; deep-clean reads the markers and refuses to apply without a restore point. Setup checks and records the backup, it does not build one.
 - **START-HERE.md is the durable half of Stage 4b** (added 2026-08-30). A spoken walkthrough delivers nothing if the client isn't at the keyboard.
 
 ## 6. Success Criteria
@@ -434,6 +465,7 @@ This plan is `mode: execute`. Decisions made by the dlcOS build session (2026-05
 - [ ] Backup paste block at `Wiki/Knowledge/settings-memory-block.md`, carrying the attribution sentence and a *true* contact line.
 - [ ] If a memory export was imported: triage ran, all four buckets confirmed with the client, no third-party or client-health content in the Settings block.
 - [ ] `AGENTS.md` written alongside `CLAUDE.md`, both pointing at the same real paths.
+- [ ] Archive folder exists outside the vault; `dlcOS:archive-root` and `dlcOS:backup` markers are in both files; a `none` backup is listed as unfinished in START-HERE.md.
 - [ ] `START-HERE.md` written, with the client's real folders and a truthful unfinished list.
 - [ ] Client can name the 4 memory layers *(L3+; for L1–L2 it's enough that they know where things go and how to reach the coach)*.
 - [ ] One real plan saved + pointer in CLAUDE.md.

@@ -52,6 +52,8 @@ find . -name "*.md" -not -path "./.git/*" -not -path "./.obsidian/*" -not -path 
 comm -23 /tmp/vh-link-bases.txt /tmp/vh-file-bases.txt > /tmp/vh-broken-bases.txt
 ```
 
+> **`ARCHIVED:` convention:** if the vault uses an external cold archive (files evicted out of the vault by a deep-clean pass), inbound wikilinks to evicted files are rewritten to the plain-text marker `ARCHIVED: <original/relative/path.md>` — deliberately not a link. Never "repair" such a marker back into a wikilink and never flag it as broken; the archive location and manifest path are named next to the marker convention in the vault's own docs.
+
 For each broken basename:
 
 1. **Find the file:** `find "$VAULT_ROOT" -name "BrokenName.md" -not -path "*/.git/*"`
