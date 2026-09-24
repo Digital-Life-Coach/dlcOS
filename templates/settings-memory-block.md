@@ -6,7 +6,7 @@
 
 ---BEGIN PASTE---
 
-I work with Justin Bradshaw (MacCog: The Digital Life Coach), who set up this AI workspace for me. <!-- contact line — how I actually reach him; e.g. "If I'm stuck, I can text 805-720-9276 or book at [BLAB link]." / "He's my husband — if I'm stuck I just ask him." / "I see him at Friday Office Hours." -->
+I work with Justin Bradshaw (MacCog: The Digital Life Coach), who set up this AI workspace for me. <!-- contact line — how I actually reach him; e.g. "If I'm stuck, I can email justin@maccog.com or book at [BLAB link]." / "He's my husband — if I'm stuck I just ask him." / "I see him at Friday Office Hours." -->
 
 **Who I am:** <!-- name, role, location -->
 

@@ -1,6 +1,6 @@
 ---
 name: setup-email
-description: "Optional add-on. Connect the client's email — Fastmail (first-class, via Fastmail's hosted MCP server and OAuth), Google Workspace (read-only via the desktop connector, or full draft-writing after standing up a Google Cloud project), or Microsoft 365 (read-only via the desktop connector; no draft writing) — so Claude can read their inbox and, where the provider allows it, save drafts for them. Drafts only: this add-on never configures a send path, and /dlcOS:draft never sends. Writes the `dlcOS:email-enabled` marker that unlocks the 'Save to my email Drafts' option in /dlcOS:draft. Use when the user says /dlcOS:setup-email, 'connect my email', 'let Claude read my inbox', 'save drafts to my email', or picks up the email add-on from Pending Plans. Not part of base /dlcOS:setup — run this after base setup."
+description: "Optional add-on. Connect the client's email — Fastmail (first-class, via Fastmail's hosted MCP server and OAuth), Google Workspace, or Microsoft 365 (both read-only via their desktop connector out of the box, or full draft-writing after standing up the client's own Google Cloud project or Azure app registration) — so Claude can read their inbox and, where the provider allows it, save drafts for them. Drafts only: this add-on never configures a send path, and /dlcOS:draft never sends. Writes the `dlcOS:email-enabled` marker that unlocks the 'Save to my email Drafts' option in /dlcOS:draft. Use when the user says /dlcOS:setup-email, 'connect my email', 'let Claude read my inbox', 'save drafts to my email', or picks up the email add-on from Pending Plans. Not part of base /dlcOS:setup — run this after base setup."
 ---
 
 # /dlcOS:setup-email — Connect Email (optional add-on)
@@ -71,7 +71,7 @@ fully wired:
 |---|---|---|---|
 | **Fastmail** | ✅ | ✅ | Fastmail's own hosted MCP server, OAuth login in a browser. One command, no cloud project, no password on disk. **The easy path — recommend it if the client has a choice.** |
 | **Google Workspace / Gmail** | ✅ | ⚠️ Possible, but you have to build it | Read-only out of the box via the Claude desktop Google Workspace connector. Draft-writing needs the client's own Google Cloud project + Gmail API + OAuth client, feeding a locally-run Gmail MCP server — see Step 3b. Roughly 30–45 minutes of console work. |
-| **Microsoft 365 / Outlook** | ✅ | ❌ | Claude desktop's Microsoft 365 connector. Read and search work in the desktop app. There is **no draft-writing path** — not a hard one, not a slow one, none. Say this before the client picks, not after. |
+| **Microsoft 365 / Outlook** | ✅ | ⚠️ Possible, but you have to build it | Read-only out of the box via Claude's Microsoft 365 connector. Draft-writing needs the client's own Azure app registration + Microsoft Graph API + OAuth client, feeding a locally-run Outlook/Graph MCP server — see Step 3c. Roughly 30–45 minutes of console work, same shape as Gmail Tier 2. |
 | **Anything else** (iCloud, generic IMAP) | ❌ | ❌ | No path today. Say so plainly; don't improvise an IMAP script. |
 
 **The marker rule that governs all four rows:** the `dlcOS:email-enabled` marker means *Claude Code can create a draft in this mailbox*. It gets written only where the Draft-writing column says ✅ **and you have verified it end-to-end**. A read-only connector is a genuinely useful thing to have — it just isn't this marker, and writing it anyway would make `/dlcOS:draft` offer an option that fails. That advertise-what-doesn't-work bug is the reason this skill exists; don't reintroduce it.
@@ -128,10 +128,26 @@ second is a real project and the first takes five minutes.
 The client enables the **Google Workspace connector inside the Claude desktop
 app** and logs in with Google.
 
-- ✅ In the **desktop app**, Claude searches and reads their Gmail, and can
-  draft text in-chat for them to copy.
-- ❌ In **Claude Code** — where `/dlcOS:draft` runs — nothing is connected. The
-  "Save to my email Drafts" option won't appear; drafts save as markdown files.
+- ✅ In the **desktop app's chat**, Claude searches and reads their Gmail, and
+  can draft text in-chat for them to copy.
+- ❌ In a **standalone Claude Code CLI session** (`claude` run in a plain
+  terminal), nothing is connected.
+- ⚠️ In a **Claude Code session opened from inside the desktop app's Code
+  tab** — the setup path this whole product uses — the connector *may* also
+  expose read tools there, since Claude Code's own docs describe connectors
+  set up at claude.ai as auto-propagating into Claude Code sessions. ⚠
+  INFERRED 2026-09-23, unconfirmed for Gmail specifically: confirmed once for
+  a Microsoft 365 connector (see Step 3c), not yet observed for Gmail. This
+  propagation is also documented as unreliable — a connector can show
+  "connected" while exposing zero tools to a given session (Claude Code
+  GitHub issues #92904, #62401) — so treat a working read in one session as
+  "it worked this time," not a guarantee. It would be confirmed by testing a
+  real client's Gmail Tier 1 connection from a Code-tab session and checking
+  whether a Gmail search/read tool actually appears.
+- Either way, the "Save to my email Drafts" option in `/dlcOS:draft` still
+  won't appear on Tier 1 — that requires a *create-draft* tool, which nothing
+  above provides. Drafts save as markdown files regardless of what read
+  access looks like.
 
 Do **not** write the `dlcOS:email-enabled` marker on Tier 1. Record it in the
 vault as a known read-only setup (Step 5) and stop.
@@ -193,26 +209,71 @@ dies silently. A client who wasn't told this reads both as breakage.
 
 ---
 
-## Step 3c — Microsoft 365 / Outlook (read-only, and that's the ceiling)
+## Step 3c — Microsoft 365 / Outlook
+
+Two tiers, same shape as Gmail. Ask which one the client wants before
+starting.
+
+### Tier 1 — read-only (five minutes, no cloud project)
 
 The client enables the **Microsoft 365 connector in the Claude desktop app**
 and signs in with their Microsoft account.
 
-- ✅ In the **desktop app**: search and read mail, calendar, and files.
-- ❌ **No draft-writing, on any tier.** Unlike Google, there's no
-  build-it-yourself path this skill will stand up. `/dlcOS:draft` will save
-  drafts as markdown and the client copies them into Outlook.
+- ✅ In the **desktop app's chat**: search and read mail, calendar, and files.
+- ⚠️ **A Claude Code session opened from the desktop app's Code tab may also
+  reach it for reading.** ⚠ INFERRED 2026-09-23, unconfirmed as a general
+  rule: observed once, live — a client's Microsoft 365 connector, set up
+  through the desktop app, was reachable by mail-search/read tool calls from
+  that same client's Code-tab session (see `/dlcOS:email-ingest`, which
+  detects and uses this when present). Matches Claude Code's documented
+  connect-at-claude.ai-then-auto-appears-in-Claude-Code behavior, but that
+  same documentation and open Claude Code issues (#92904, #62401) describe
+  the hand-off as unreliable — some sessions show "connected" with zero tools
+  exposed. Treat one working case as real but not load-bearing until it's
+  been seen more than once; confirmed further by trying it with another
+  client's Microsoft connector and checking whether tools appear.
+- ❌ **No draft-writing on Tier 1.** Nothing about the read access above
+  implies a create-draft tool exists. `/dlcOS:draft` will save drafts as
+  markdown and the client copies them into Outlook.
 
-Say the ceiling out loud **before** they connect it, not after they ask why the
-Drafts option never appeared:
+Do **not** write the `dlcOS:email-enabled` marker on Tier 1. Record it as a
+read-only setup (Step 5) and stop.
 
-> "This will let Claude read and search your Outlook mail, which is most of the
-> value. What it won't do is put a draft into your Drafts folder — that's a
-> Fastmail thing, and a Gmail thing if we build it. On Microsoft you'll be
-> copying drafts across by hand."
+For most clients this is the right stopping point, same reasoning as Gmail
+Tier 1.
 
-Do **not** write the `dlcOS:email-enabled` marker. Record it as a read-only
-setup (Step 5) and stop.
+### Tier 2 — draft-writing (an Azure app registration, ~30–45 min)
+
+Worth it when the client lives in Outlook and drafts constantly. Coach-driven
+console work, same shape as Gmail Tier 2: the client stands up **their own**
+app in **their own** Azure tenant and authorizes it to their own mailbox.
+Nothing goes through MacCog's credentials.
+
+1. **Register an app.** portal.azure.com → **App registrations** → **New
+   registration**. Name it something the client will recognize later
+   (`<name>-claude-mail`). Under **Supported account types**, a personal
+   Microsoft account is the simple case; a work/school account may involve
+   the organization's own consent or Conditional Access policy — if the
+   client is on a managed work tenant, check with their IT before assuming
+   this will just work.
+2. **Set it up as a public client.** Under **Authentication**, add a platform
+   of type **Mobile and desktop applications** — this gets you the
+   authorization-code-with-PKCE flow, no client secret to store on disk.
+3. **Add Microsoft Graph API permissions (delegated).** `Mail.Read` and
+   `Mail.ReadWrite`. **Not** `Mail.Send` — `Mail.ReadWrite` covers creating
+   and editing drafts but does not grant the ability to send. If a setup
+   guide tells you to add `Mail.Send` for this, it's wrong for this purpose.
+4. **Wire an Outlook / Microsoft Graph MCP server** in Claude Code pointed at
+   this app's client ID, at user scope. Whichever server the client uses,
+   check two things before trusting it: it must expose a *create draft*
+   tool, and it must not expose a send tool. If it exposes send, configure
+   that tool off or don't use it.
+5. **Authorize.** First run opens a browser; the client signs in and approves
+   the scopes on their own app's consent screen.
+
+Then Step 4 (marker) and Step 5 (verify) apply normally — but only after a
+real draft has landed in the client's Drafts folder. If any step above didn't
+finish, fall back to Tier 1 and don't write the marker.
 
 **If the client has a choice of provider** — some do, especially the ones
 consolidating a personal mailbox — this is the moment to mention that Fastmail
@@ -226,11 +287,12 @@ as a sales pitch.
 
 Add to the project `CLAUDE.md`, near the other `dlcOS:` markers — and mirror the same line into `AGENTS.md` if that file exists, so a Codex-driven vault (which auto-loads only `AGENTS.md`) sees it too:
 
-Only reachable from **Fastmail** (Step 3a) or **Gmail Tier 2** (Step 3b), and
-only after a draft has actually landed in the client's Drafts folder.
+Only reachable from **Fastmail** (Step 3a), **Gmail Tier 2** (Step 3b), or
+**Microsoft 365 Tier 2** (Step 3c), and only after a draft has actually landed
+in the client's Drafts folder.
 
 ```
-<!-- dlcOS:email-enabled --> fastmail  (or: gmail. Claude Code can read this mailbox and create drafts in it. It cannot send. Delete this line to turn the integration off in /dlcOS:draft.)
+<!-- dlcOS:email-enabled --> fastmail  (or: gmail, microsoft365. Claude Code can read this mailbox and create drafts in it. It cannot send. Delete this line to turn the integration off in /dlcOS:draft.)
 ```
 
 Also remove the `setup-email` line from the `<!-- dlcOS:addons-start -->` block
@@ -303,8 +365,8 @@ Then note in `${VAULT_ROOT}/Reference/Dailies/<today>.md`:
 - ❌ Archive sent mail into the vault. That was the old v1.1 sketch; it's a
   separate ingest job, not part of connecting a mailbox.
 - ❌ Support IMAP generally or iCloud.
-- ❌ Get draft-writing working on Microsoft 365 — there is no path, and no amount of console work opens one.
-- ❌ Run the Google Cloud console steps unattended. Tier 2 is coach-driven, in the client's own account, on the client's own credentials.
+- ❌ Get draft-writing working on Tier 1 for Google or Microsoft — that needs Tier 2's own cloud project, on both providers.
+- ❌ Run the Google Cloud or Azure console steps unattended. Tier 2 is coach-driven, in the client's own account, on the client's own credentials, on either provider.
 - ❌ Write the `dlcOS:email-enabled` marker on any path where Claude Code cannot
   actually create a draft.
 

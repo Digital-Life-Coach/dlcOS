@@ -10,8 +10,12 @@ This page gets you from a fresh machine to "the wizard is running" in about ten 
 
 1. **A Mac** running macOS 14 (Sonoma) or newer, **or a Linux box** running a current systemd distro (Ubuntu LTS is what we test). macOS is the common path and what the setup pages below assume; Linux is supported and is the basis of the appliance option, where dlcOS runs on a dedicated always-on machine and syncs to the Mac you actually use. Windows is not supported.
 2. **A Claude Pro or Max subscription.** The free plan does not include Claude Code, which is the piece that does the work.
-3. **Claude Code**, installed with one command: `curl -fsSL https://claude.ai/install.sh | bash`
+3. **Claude Code**, installed with one command: 
+	```
+	curl -fsSL https://claude.ai/install.sh | bash
+	```
 4. **A terminal.** [cmux](https://cmux.com/) is what we recommend and what your coach uses. Terminal.app works too.
+5. **On macOS, `git`** — most Macs don't ship with it. The marketplace-add step below clones a repo, and it fails outright without git. Check first with `git --version`; if it prints a version, skip this. If it instead pops an "install developer tools" dialog (or you want to trigger it yourself), run `xcode-select --install`, accept the dialog, and wait for it to finish (several minutes, needs internet) before continuing. This is the small Command Line Tools package, not the full Xcode app — don't install Xcode itself just for this. Linux boxes typically have git already; check the same way.
 
 No GitHub account is needed. dlcOS is a public repo.
 
@@ -106,4 +110,4 @@ Two of these agents (`librarian`, `drafter`) get a little smarter each time you 
 
 See `troubleshooting.md` in this folder. Most issues are one of: stale plugin registration (run `/reload-plugins`), missing vault root marker, or the marketplace step was skipped during install.
 
-If `troubleshooting.md` doesn't fix it, text Justin at **805-720-9276** or book time at **support.maccog.com**.
+If `troubleshooting.md` doesn't fix it, email Justin at **justin@maccog.com** or book time at **support.maccog.com**.

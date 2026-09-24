@@ -5,7 +5,7 @@
 <!-- dlcOS:vault-root --> /absolute/path/to/your/vault
 <!-- dlcOS:office-hours-ical --> https://example.com/office-hours.ics  (replace with your coach's calendar URL, or delete this line to disable Office Hours nudges)
 <!-- dlcOS:gcal-enabled -->  (delete this line to disable Google Calendar integration in /dlcOS:weekly-review)
-<!-- dlcOS:coach-contact --> text 805-720-9276 or book at [BLAB link]  (how you actually reach your coach — set during setup; edit freely, or delete this line if you reach them some other way)
+<!-- dlcOS:coach-contact --> email justin@maccog.com or book at [BLAB link]  (how you actually reach your coach — set during setup; edit freely, or delete this line if you reach them some other way)
 
 ---
 
@@ -18,7 +18,8 @@ See [`Wiki/Knowledge/about-me.md`](Wiki/Knowledge/about-me.md) — populated by 
 *Used by `/dlcOS:save-plan` and `/dlcOS:resume-plan`. Each entry: one line, link to the plan file in `Reference/Plans/`. Optional dlcOS add-ons appear here as pending plans you can pick up anytime — run `/dlcOS:resume-plan <name>` to start the guided setup.*
 
 <!-- dlcOS:addons-start -->
-- `setup-email` *(v2.1 add-on)* — Let Claude read your inbox, and (on Fastmail, or Gmail with extra setup) save drafts straight into your Drafts folder. Drafts only — nothing is ever sent without you. Run `/dlcOS:setup-email` when ready.
+- `setup-email` *(v2.1 add-on)* — Let Claude read your inbox, and (on Fastmail, or Gmail/Outlook with extra setup) save drafts straight into your Drafts folder. Drafts only — nothing is ever sent without you. Run `/dlcOS:setup-email` when ready.
+- `email-ingest` *(v2.3 add-on)* — Archive your Sent folder into searchable vault notes, one clean file per conversation. Works with Fastmail (via `setup-email`) or a Microsoft 365/Google Workspace connector already set up through claude.ai. Read-only. Run `/dlcOS:email-ingest` when ready.
 - `dashboard-setup` *(v2.0 add-on)* — Your daily command center as a phone-installable web app, running on your own machine. Technical setup; coach-run. Run `/dlcOS:dashboard-setup` when ready.
 - `setup-librarian-index` *(v2.0 add-on)* — Give the `librarian` agent a local semantic-search index so it finds things by meaning, not just keywords. Everything stays on your machine. Technical setup (needs Python + `uv`). Run `/dlcOS:setup-librarian-index` when ready.
 <!-- dlcOS:addons-end -->

@@ -147,10 +147,10 @@ Every dlcOS skill, what it does, when to use it, what it produces. Skim once; co
 |---|---|---|
 | **Fastmail** | Yes | **Yes** — one command and a browser login. The easy path. |
 | **Google Workspace / Gmail** | Yes | Only if you set up your own Google Cloud project first (about 30–45 minutes with your coach, in your own Google account). Without that, read-only. |
-| **Microsoft 365 / Outlook** | Yes | **No.** There's no way to do it, quick or slow. You'll copy drafts across by hand. |
+| **Microsoft 365 / Outlook** | Yes | Only if you set up your own Azure app registration first (about 30–45 minutes with your coach, in your own Microsoft account). Without that, read-only — you'll copy drafts across by hand. |
 | iCloud, other IMAP | No | No |
 
-The Gmail draft-writing path is real but it's a project: a Google Cloud project of your own, the Gmail API turned on, and an app you authorize to your own mailbox — scoped so it can create drafts and *cannot* send. Your coach drives it. Most people are happier stopping at read-only and copying the occasional draft across.
+The Gmail and Outlook draft-writing paths are real but each is a project: a cloud project of your own (Google Cloud or Azure), the mail API turned on, and an app you authorize to your own mailbox — scoped so it can create drafts and *cannot* send. Your coach drives it. Most people are happier stopping at read-only and copying the occasional draft across.
 
 **When to use it.** When you're tired of copying drafts out of a chat window by hand, and you're comfortable with Claude being able to read your mail to answer questions about it.
 
@@ -159,6 +159,18 @@ The Gmail draft-writing path is real but it's a project: a Google Cloud project 
 **If you have a choice of provider,** Fastmail gets you draft-writing in five minutes with no cloud project. Nobody should switch email hosts over this — but if you were already thinking about it, that's the difference.
 
 **Worth knowing before you say yes.** Messages Claude reads to answer you go to Anthropic, the same as anything you paste into a conversation — your mailbox isn't uploaded, but what it reads does leave your machine. If your inbox carries other people's confidential information (clients, patients, HR), skipping this is a reasonable choice, not a timid one. Turn it off any time by deleting the `dlcOS:email-enabled` line from your `CLAUDE.md` and revoking the grant in Fastmail's settings.
+
+---
+
+## `/dlcOS:email-ingest` *(add-on)*
+
+**What it does.** Archives your Sent folder into `Wiki/Emails/` as clean, searchable markdown — one file per conversation, quoting and signatures stripped out, full history kept. Once ingested, `librarian` can search your old email the same way it searches your notes.
+
+**Needs first.** A working mail connection in the session — either Fastmail via `/dlcOS:setup-email`, or a Microsoft 365 / Google Workspace connector already set up through claude.ai's own Settings → Connectors. Fastmail is the reliable path: it has a documented, stable connection. Microsoft/Google connectors are supposed to carry over into Claude Code automatically once connected, but that hand-off is known to be inconsistent — this skill checks what's actually reachable each run and tells you plainly which one it found, or that it found none.
+
+**When to use it.** Once, for a backlog (`--days 365` or more), then periodically to keep it current. Read-only throughout: it never sends, deletes, or touches anything in your mailbox, and it doesn't run on a schedule by itself — you or your coach run it when you want it run.
+
+**What it will never do.** Scan your Inbox (Sent only), download attachments, or send anything.
 
 ---
 

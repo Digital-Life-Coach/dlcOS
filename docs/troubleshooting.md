@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Things that go wrong, and how to fix them. If none of these match, text Justin at **805-720-9276** or book time at **support.maccog.com**.
+Things that go wrong, and how to fix them. If none of these match, email Justin at **justin@maccog.com** or book time at **support.maccog.com**.
 
 ---
 
@@ -20,6 +20,26 @@ Run `/plugin list` after — you should see `dlcOS` listed. If you do but the sk
 ```
 
 Then try `/dlcOS:` again. The slash menu should populate.
+
+---
+
+## "`/plugin marketplace add` fails with `xcode-select: note: No developer tools were found`"
+
+macOS only, on a machine that has never had git installed. `/plugin marketplace add` clones the repo, and there is no git binary to do that with.
+
+Run:
+
+```
+xcode-select --install
+```
+
+A GUI dialog pops up — accept it and let it finish (a few minutes, needs internet). Ignore the `sudo xcode-select --switch path/to/Xcode.app` line the error suggests; that command points at an *existing* Xcode install at a nonstandard path, which doesn't apply here — you have no Xcode/CLT install at all yet. Once the installer finishes, retry:
+
+```
+/plugin marketplace add Digital-Life-Coach/dlcOS
+```
+
+You only need the small Command Line Tools package this installs, not the full Xcode app.
 
 ---
 
@@ -160,7 +180,7 @@ If something feels weird after running `/dlcOS:setup`, here's the full list of p
 
 ## Last resort
 
-Text Justin at **805-720-9276** with:
+Email Justin at **justin@maccog.com** with:
 
 1. What you were trying to do.
 2. The exact command you ran (or what you said to Claude).

@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dlcOS Setup</title>
+<style>
+  :root {
+    --ink: #1e293b; --muted: #64748b; --line: #e2e8f0;
+    --accent: #4f46e5; --accent-soft: #eef2ff; --bg: #f8fafc; --card: #ffffff;
+    --warn: #b45309; --warn-soft: #fffbeb; --warn-line: #fde68a;
+    --ok: #047857; --ok-soft: #ecfdf5; --ok-line: #a7f3d0;
+    --term-bg: #0f172a; --term-ink: #e2e8f0; --term-line: #1e293b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: var(--ink); background: var(--bg); margin: 0; padding: 2rem 1rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  .sheet { max-width: 840px; margin: 0 auto; }
+
+  /* ---------- header ---------- */
+  header { margin-bottom: 1.75rem; }
+  .brand {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: .8rem;
+  }
+  .brand .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--accent); flex: none; }
+  h1 { font-size: 2.1rem; line-height: 1.1; margin: 0 0 .4rem; letter-spacing: -.02em; }
+  .sub { color: var(--muted); font-size: 1.02rem; max-width: 60ch; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem;
+  }
+  .pill {
+    font-size: .78rem; font-weight: 600; padding: .22rem .6rem; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); border: 1px solid transparent;
+  }
+
+  /* ---------- sections ---------- */
+  section {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.2rem 1.35rem; margin: 0 0 1rem;
+    box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  }
+  h2 {
+    font-size: .74rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--accent); margin: 0 0 .8rem; font-weight: 700;
+  }
+  h3 { font-size: 1rem; margin: 1rem 0 .35rem; }
+  h3:first-of-type { margin-top: 0; }
+  p { margin: .45rem 0; }
+  ul, ol { margin: .3rem 0; padding-left: 1.3rem; }
+  li { margin: .32rem 0; }
+  strong { font-weight: 650; }
+
+  /* ---------- stage cards ---------- */
+  .stage {
+    display: grid; grid-template-columns: 2.4rem 1fr; gap: .1rem 1rem;
+    align-items: start;
+  }
+  .stage + .stage { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--line); }
+  .stage .num {
+    grid-row: span 2;
+    width: 2.4rem; height: 2.4rem; border-radius: 12px;
+    background: var(--accent); color: #fff;
+    font-size: 1.05rem; font-weight: 700;
+    display: grid; place-items: center; flex: none;
+  }
+  .stage .title { font-size: 1.12rem; font-weight: 650; margin: .18rem 0 .1rem; letter-spacing: -.01em; }
+  .stage .body { grid-column: 2; }
+  .why { color: var(--muted); font-size: .93rem; margin: 0 0 .6rem; }
+
+  /* ---------- commands ---------- */
+  .cmd {
+    position: relative; background: var(--term-bg); border: 1px solid var(--term-line);
+    border-radius: 10px; padding: .75rem 3.6rem .75rem .9rem; margin: .6rem 0;
+    overflow-x: auto;
+  }
+  .cmd pre {
+    margin: 0; color: var(--term-ink);
+    font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    white-space: pre;
+  }
+  .cmd .prompt { color: #64748b; user-select: none; }
+  .copy {
+    position: absolute; top: .5rem; right: .5rem;
+    font: 600 11px/1 -apple-system, system-ui, sans-serif; letter-spacing: .04em;
+    text-transform: uppercase; color: #cbd5e1; background: #1e293b;
+    border: 1px solid #334155; border-radius: 6px; padding: .38rem .55rem; cursor: pointer;
+  }
+  .copy:hover { color: #fff; background: #334155; }
+  .copy.done { color: #6ee7b7; border-color: #065f46; }
+  code, kbd {
+    font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--accent-soft); color: var(--accent);
+    padding: .1rem .4rem; border-radius: 5px;
+  }
+
+  /* ---------- callouts ---------- */
+  .callout {
+    background: var(--warn-soft); border: 1px solid var(--warn-line); border-radius: 9px;
+    padding: .65rem .85rem; margin: .7rem 0; font-size: .93rem; color: var(--warn);
+  }
+  .expect {
+    background: var(--ok-soft); border: 1px solid var(--ok-line); border-radius: 9px;
+    padding: .65rem .85rem; margin: .7rem 0; font-size: .93rem; color: var(--ok);
+  }
+  .expect strong, .callout strong { font-weight: 700; }
+
+  /* ---------- checklist ---------- */
+  .check { list-style: none; padding-left: 0; }
+  .check li {
+    display: flex; gap: .65rem; align-items: baseline; margin: .5rem 0;
+  }
+  .check li::before {
+    content: ""; flex: none; width: 1.05rem; height: 1.05rem; border-radius: 5px;
+    border: 2px solid var(--line); background: var(--card); position: relative; top: .18rem;
+  }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .93rem; min-width: 420px; }
+  th, td { text-align: left; padding: .5rem .65rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+  tr:last-child td { border-bottom: none; }
+
+  footer { color: var(--muted); font-size: .82rem; text-align: center; margin-top: 1.75rem; line-height: 1.7; }
+  a { color: var(--accent); }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #e2e8f0; --muted: #94a3b8; --line: #334155;
+            --accent: #818cf8; --accent-soft: #1e1b4b; --bg: #0f172a; --card: #1e293b;
+            --warn: #fbbf24; --warn-soft: #422006; --warn-line: #78350f;
+            --ok: #6ee7b7; --ok-soft: #022c22; --ok-line: #065f46;
+            --term-bg: #020617; --term-line: #1e293b; }
+  }
+  @media (max-width: 560px) {
+    body { padding: 1.25rem .75rem; }
+    h1 { font-size: 1.65rem; }
+    .stage { grid-template-columns: 2rem 1fr; gap: .1rem .7rem; }
+    .stage .num { width: 2rem; height: 2rem; font-size: .9rem; border-radius: 10px; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    section { box-shadow: none; break-inside: avoid; }
+    .copy { display: none; }
+    .cmd { background: #f1f5f9; border-color: #cbd5e1; }
+    .cmd pre { color: #0f172a; }
+  }
+
+  /* ---------- collapsible advanced section ---------- */
+  details.adv {
+    background: var(--card); border: 1px dashed var(--line); border-radius: 14px;
+    padding: 0; margin: 0 0 1rem;
+  }
+  details.adv > summary {
+    cursor: pointer; list-style: none; padding: 1.1rem 1.35rem;
+    font-size: .74rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--muted); font-weight: 700;
+    display: flex; align-items: center; gap: .55rem;
+  }
+  details.adv > summary::-webkit-details-marker { display: none; }
+  details.adv > summary::before { content: "\25B8"; font-size: .9em; transition: transform .15s; }
+  details.adv[open] > summary::before { transform: rotate(90deg); }
+  details.adv > summary:hover { color: var(--accent); }
+  details.adv .adv-body { padding: 0 1.35rem 1.2rem; }
+  details.adv .adv-body > p:first-child { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="brand"><span class="dot"></span> MacCog &middot; The Digital Life Coach</div>
+    <h1>dlcOS Setup</h1>
+    <div class="sub">Everything we install together, in order, on the Mac that will hold your AI workspace. Three apps, about twenty minutes, and then the setup wizard takes over.</div>
+    <div class="meta">
+      <span class="pill">~20 minutes</span>
+      <span class="pill">Do it together on the call</span>
+      <span class="pill">I run the terminal part</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Read this first</h2>
+    <p>Nothing here is technical. You download a couple of apps, sign in, and answer some questions. I handle the one piece that needs a command, and you can watch me do it.</p>
+    <p>Pick the Mac that <strong>stays home and stays on</strong>. This machine becomes the home of your second brain, so a desktop beats a laptop you carry around. (If you only have a laptop, that's fine too, it just means the workspace travels with you.)</p>
+  </section>
+
+  <section>
+    <h2>Before we start</h2>
+    <p class="why">Three things to confirm before the call. Any one of these missing will stop us partway through, so it is worth two minutes now.</p>
+    <ul class="check">
+      <li><strong>macOS 13 (Ventura) or newer.</strong> Click the Apple menu, then About This Mac. If you're older than that, tell me before the call and we'll sort the update out first.</li>
+      <li><strong>Your Mac login password.</strong> The installers will ask for it.</li>
+      <li><strong>Twenty uninterrupted minutes</strong> on the machine itself, not screen sharing from somewhere else.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What we're installing, and why</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>What</th><th>In plain English</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claude desktop + iOS apps</strong></td>
+            <td>Claude, with hands. The Code tab can read and write the files in your workspace instead of just talking about them. Desktop is where you'll do most of the work; the iOS app lets you check in from your phone.</td>
+          </tr>
+          <tr>
+            <td><strong>dlcOS</strong></td>
+            <td>My system, installed into your Claude. Memory that persists, weekly reviews, plan handoffs, session wrap-ups. This is the part you're paying for.</td>
+          </tr>
+          <tr>
+            <td><strong>Obsidian</strong></td>
+            <td>Where you can see your notes. Plain text files in a folder on your Mac, not in someone's cloud. Optional, but it's the easiest way to read, edit, or delete anything Claude has written for yourself.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>The install</h2>
+
+    <div class="stage">
+      <div class="num">1</div>
+      <div class="title">Set up your account and install the apps</div>
+      <div class="body">
+        <p class="why">Ten minutes, and it has to happen first. The free Claude plan doesn't include the Code tab, which is the piece that does the real work. Everything after this depends on it.</p>
+        <ol>
+          <li>Go to <a href="https://claude.ai/">claude.ai</a> and sign in, or create an account if you don't have one.</li>
+          <li>Open <a href="https://claude.ai/settings/billing">Settings &rarr; Billing</a> and pick a plan. <strong>Pro</strong> is the right starting point for most people. <strong>Max</strong> is for heavy daily use, and you can move up later without redoing anything.</li>
+          <li>Go to <a href="https://claude.ai/download">claude.ai/download</a>, get the Mac version, open the download, drag Claude into Applications, and launch it. Sign in with the account you just made.</li>
+          <li>On your phone, download <strong>Claude</strong> from the App Store and sign in with the same account. This is what lets you pick a session back up from your phone later.</li>
+        </ol>
+        <div class="callout"><strong>Already have a Claude account?</strong> Check whether it's the free tier. Open Settings &rarr; Billing: if it doesn't say Pro or Max, it's free, and the Code tab won't open.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="num">2</div>
+      <div class="title">Create your vault folder, then I install dlcOS</div>
+      <div class="body">
+        <p class="why">Two minutes for the folder, five for my part. Everything you build lives in one plain folder of text files &mdash; that folder is the vault. Once it exists, I point dlcOS at it.</p>
+        <ol>
+          <li>In Finder, create a new folder wherever you want your workspace to live and give it a name (something like &ldquo;<em>Your Name</em> Vault&rdquo;). Your Documents folder is a fine location. Keep it at the root level rather than nested inside another folder &mdash; this tends to become your most-used folder over time.</li>
+        </ol>
+        <p>Then it's my turn. The Claude app can't install plugins by itself, so this step runs a few commands in the Mac's built-in <strong>Terminal</strong> app (Applications &rarr; Utilities &rarr; Terminal). Watch if you're curious, or get a coffee &mdash; you won't need to type any of this yourself.</p>
+
+        <p><strong>My checklist, in order</strong> &mdash; run each, confirm the expected result before moving on:</p>
+
+        <p style="margin-bottom:-.1rem"><strong>1. Check for git</strong></p>
+        <div class="cmd">
+          <button class="copy" data-copy="git --version">Copy</button>
+          <pre><span class="prompt">$ </span>git --version</pre>
+        </div>
+        <p style="margin-top:-.2rem" class="why">Prints a version number &rarr; skip to step 3. Instead pops an "install developer tools" dialog, or errors with <code>xcode-select: note: No developer tools were found</code> &rarr; go to step 2.</p>
+
+        <p style="margin-bottom:-.1rem"><strong>2. Install Command Line Tools (only if step 1 needed it)</strong></p>
+        <div class="cmd">
+          <button class="copy" data-copy="xcode-select --install">Copy</button>
+          <pre><span class="prompt">$ </span>xcode-select --install</pre>
+        </div>
+        <p style="margin-top:-.2rem" class="why">A GUI dialog pops up &mdash; accept it and wait for it to finish (several minutes, needs internet). This installs git, nothing more; ignore any suggestion to run <code>xcode-select --switch</code>, that's for a different situation. Don't install the full Xcode app for this.</p>
+
+        <p style="margin-bottom:-.1rem"><strong>3. Install the Claude Code CLI</strong></p>
+        <div class="cmd">
+          <button class="copy" data-copy="curl -fsSL https://claude.ai/install.sh | bash">Copy</button>
+          <pre><span class="prompt">$ </span>curl -fsSL https://claude.ai/install.sh | bash</pre>
+        </div>
+        <p style="margin-top:-.2rem" class="why">Installing dlcOS only works from here, not from inside the app.</p>
+
+        <p style="margin-bottom:-.1rem"><strong>4. Add the marketplace and install the plugin</strong> &mdash; type <code>claude</code> to start a session, then run these two:</p>
+        <div class="cmd">
+          <button class="copy" data-copy="/plugin marketplace add Digital-Life-Coach/dlcOS">Copy</button>
+          <pre><span class="prompt">&gt; </span>/plugin marketplace add Digital-Life-Coach/dlcOS</pre>
+        </div>
+        <div class="cmd">
+          <button class="copy" data-copy="/plugin install dlcOS@dlcOS">Copy</button>
+          <pre><span class="prompt">&gt; </span>/plugin install dlcOS@dlcOS</pre>
+        </div>
+        <p style="margin-top:-.2rem" class="why">If step 4 fails with the xcode-select error, step 2 was skipped &mdash; go back and run it, then retry both lines above.</p>
+        <div class="expect"><strong>You'll know it worked</strong> when typing <code>/dlcOS</code> in the Claude app brings up a list instead of nothing.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="num">3</div>
+      <div class="title">Open the Code tab and run the wizard</div>
+      <div class="body">
+        <p class="why">This is the handoff. From here dlcOS walks you through the rest and I'm just along for the ride.</p>
+        <ol>
+          <li>In the Claude desktop app, click <strong>Code</strong> at the top of the window (the other two tabs, Chat and Cowork, are cloud-based &mdash; we're avoiding those for anything private).</li>
+          <li>Choose <strong>Local</strong> when it asks about the environment.</li>
+          <li>Click <strong>Select folder</strong> and choose the vault folder you created in step 2.</li>
+        </ol>
+        <div class="cmd">
+          <button class="copy" data-copy="/dlcOS:setup">Copy</button>
+          <pre>/dlcOS:setup</pre>
+        </div>
+        <p>The wizard takes about forty five minutes and covers:</p>
+        <ul>
+          <li>A few questions about who you are and what you want out of this.</li>
+          <li>Building out the rest of your vault.</li>
+          <li>Writing your <strong>memory</strong>, so Claude knows you in every future conversation instead of starting cold every time.</li>
+          <li>A walk through the four memory layers, so you understand where things get remembered and why.</li>
+          <li>A closing checklist of what to use when.</li>
+        </ul>
+        <div class="callout"><strong>If clicking Code asks you to upgrade</strong>, you're signed in with a free account or the wrong one. Sign out, check <a href="https://claude.ai/settings/billing">Settings &rarr; Billing</a>, and sign back in with the account from step 1.</div>
+        <div class="callout"><strong>Don't run this one on your own the first time.</strong> The wizard asks questions that are much easier to answer with me on the call, and getting your memory right at the start saves redoing it later.</div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="num">4</div>
+      <div class="title">Install Obsidian and open your vault</div>
+      <div class="body">
+        <p class="why">Two minutes, and now the last step &mdash; by now the wizard has already built out your vault, so there's something worth looking at.</p>
+        <ol>
+          <li>Go to <a href="https://obsidian.md/download">obsidian.md/download</a> and click the Mac download.</li>
+          <li>Open the downloaded file, then drag the Obsidian icon into your Applications folder, and launch it.</li>
+          <li>When it asks you to open a vault, choose <strong>Open folder as vault</strong> and select the same folder from step 2.</li>
+        </ol>
+        <p>This is how you can see everything Claude has done. Every file it created or changed lives here as plain text, and you can read, edit, delete, or add to any of it yourself, any time &mdash; there's no mystery box.</p>
+      </div>
+    </div>
+  </section>
+
+  <details class="adv">
+    <summary>Optional: add cmux, a nicer terminal</summary>
+    <div class="adv-body">
+      <p class="why">Skip this unless we talked about it. Step 2 already installed Homebrew, git, and the Claude Code CLI &mdash; you don't need any of that again. This just swaps the plain macOS Terminal app for cmux, a terminal built for running AI assistants. Worth doing if you want a dashboard that can start sessions for you, or if you like working in a terminal. We can always come back and add it later.</p>
+
+      <h3>Install cmux</h3>
+      <p>It needs <strong>macOS 14 (Sonoma) or newer</strong>.</p>
+      <ol>
+        <li>Go to <a href="https://cmux.com/">cmux.com</a> and click <strong>Download for Mac</strong>.</li>
+        <li>Open the download, drag cmux into Applications, and launch it.</li>
+        <li>Click through the welcome screen. You'll land on a window with a blinking cursor. Type <code>claude</code> and press return &mdash; since the CLI is already installed, it opens straight into a session.</li>
+      </ol>
+    </div>
+  </details>
+
+  <section>
+    <h2>If something goes wrong</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>What you see</th><th>What to do</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Clicking <strong>Code</strong> asks you to upgrade</td><td>Free plan, or the wrong account. Check <a href="https://claude.ai/settings/billing">Settings &rarr; Billing</a> and sign in with the account from step 1.</td></tr>
+          <tr><td>macOS blocks an app from opening</td><td>Open System Settings, go to Privacy &amp; Security, scroll down, and click <strong>Open Anyway</strong> next to the app's name.</td></tr>
+          <tr><td>Typing <code>/dlcOS</code> shows nothing</td><td>Step 2 didn't take. Tell me and I'll redo it, it's a thirty second fix.</td></tr>
+          <tr><td>Homebrew or git asks for your password mid-install</td><td>Normal. Type your Mac login password and press return &mdash; it won't show characters as you type, that's expected.</td></tr>
+          <tr><td>The Code tab looks stuck or blank</td><td>Quit Claude completely (Command-Q) and reopen. If it's still stuck, text me.</td></tr>
+          <tr><td>Obsidian asks you to create a new vault</td><td>Choose <strong>Open folder as vault</strong> instead and pick the folder from step 2 &mdash; don't let it create a fresh empty one.</td></tr>
+          <tr><td>Anything else</td><td>Stop and text me. Don't spend twenty minutes fighting it, that's what I'm for.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>After the wizard</h2>
+    <p>You'll have a working setup and a handful of commands worth knowing. You don't have to memorize them: type <code>/dlcOS:</code> and the menu shows you everything, and plain English works for most of it too.</p>
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td><code>/dlcOS:end</code></td><td>Wrap up a session cleanly. Use this one <strong>every single time</strong>, even for a five-minute session &mdash; it's the habit that makes the rest work. See below.</td></tr>
+          <tr><td><code>/dlcOS:save-plan</code></td><td>Park something half finished so a future session can pick it up.</td></tr>
+          <tr><td><code>/dlcOS:resume-plan</code></td><td>Pick that plan back up, with fresh eyes on it first.</td></tr>
+          <tr><td><code>/dlcOS:weekly-review</code></td><td>The Friday sweep through tasks and projects.</td></tr>
+          <tr><td><code>/dlcOS:monthly-review</code></td><td>Monthly memory maintenance, so what Claude knows about you stays current.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Running a session, start to finish</h2>
+    <p class="why">The mechanics you'll use every time you sit down with Claude. None of this is complicated, but it's easy to forget in your first week, so it's worth reading once slowly.</p>
+
+    <h3>Starting one</h3>
+    <p>Click the <strong>+</strong> (New) button above your session list. Make sure it's creating the session inside your vault, not somewhere else &mdash; if you only have one vault, this is automatic. Then just tell it what you're there to do, in plain language.</p>
+
+    <h3>Naming it</h3>
+    <p>New sessions get a generic name. Double-click the name in the sidebar and type whatever the topic actually is, so you can find it again later.</p>
+
+    <h3>Sending a turn</h3>
+    <p>Each message you send is called a <strong>turn</strong>. Get all your thoughts out and send them together rather than firing off one short message, waiting, then sending another &mdash; that's slower and burns through your context faster. Hold <kbd>Shift</kbd> while you hit <kbd>Return</kbd> to add a new line without sending; a plain <kbd>Return</kbd> sends the whole thing.</p>
+
+    <h3>Ending it &mdash; the step that matters most</h3>
+    <p>When you're done, before you close the window or walk away, run:</p>
+    <div class="cmd">
+      <button class="copy" data-copy="/dlcOS:end">Copy</button>
+      <pre>/dlcOS:end</pre>
+    </div>
+    <p>This is the command that actually writes what happened into your memory system: what you were working on, what you decided, what's still open. Skip it, and your next session starts cold with no idea what you just did &mdash; even a session that felt too short or trivial to bother with is worth ten seconds of <code>/dlcOS:end</code>. Plain <code>/end</code> works too, it's the same command.</p>
+    <p>Once it finishes, close out the session by going up to <strong>Archive</strong>. <strong>Archive</strong> keeps the session transcript on your hard drive so a future agent can look back at it if you ask it to. <strong>Delete</strong> removes that transcript entirely. Archive is the right default; only delete if you specifically want it gone for good.</p>
+    <div class="callout"><strong>Archiving without running <code>/dlcOS:end</code> first skips the memory-writing step</strong> &mdash; the transcript sits there, but nothing from it gets pulled into your vault's memory. Always <code>/end</code>, then archive.</div>
+
+    <h3>Picking a session back up on your phone</h3>
+    <p>Open the Claude app on your phone (the one you installed in step 1) and sign in with the same account. The default view is the regular chat interface &mdash; swipe over or use the sidebar to get to the <strong>Code</strong> tab, where your vault's sessions live. Tap the one you want, and it continues exactly where you left it.</p>
+    <div class="callout"><strong>This only works while the Mac running your vault is on and awake.</strong> Your phone isn't running the session itself, it's remote-controlling the one on your Mac &mdash; so if that machine is asleep or off, there's nothing to connect to.</div>
+  </section>
+
+  <footer>
+    Questions, or something on this page didn't match what you saw? Text me at <strong>805-720-9276</strong> or book time at <a href="https://support.maccog.com/">support.maccog.com</a>.<br>
+    Updated 2026-08-18 &middot; MacCog &middot; maccog.com
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy') || '';
+      var done = function () {
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+</script>
+</body>
+</html>
