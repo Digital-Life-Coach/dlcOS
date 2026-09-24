@@ -89,7 +89,7 @@ If an `Inbox/` folder exists, flag markdown files sitting there older than ~8 da
 
 ## Rule 3 — Empty structural sections (conditional)
 
-If the vault has a tracked list file the client uses for projects/tasks (commonly `Action/` notes, or a `PROJECTS.md`/`TASKS.md` if present), scan for `##`/`###` headers with zero `- [ ]` items before the next header. Flag them.
+If the vault has a tracked list file the client uses for projects/tasks (commonly `Action/` notes, or a `PROJECTS.md`/`TASKS.md` if present), scan for `##`/`###` headers with neither a `- [ ]` item nor an explicit `**Next action:**` line/link before the next header. Flag them. A written next-action pointer counts — don't flag a project just because its checkbox lives in the task list instead.
 
 **Always report-only** — surfaces gaps for the user's next review; never auto-edits their planning docs.
 
@@ -160,6 +160,7 @@ Return a markdown string. In report-only mode, also write it to `Reference/Daili
 
 ## Empty structural sections (N)
 - `Action/projects.md` → ## SomeProject (no open items)
+
 ## Memory formation (24h)
 - 3 real session(s), 0 vault writes — ⚠️ memory is not forming (last vault write: 2026-09-02)
 ```

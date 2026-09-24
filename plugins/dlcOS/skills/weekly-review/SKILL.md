@@ -336,16 +336,9 @@ Update the "Last updated" line in:
 - `${VAULT_ROOT}/Action/PROJECTS.md` → `*Last updated: YYYY-MM-DD*`
 - `${VAULT_ROOT}/Action/SOMEDAY.md` → `*Last refreshed: YYYY-MM-DD*`
 
-### 4d. Git commit (conditional)
+### 4d. Git commit — DON'T. `/dlcOS:end` owns the commit.
 
-Not every dlcOS client's vault is a git repo. If it isn't, skip this silently — no mention of git in the reply to the user at all; don't narrate the check or the skip.
-
-```bash
-REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-if [ -n "$REPO_ROOT" ] && [ "$(pwd)" = "$REPO_ROOT" ]; then
-  git add -A && git commit -m "weekly review: YYYY-MM-DD — [brief summary]"
-fi
-```
+Do not commit here, and never `git add -A` mid-review: a blanket stage sweeps up unrelated files another session (or the user) may have mid-flight. `/dlcOS:end` already commits correctly — session-scoped staging, silent skip on non-git vaults — so the review's changes ride the normal session close. If the user asks to commit right now, stage only the files this review wrote and say what you staged.
 
 ### 4e. Write the last-run marker
 

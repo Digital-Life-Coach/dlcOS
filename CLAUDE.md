@@ -55,3 +55,13 @@ Genuinely Claude-only in practice: the librarian/drafter **companion-memory loop
 
 ⚠️ **Verify before asserting a capability gap.** The claim "Codex has no subagents" was made here on 2026-08-31 from weak evidence (no `agents/` dir in bundled plugins) and was wrong — `codex features list | grep multi_agent` and `strings` on the real binary both showed otherwise. The `codex` on PATH may be a cmux shim; the real binary is under the npm global prefix or `~/.codex/packages/standalone/`.
 - Client-facing docs: `docs/client-quickstart.md`, `docs/skills-reference.md`, `docs/troubleshooting.md`
+
+## Vault → product fix propagation *(decided 2026-09-05)*
+
+The personal vault's skills are the upstream of this repo's `plugins/dlcOS/skills/`. When a vault skill gets a fix, the default is:
+
+- **Doctrine and safety fixes port by default, same session** — commit behavior (no `git add -A` mid-flow; `/end` owns commits), task-authorization gates, memory-routing rules, anything that prevents data loss or unauthorized writes. Port it into the product copy when the vault copy is fixed; it ships silently with the next real release (no version bump for the fix alone).
+- **Justin-specific tooling never ports** — WP fleet, Daylite/billing, dashboards, librarian infra, lite workers, `Work/Automation/` anything.
+- **Ambiguous cases get asked** — if it's not clearly one of the above, ask Justin per-fix.
+
+Precedent: the 2026-09-04 audit fixed vault `weekly-review`/`monthly-review`/`end` commit-and-authorization doctrine but the product `weekly-review` kept `git add -A` mid-review until 2026-09-05 — exactly the drift this rule exists to prevent. Agents remain deliberately non-symlinked (`agents/CLAUDE.md`); this rule is about porting *doctrine*, not sharing files.

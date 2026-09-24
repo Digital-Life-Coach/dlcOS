@@ -138,9 +138,11 @@ Compare `about-me.md` against the month's dailies. Flag:
 
 For each, add a draft to the collector: specific old → new edit.
 
-### 2b. Settings → Memory drift
+### 2b. Settings → Memory drift *(Claude Code vaults only)*
 
-Claude cannot read the Settings → Memory GUI directly — so this check works against the `settings-memory-block.md` backup file.
+**Check the runtime first.** Settings → Memory is a Claude desktop feature; a vault run under Codex (AGENTS.md-based, shipped since v2.2.0) has no such surface. If this vault is Codex-only — `AGENTS.md` present and no Claude-side install evidence, or the user says so — skip this step entirely: `about-me.md` is the single L3 surface there, and 2a already audited it. Don't generate a paste block nobody can paste.
+
+For Claude Code vaults: Claude cannot read the Settings → Memory GUI directly — so this check works against the `settings-memory-block.md` backup file.
 
 Regenerate the short Settings block from the *current* `about-me.md` (same shape as `templates/settings-memory-block.md` — under ~400 words; keep the required coach-attribution sentence verbatim, and carry the client's own contact line through unchanged — it's theirs, not boilerplate to regenerate). Diff it against the saved `settings-memory-block.md`.
 
