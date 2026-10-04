@@ -99,6 +99,8 @@ Skip this rule entirely if no such file exists. Do not invent a task system the 
 
 ## Rule 4 — Memory formation (sessions vs. writes)
 
+**Opt-in only.** Run this rule ONLY IF the project `CLAUDE.md` contains a `<!-- dlcOS:memory-health -->` marker. Without the marker, skip the rule entirely and say so in one line: "Rule 4 (memory formation): off, not opted in." The rule reads the client's AI session logs (to count user messages, never to quote them), so the client turns it on; it is never on by default.
+
 A working memory system and a broken one look identical from the outside: nothing errors, nothing logs. This rule makes silence visible by comparing *real sessions in the last 24h* against *vault writes in the last 24h*. (Field evidence: a client vault ran a week of real daily use and wrote one durable fact; nobody noticed for three days.)
 
 **Count real sessions** — check whichever harness session dirs exist; a session only counts if its log contains at least one actual user message. This filter is required: some machines generate many phantom sessions a day with zero user messages (background/automation launches), and counting those masks the problem in the opposite direction — writes of 0 against inflated sessions, or sessions that never had a user to write for.
