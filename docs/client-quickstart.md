@@ -8,20 +8,33 @@ This page gets you from a fresh machine to "the wizard is running" in about ten 
 
 ## What you need first
 
-1. **A Mac** running macOS 14 (Sonoma) or newer, **or a Linux box** running a current systemd distro (Ubuntu LTS is what we test). macOS is the common path and what the setup pages below assume; Linux is supported and is the basis of the appliance option, where dlcOS runs on a dedicated always-on machine and syncs to the Mac you actually use. Windows is not supported.
+1. **A Mac** running macOS 14 (Sonoma) or newer, **a Linux box** running a current systemd distro (Ubuntu LTS is what we test), **or a Windows PC** running Windows 10 (1809+) or Windows 11. macOS is the common path and what most of the setup pages below assume; Linux is supported and is the basis of the appliance option, where dlcOS runs on a dedicated always-on machine and syncs to the Mac you actually use. Windows is supported natively as of this page: see the **Windows branch** callouts below for each step that differs.
 2. **A Claude Pro or Max subscription.** The free plan does not include Claude Code, which is the piece that does the work.
-3. **Claude Code**, installed with one command: 
-	```
-	curl -fsSL https://claude.ai/install.sh | bash
-	```
-4. **A terminal.** [cmux](https://cmux.com/) is what we recommend and what your coach uses. Terminal.app works too.
-5. **On macOS, `git`** — most Macs don't ship with it. The marketplace-add step below clones a repo, and it fails outright without git. Check first with `git --version`; if it prints a version, skip this. If it instead pops an "install developer tools" dialog (or you want to trigger it yourself), run `xcode-select --install`, accept the dialog, and wait for it to finish (several minutes, needs internet) before continuing. This is the small Command Line Tools package, not the full Xcode app — don't install Xcode itself just for this. Linux boxes typically have git already; check the same way.
+3. **Claude Code**, installed with one command:
+
+   **macOS, Linux:**
+   ```
+   curl -fsSL https://claude.ai/install.sh | bash
+   ```
+
+   **⊞ Windows (PowerShell):**
+   ```
+   irm https://claude.ai/install.ps1 | iex
+   ```
+   This is the official install method from Anthropic's own docs (checked 2026-09-30). You can also install with `winget install Anthropic.ClaudeCode`, but winget does not auto-update, so the PowerShell installer above is the better default.
+4. **A terminal.** [cmux](https://cmux.com/) is what we recommend and what your coach uses on macOS. On Windows, use **Git Bash** (installed with Git for Windows, see item 5) or PowerShell. Terminal.app works too on macOS.
+5. **`git`:**
+   - **On macOS**, most Macs don't ship with it. The marketplace-add step below clones a repo, and it fails outright without git. Check first with `git --version`; if it prints a version, skip this. If it instead pops an "install developer tools" dialog (or you want to trigger it yourself), run `xcode-select --install`, accept the dialog, and wait for it to finish (several minutes, needs internet) before continuing. This is the small Command Line Tools package, not the full Xcode app. Don't install Xcode itself just for this.
+   - **On Linux**, boxes typically have git already; check the same way.
+   - **⊞ On Windows**, install [Git for Windows](https://git-scm.com/downloads/win). This is not optional for dlcOS the way it is for a bare Claude Code install: it gives you Git Bash, which is the shell we recommend for every command on this page and in the setup wizard. Without it, Claude Code falls back to the PowerShell tool, and some of the marketplace and wizard commands assume a bash-like shell. After install, open **Git Bash** (search the Start menu) and run `git --version` to confirm.
 
 No GitHub account is needed. dlcOS is a public repo.
 
 If any of those is missing, stop here and finish them with your coach before continuing.
 
 Your coach will usually hand you a step-by-step setup page covering all of the above before your first session.
+
+**⊞ Windows path differences worth knowing up front:** your home directory is `%USERPROFILE%` (Git Bash shows this as `~`, same as macOS/Linux). Obsidian's default vault location on Windows is `C:\Users\<you>\Documents\<vault-name>`, not `~/Documents`; either works, Git Bash treats both the same way. Anywhere this page or the wizard says a Unix path like `~/.claude/`, Git Bash resolves `~` to `%USERPROFILE%` automatically, so you don't need to translate it yourself. ⚠ untested on Windows: the exact prompt text and error messages the wizard shows may differ slightly from what's documented for macOS.
 
 ---
 

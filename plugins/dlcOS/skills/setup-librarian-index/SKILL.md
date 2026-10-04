@@ -76,6 +76,16 @@ Load it: `launchctl load ~/Library/LaunchAgents/com.dlcos.librarian-reindex.plis
 30 3 * * *  libr add "<VAULT_ROOT>" --name vault >> ~/.cache/dlcos/librarian-reindex.log 2>&1
 ```
 
+**⊞ Windows (Task Scheduler):** no cron, no launchd; use `schtasks` from Git Bash or PowerShell to register a daily task. From Git Bash:
+```
+schtasks /Create /SC DAILY /ST 03:30 /TN "dlcOS Librarian Reindex" /TR "libr add \"$VAULT_ROOT\" --name vault" /F
+```
+`/F` overwrites a task of the same name if this runs a second time (idempotent, same as the macOS/Linux branches). Check `where libr` first: if `libr` isn't on the PATH Task Scheduler runs with, use the full path it reports instead of the bare command. Confirm the task registered with:
+```
+schtasks /Query /TN "dlcOS Librarian Reindex"
+```
+To remove it later: `schtasks /Delete /TN "dlcOS Librarian Reindex" /F`. ⚠ untested on Windows: this add-on has only been run end-to-end on macOS; verify the task actually fires (check `%LOCALAPPDATA%\dlcos\librarian-reindex.log` or wherever the user redirects output) before telling the client it's live.
+
 Adapt the exact mechanism to the user's OS; the job is just a daily `libr add "$VAULT_ROOT" --name vault`.
 
 ## Step 6 — Write the marker

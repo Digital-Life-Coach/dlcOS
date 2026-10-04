@@ -80,7 +80,21 @@ sudo apt update && sudo apt install -y git curl
 curl -fsSL https://claude.ai/install.sh | bash
 ```
 
-Everything the base wizard does afterwards is platform-neutral — it writes markdown into a directory. The macOS-specific pieces are all in optional add-ons (`dashboard-setup` and `setup-librarian-index` both branch on platform; `dashboard-setup` writes a systemd user unit on Linux instead of a launchd plist).
+**⊞ On Windows** (supported natively, not WSL, unless the client already prefers WSL for other reasons) there is no Homebrew step, but Git for Windows comes first, since dlcOS assumes a bash-like shell throughout:
+
+```
+winget install --id Git.Git -e --source winget
+```
+
+or download the installer directly from git-scm.com/downloads/win if `winget` isn't set up. Once it's installed, open **Git Bash** (not PowerShell, not CMD; search the Start menu) and run the same install command as macOS/Linux from inside it:
+
+```
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+That works because Git Bash ships its own `curl` and POSIX shell. If the client prefers to install from native PowerShell instead, the command there is `irm https://claude.ai/install.ps1 | iex` (both forms are confirmed against Anthropic's official install docs, checked 2026-09-30). Either way, **run the wizard itself from Git Bash**, not PowerShell or CMD: the plan and templates below assume bash. ⚠ untested on Windows: this wizard has only been run end-to-end against macOS and Linux clients so far. Watch for shell-quoting or path differences as you go and flag anything that breaks.
+
+Everything the base wizard does afterwards is platform-neutral, it writes markdown into a directory. The macOS-specific pieces are all in optional add-ons (`dashboard-setup` and `setup-librarian-index` both branch on platform; `dashboard-setup` writes a systemd user unit on Linux instead of a launchd plist; `setup-librarian-index` uses Task Scheduler on Windows instead of launchd, see that skill's Step 5).
 
 Only then does the install work. **Two harnesses, same plugin** — use whichever the client actually drives:
 
@@ -142,7 +156,7 @@ When all stages pass:
 
 - **Recurring Wiki synchronization or large historical imports** — Stage 2 creates up to 3 client-selected starter areas and may pull a small confirmed starting batch; Phase 2 owns unattended sync and larger migrations.
 - **Morning-brief setup** — deferred to a follow-up session. Wizard mentions it in Stage 6 handoff.
-- **Scheduled actions (cron/launchd)** — Phase 2.
+- **Scheduled actions (cron/launchd/Task Scheduler):** Phase 2.
 - **Claude desktop Settings → Memory automation** — there's no API. The wizard outputs a paste block; the client manually pastes it into Settings.
 - **Critique the plan each run** — `mode: execute` skips the critique. The plan content was reviewed at build time.
-- **Re-install the dlcOS plugin** — the client must already have installed it (Claude Code or Codex, see **Step 2**) before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI; on Linux, git plus the CLI (see **Step 2**) — this skill assumes that's already done, it doesn't walk the coach through it.
+- **Re-install the dlcOS plugin:** the client must already have installed it (Claude Code or Codex, see **Step 2**) before invoking `/dlcOS:setup`. On a fresh Mac that itself requires Homebrew, git, and the Claude Code CLI; on Linux, git plus the CLI; on Windows, Git for Windows plus the CLI (see **Step 2**). This skill assumes that's already done, it doesn't walk the coach through it.
