@@ -51,7 +51,7 @@ Present a single-select choice (`AskUserQuestion` where available, a lettered li
 **Only if `dlcOS:email-enabled` marker is present AND format hint = email AND subject + recipient are known:**
 - **Save to my email Drafts** — create a draft in the connected email account (never send).
 
-If the user's original message named the destination explicitly ("draft an email to X" → they want a draft saved/handed for that email; "draft a blog post" → markdown file), pre-select that option but still confirm.
+If the user's original message named the destination explicitly ("draft an email to X" → they want a draft saved/handed for that email; "draft a blog post" → markdown file), use it and run Step 5 without asking; still show the draft and its Notes afterward.
 
 ### 5. Execute
 

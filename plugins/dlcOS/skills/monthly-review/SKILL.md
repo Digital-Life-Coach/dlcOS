@@ -79,7 +79,7 @@ Present as a structured summary, then ask to proceed:
 ⏸️ STALLED FROM LAST MONTH: [N] flagged
 ```
 
-Then: `Ready to start? Phase 1: Look Back — synthesize this month's themes.`
+Then go straight to Phase 1: Look Back — synthesize this month's themes.
 
 ---
 

@@ -120,4 +120,4 @@ Update frontmatter `status: abandoned`, append `## Abandoned` section explaining
 - ❌ Editing the plan file's history (sections 1-10) instead of appending — preserves the audit trail
 - ❌ Forgetting to clean up the CLAUDE.md pointer when done — leaves stale entries that bloat future sessions
 - ❌ Archiving by copy instead of by move — leaves a `status: pending` twin at the top-level path that looks like live work forever. Verify the old path is gone (Step 4.5).
-- ❌ Bundling multiple steps' execution before reporting — go step by step so the user can interrupt
+- ❌ Stopping to report between steps that passed Verify — report once at the end, or at once on a failed step

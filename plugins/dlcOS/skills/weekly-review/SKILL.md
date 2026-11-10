@@ -108,7 +108,7 @@ Present as a structured summary:
 📆 CALENDAR: [N] events past week, [N] upcoming   ← only if GCal enabled
 ```
 
-Then: `Ready to start? Phase 1: Get Clear`
+Then: `Continue to Phase 1: Get Clear`
 
 ---
 
